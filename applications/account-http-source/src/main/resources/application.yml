@@ -1,2 +1,12 @@
-server:
-  port: 4001
+spring:
+  application:
+    name: account-http-source
+  cloud:
+    function.definition: supplier
+    stream:
+      bindings:
+        supplier-out-0:
+          destination: banking.account
+      rabbit:
+        default:
+          quorum.enabled: true

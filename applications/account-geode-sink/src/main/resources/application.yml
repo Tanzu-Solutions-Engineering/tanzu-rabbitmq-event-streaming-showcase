@@ -1,2 +1,24 @@
 server:
-  port: 4001
+  port: 8081
+spring:
+  application:
+    name: account-geode-sink
+  cloud:
+    function.definition: accountConsumer
+    stream:
+      bindings:
+        accountConsumer-in-0:
+          destination: banking.account
+          group: bankingAccount
+          consumer:
+            concurrency: 20
+      rabbit:
+        bindings:
+          accountConsumer-in-0:
+            consumer:
+              autoBindDlq: true
+              quorum.enabled: true
+              prefetch: 10000
+        default:
+          quorum.enabled: true
+          autoBindDlq: true

@@ -14,27 +14,16 @@
     <name>account-http-source</name>
     <description>account-http-source</description>
     <properties>
-		<geode.version>1.13.1</geode.version>
+		<geode.vrsion>1.13.1</geode.vrsion>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.0-M1</spring-cloud.version>
         <kotlin.version>1.5.21</kotlin.version>
-        <spring-geode.version>1.5.3</spring-geode.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.5.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.geode</groupId>
-            <artifactId>spring-geode-starter</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.geode</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.nyla-solutions</groupId>
@@ -57,62 +46,6 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
         </dependency>
-
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-core</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-cq</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-lucene</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-wan</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-common</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-management</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-logging</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-membership</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-unsafe</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-serialization</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geode</groupId>
-			<artifactId>geode-tcp-server</artifactId>
-			<version>${geode.version}</version>
-		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -156,13 +89,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.geode</groupId>
-                <artifactId>spring-geode-bom</artifactId>
-                <version>${spring-geode.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
