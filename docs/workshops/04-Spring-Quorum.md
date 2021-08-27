@@ -1,71 +1,66 @@
-# Prerequisite
+# Spring Add to Quorum Queues
 
+#--------------------
+# Setup GemFire data store
 
-
-*GemFire*
-
-
-Example
+## step 1 - Change to project dir
 
     cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+
+## step 2 - Create GemFire cluster
+
     k apply -f cloud/k8/data-services/geode/gemfire.yml
+
+## step 3 - Watch for gemfire1-locator-0  and  gemfire1-server-0-2 in ready state
 
     watch kubectl get pods
 
-    kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "create region --name=Vehicle --eviction-action=local-destroy --eviction-max-memory=10000 --entry-time-to-live-expiration=60 --entry-time-to-live-expiration-action=DESTROY --enable-statistics=true --type=PARTITION"
+## step 4 - Kill watch (Control^C) and create Account GemFire region/table 
 
-*RabbitMq*
-
-    kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
-    k apply -f cloud/k8/data-services/rabbitmq/rabbitmq.yml
-
-```shell
-
-  watch kubectl 
-     
-kubectl exec rabbitmq-server-0 -- rabbitmqctl add_user app CHANGEME
-
-kubectl exec rabbitmq-server-0 -- rabbitmqctl set_permissions  -p / app ".*" ".*" ".*"
-
-kubectl exec rabbitmq-server-0 -- rabbitmqctl set_user_tags app monitoring
-
-k port-forward rabbitmq-server-0 15672:15672
-
-CHROME
-open http://localhost:15670
-
-```
+    kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "create region --name=Account --eviction-action=local-destroy --eviction-max-memory=10000 --entry-time-to-live-expiration=60 --entry-time-to-live-expiration-action=DESTROY --enable-statistics=true --type=PARTITION"
 
 
 
-Geode sink
+#--------------------
+# Build account-geode-sink Docker Images 
 
-```shell
+## step 1 - Change to project dir
+
+    cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+
+## step 2 - build docker
     
-    mvn -pl applications/account-geode-sink -am spring-boot:build-image
-    kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
-    
+mvn -pl applications/account-geode-sink -am spring-boot:build-image
 
-```
+## step 3 - load docker to kubernetes kind
 
-
+kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
 
 
 
-account-http-source
+#--------------------
+# Build account-http-sourceDocker Images
 
-```shell
+## step 1 - build docker
+
     mvn -pl applications/account-http-source -am spring-boot:build-image
+
+## step 2 - load docker to kubernetes kind
+
     kind load docker-image account-http-source:0.0.1-SNAPSHOT
-```
 
 
-Generator Source
-```shell
+#--------------------
+# Build account-generator-source Docker Images
+
+## step 1 - build docker
+
     mvn -pl applications/account-generator-source -am spring-boot:build-image
+
+## step 2 - load docker to kubernetes kind
+
     kind load docker-image account-generator-source:0.0.1-SNAPSHOT
     
-```
 
 ---------------
 
