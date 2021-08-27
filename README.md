@@ -24,8 +24,8 @@ Lab 2 - Create a RabbitMQ Cluster with HA
 Lab 3 - Provision RabbitMQ Topology Operation
 - Users, Permissions, Queues, Vhost, etc.
 
-Lab 4 - Quorum
-Lab 5 - Streams
+Lab 4 - Spring Apps with Quorum Queues 
+Lab 5 - Spring Apps with Streams
 
 
 Lab 6 - Spring DataFlow
