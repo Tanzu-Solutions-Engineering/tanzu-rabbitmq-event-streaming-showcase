@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vmware</groupId>
-    <artifactId>financial-open-banking-showcase-parent</artifactId>
+    <artifactId>tanzu-rabbitmq-event-streaming-showcase-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
-    <name>financial-open-banking-showcase-parent</name>
+    <name>tanzu-rabbitmq-event-streaming-showcase-parent</name>
 
     <modules>
          <module>applications/account-http-source</module>

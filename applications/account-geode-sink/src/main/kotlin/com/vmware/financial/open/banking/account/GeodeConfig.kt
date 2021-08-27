@@ -3,6 +3,7 @@ package com.vmware.financial.open.banking.account
 import com.vmware.financial.open.banking.account.domain.Account
 import org.apache.geode.cache.GemFireCache
 import org.apache.geode.cache.client.ClientCacheFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.gemfire.GemfireTemplate
@@ -18,12 +19,15 @@ import org.springframework.data.gemfire.config.annotation.EnableContinuousQuerie
 @EnableClusterDefinedRegions
 @EnableContinuousQueries
 class GeodeConfig {
+
     @Bean
-    fun gemfireTemple(gemFireCache : GemFireCache) : GemfireTemplate
+    fun gemfireTemple(gemFireCache : GemFireCache,
+     @Value("\${gemfire.region.name:Account}") regionName : String) : GemfireTemplate
     {
         return GemfireTemplate<String,Account>(
             ClientCacheFactory
                 .getAnyInstance()
-                .getRegion("Account"))
+                .getRegion(regionName))
     }
 }
+
