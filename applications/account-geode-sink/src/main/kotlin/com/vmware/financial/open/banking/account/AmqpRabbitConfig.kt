@@ -19,7 +19,8 @@ import org.springframework.rabbit.stream.listener.StreamListenerContainer
 
 
 /**
- *
+ * RabbitMQ Configuration
+ * @author Gregory Green
  */
 @Configuration
 class AmqpRabbitConfig {
