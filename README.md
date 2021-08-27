@@ -19,10 +19,13 @@ java -jar applications/account-geode-sink/target/account-geode-sink-0.0.1-SNAPSH
 # Lab Outline
 
 
-Lab 1 - Setup RabbitMQ /Topology Operation on K8
+Lab 1 - Setup RabbitMQ /Topology Operation on K8 
 Lab 2 - Create a RabbitMQ Cluster with HA
 Lab 3 - Provision RabbitMQ Topology Operation
 - Users, Permissions, Queues, Vhost, etc.
-- Basic message Publish/Consume
-  Lab 4 - Streams
-  Lab 5 - Spring DataFlow
+
+Lab 4 - Quorum
+Lab 5 - Streams
+
+
+Lab 6 - Spring DataFlow

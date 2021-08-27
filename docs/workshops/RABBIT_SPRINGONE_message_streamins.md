@@ -41,6 +41,9 @@ Example
     k apply -f cloud/k8/data-services/rabbitmq/rabbitmq.yml
 
 ```shell
+
+  watch kubectl 
+     
 kubectl exec rabbitmq-server-0 -- rabbitmqctl add_user app CHANGEME
 
 kubectl exec rabbitmq-server-0 -- rabbitmqctl set_permissions  -p / app ".*" ".*" ".*"
@@ -54,31 +57,35 @@ open http://localhost:15670
 
 ```
 
-Generator Source
-```shell
-    cd applications/account-generator-source
-    mvn spring-boot:build-image
-    kind load docker-image account-generator-source:0.0.1-SNAPSHOT
-    
-    k apply -f cloud/k8/apps/account-generator-source/account-generator-source.yml
-```
+
 
 Geode sink
 
 ```shell
-    cd ../account-geode-sink
-    mvn spring-boot:build-image
+    
+    mvn -pl applications/account-geode-sink -am spring-boot:build-image
     kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
+    
 
 ```
+
+
+
 
 
 account-http-source
 
 ```shell
-    cd ../account-http-source
-    mvn spring-boot:build-image
+    mvn -pl applications/account-http-source -am spring-boot:build-image
     kind load docker-image account-http-source:0.0.1-SNAPSHOT
+```
+
+
+Generator Source
+```shell
+    mvn -pl applications/account-generator-source -am spring-boot:build-image
+    kind load docker-image account-generator-source:0.0.1-SNAPSHOT
+    
 ```
 
 ---------------
@@ -86,12 +93,18 @@ account-http-source
 **Start Demo**
 ---------------
 ###
-k apply -f cloud/k8/apps/sink/geode-sink/gke/vehicles-geode-sink-gke.yml
 
-k apply -f cloud/k8/apps/source/vehicle-generator-source/gke/FLEET-A.yml
+```shell
+kubectl exec -it gemfire1-locator-0 -- gfsh -e connect -e "create region --name=Account --type=PARTITION"
+```
 
+```shell
+k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
+```
 
-k apply -f cloud/k8/apps/source/vehicle-generator-source/gke/FLEET-B.yml
+watch kubectl get pods
+
+k apply -f cloud/k8/apps/account-generator-source/account-generator-source.yml
 
 
 
