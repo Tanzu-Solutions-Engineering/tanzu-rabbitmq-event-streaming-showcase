@@ -18,6 +18,8 @@ spring:
             consumer:
               autoBindDlq: true
               quorum.enabled: true
+              dlqQuorum:
+                enabled: true
               prefetch: 10000
 #        default:
 #          quorum.enabled: true

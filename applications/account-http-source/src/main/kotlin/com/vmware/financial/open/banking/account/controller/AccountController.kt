@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RestController
  */
 @RestController("/obp/v4.0.0")
 class AccountController(private val rabbitTemplate: RabbitTemplate,
-                        @Value("\${spring.cloud.stream.bindings.supplier-out-0.destination:banking-account}") private var exchangeId: String = "banking-account") {
+                        @Value("\${spring.cloud.stream.bindings.supplier-out-0.destination:banking-account}")
+                        private var exchangeId: String = "banking-account") {
 
     @PostMapping("banks/{bankId}/accounts")
     fun createAccount(@PathVariable("bankId") bankId : String, @RequestBody account: Account) : ResponseEntity<Account> {

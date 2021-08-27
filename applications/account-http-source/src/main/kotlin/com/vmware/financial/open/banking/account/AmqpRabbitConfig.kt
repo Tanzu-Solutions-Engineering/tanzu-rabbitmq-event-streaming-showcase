@@ -2,6 +2,8 @@ package com.vmware.financial.open.banking.account
 
 import com.vmware.financial.open.banking.account.domain.Account
 import nyla.solutions.core.data.collections.QueueSupplier
+import org.springframework.amqp.core.Exchange
+import org.springframework.amqp.core.TopicExchange
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy
@@ -18,7 +20,6 @@ import org.springframework.context.annotation.Configuration
  *
  */
 @Configuration
-//@EnableAsync
 class AmqpRabbitConfig {
 
     @Value("\${spring.rabbitmq.username:guest}")
@@ -34,13 +35,10 @@ class AmqpRabbitConfig {
     private var applicationName: String? = null
 
     @Bean
-    fun supplier () : QueueSupplier<Account>
+    fun exchange(@Value("\${spring.cloud.stream.bindings.supplier-out-0.destination:banking-account}")
+                 exchangeName: String) : Exchange
     {
-        return QueueSupplier<Account>()
-    }
-    @Bean
-    fun connectionNameStrategy(): ConnectionNameStrategy? {
-        return ConnectionNameStrategy { applicationName!! }
+        return TopicExchange(exchangeName)
     }
 
     @Bean
@@ -51,19 +49,17 @@ class AmqpRabbitConfig {
         factory.setUsername(username);
         factory.setPassword(password);
 
-        return ThreadChannelConnectionFactory(factory.rabbitConnectionFactory);
+        var tcf =  ThreadChannelConnectionFactory(factory.rabbitConnectionFactory);
+        tcf.setConnectionNameStrategy(ConnectionNameStrategy { applicationName!! })
+
+        return tcf
     }
 
+    /**
+     * Override the Java Serializer
+     */
     @Bean
-    fun convert() : MessageConverter
-    {
+    fun convert() : MessageConverter {
         return Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    fun rabbitListenerContainerFactory() :SimpleRabbitListenerContainerFactory {
-        var factory = SimpleRabbitListenerContainerFactory();
-        factory.setMessageConverter(Jackson2JsonMessageConverter());
-        return factory;
     }
 }
