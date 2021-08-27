@@ -19,6 +19,6 @@ spring:
               autoBindDlq: true
               quorum.enabled: true
               prefetch: 10000
-        default:
-          quorum.enabled: true
-          autoBindDlq: true
+#        default:
+#          quorum.enabled: true
+#          autoBindDlq: true
