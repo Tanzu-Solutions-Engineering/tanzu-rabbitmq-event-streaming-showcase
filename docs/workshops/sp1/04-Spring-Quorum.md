@@ -49,17 +49,24 @@ kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
 
     kind load docker-image account-http-source:0.0.1-SNAPSHOT
 
+## step 3 - starts app
+
+  k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
+
+## step 4 - start app see pod with name account-geode-sink, then control^C
+
+watch kubectl get pods
 
 #--------------------
-# Build account-generator-source Docker Images
+# Build account-http-source Docker Images
 
 ## step 1 - build docker
 
-    mvn -pl applications/account-generator-source -am spring-boot:build-image
+    mvn -pl applications/account-http-source -am spring-boot:build-image
 
 ## step 2 - load docker to kubernetes kind
 
-    kind load docker-image account-generator-source:0.0.1-SNAPSHOT
+    kind load docker-image account-http-source:0.0.1-SNAPSHOT
     
 
 ---------------

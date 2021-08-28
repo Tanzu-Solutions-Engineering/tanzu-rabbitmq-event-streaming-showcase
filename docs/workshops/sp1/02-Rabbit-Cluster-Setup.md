@@ -5,11 +5,23 @@
 
 ```shell
 
-  watch kubectl 
+
+## step 3 - wait for rabbitmq-server-0-2 then Control^C
+  watch kubectl get pods
+
+
+# ------------------------------
+# Add Monitoring app user
      
+##step 1 - add user
+
 kubectl exec rabbitmq-server-0 -- rabbitmqctl add_user app CHANGEME
 
+##step 2 - set user permissions
+
 kubectl exec rabbitmq-server-0 -- rabbitmqctl set_permissions  -p / app ".*" ".*" ".*"
+
+##step 3 - set tag to access the admin dashboard
 
 kubectl exec rabbitmq-server-0 -- rabbitmqctl set_user_tags app monitoring
 

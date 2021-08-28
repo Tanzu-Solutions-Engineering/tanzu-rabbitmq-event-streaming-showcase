@@ -11,20 +11,19 @@ import java.util.function.Supplier
  * @author Gregory Green
  */
 @Component
-class AccountGeneratorSupplier(@Value("\${account.generator.sleepMs:3000}")private val sleepMs: Long = 3000) : Supplier<Account> {
-    private var log = LogManager.getLogger(AccountGeneratorSupplier::class.java)
-    /**
-     * Gets a result.
-     *
-     * @return a result
-     */
-    override fun get(): Account {
-        Thread.sleep(sleepMs)
-        var account = nextAccount()
-        log.info("account: account {}",account)
-        return account
+class AccountGeneratorSupplier(
+    @Value("\${account.generator.sleepMs:3000}")private val sleepMs: Long = 3000) : Supplier<Account> {
 
+    override fun get(): Account {
+        return nextAccount()
     }
 
-    private fun nextAccount() = JavaBeanGeneratorCreator.of(Account::class.java).create()
+    private fun nextAccount() :Account {
+        Thread.sleep(sleepMs)
+        var account = JavaBeanGeneratorCreator.of(Account::class.java).create()
+        log.info("account: account {}",account)
+        return account
+    }
+
+    private var log = LogManager.getLogger(AccountGeneratorSupplier::class.java)
 }
