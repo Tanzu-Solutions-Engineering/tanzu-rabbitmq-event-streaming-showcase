@@ -16,6 +16,8 @@ spec:
     spec:
       containers:
         - env:
+            - name: spring.application.name
+              value: account-geode-sink
             - name: spring.rabbitmq.host
               value: rabbitmq
             - name: spring_rabbitmq_username

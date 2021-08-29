@@ -1,25 +1,17 @@
 # Spring Add to Quorum Queues
 
+## Pre-requisite
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+
+ k apply -f cloud/k8/data-services/rabbitmq/rabbitmq.yml
+
 #--------------------
 # Setup GemFire data store
 
-## step 1 - Change to project dir
 
-    cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
-
-## step 2 - Create GemFire cluster
-
-    k apply -f cloud/k8/data-services/geode/gemfire.yml
-
-## step 3 - Watch for gemfire1-locator-0  and  gemfire1-server-0-2 in ready state
-
-    watch kubectl get pods
-
-## step 4 - Kill watch (Control^C) and create Account GemFire region/table 
+## step 1 - create Account GemFire region/table 
 
     kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "create region --name=Account --eviction-action=local-destroy --eviction-max-memory=10000 --entry-time-to-live-expiration=60 --entry-time-to-live-expiration-action=DESTROY --enable-statistics=true --type=PARTITION"
-
-
 
 #--------------------
 # Build account-geode-sink Docker Images 
@@ -36,7 +28,9 @@ mvn -pl applications/account-geode-sink -am spring-boot:build-image
 
 kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
 
+## step 4 - starts app
 
+k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
 
 #--------------------
 # Build account-http-sourceDocker Images
@@ -51,7 +45,7 @@ kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
 
 ## step 3 - starts app
 
-  k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
+  k apply -f cloud/k8/apps/account-http-source
 
 ## step 4 - start app see pod with name account-geode-sink, then control^C
 
