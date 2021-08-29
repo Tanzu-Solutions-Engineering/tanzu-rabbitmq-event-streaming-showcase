@@ -68,6 +68,29 @@ watch kubectl get pods
 
     kind load docker-image account-http-source:0.0.1-SNAPSHOT
     
+## step 3 - deploy app
+    k apply -f cloud/k8/apps/account-http-source
+
+## step 4 - start app see pod with name account-http-source, then control^C
+
+watch kubectl get pods
+
+
+#--------------------
+# Verify quorum queue publisher/consumer
+
+## step 1 - port forward to access source
+
+k port-forward service/account-http-source-service 8080:80
+
+
+## step 2 - New Shell - port forward Rabbit Cluster dashboard
+k port-forward service/rabbitmq 15692:15692
+
+## step 3 - New Shell - port forward Rabbit Cluster dashboard
+
+
+
 
 ---------------
 
