@@ -24,7 +24,7 @@ tar xvf postgres-for-kubernetes-v1.2.0.tar.gz
 cd postgres-for-kubernetes-v1.2.0/
 
 
-docker load -i ./images/postgres-instance
+docker load -i ./images/postgres-instance   
 docker load -i ./images/postgres-operator
 docker images "postgres-*"
 export HELM_EXPERIMENTAL_OCI=1
@@ -42,20 +42,15 @@ kubectl create secret docker-registry regsecret \
 helm install --wait my-postgres-operator /tmp/postgres-operator/
 
 kubectl get all | grep postgres
+------------------------
 
+cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+git pull
+k apply -f cloud/k8/data-services/postgres
 
+kubectl exec -it postgres-0 -- psql
+ALTER USER postgres PASSWORD 'CHANGEME';
 
-    docker tag $(cat ./images/postgres-instance-id) ${INSTANCE_IMAGE_NAME}
-    docker push ${INSTANCE_IMAGE_NAME}
-
-    OPERATOR_IMAGE_NAME="${REGISTRY}/postgres-operator:$(cat ./images/postgres-operator-tag)"
-    docker tag $(cat ./images/postgres-operator-id) ${OPERATOR_IMAGE_NAME}
-    docker push ${OPERATOR_IMAGE_NAME}
-
-    source ~/.bash_profile
-    kubectl create secret docker-registry regsecret --docker-server=https://registry.pivotal.io --docker-username=$HARBOR_USER --docker-password=$HARBOR_PASSWORD
-
-    helm install postgres-operator operator-gke/
 
 -------
 
@@ -257,6 +252,7 @@ docker system prune
 ```
 # ------------------------------------
 
+# SCDF 
 
 
 wget https://github.com/mikefarah/yq/releases/download/v4.12.1/yq_linux_386.tar.gz -O - |\
@@ -267,29 +263,35 @@ sudo mv kbld-linux-amd64 /usr/bin/kbld
 sudo chmod +x /usr/bin/kbld
 
 curl -OL https://github.com/vmware-tanzu/carvel-kapp/releases/download/v0.39.0/kapp-linux-amd64 
-./bin/install-dev.sh -m prometheus -d postgresql -o /tmp/scdf
+
+
+
+./bin/install-dev.sh -m prometheus -d postgresql -o ./services/dev
 
 
  
-kubectl apply -f ./services/dev/postgresql
-kubectl wait pod/postgresql-0 --for=condition=Ready
+# kubectl wait pod/postgresql-0 --for=condition=Ready
 
-kubectl exec -it postgresql-0 -- bash
+kubectl create secret docker-registry scdf-image-regcred --docker-server=registry.pivotal.io --docker-username=$HARBOR_USER --docker-password=$HARBOR_PASSWORD
 
-sudo -u postgres psql dataflow
-
-psql dataflow postgres
-CHANGEME
-
+## Prometheus operator
+cd /tmp
+curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releases/download/v0.18.3/install.sh | bash -s v0.18.3
+kubectl create -f https://operatorhub.io/install/prometheus.yaml
+kubectl get csv -n operators
 kubectl apply -f ./services/dev/monitoring
 
+
+## SCDF Configurations Services
+
+kubectl apply -f ./services/dev/postgresql/secret.yaml
 kubectl apply -f ./services/dev/rabbitmq/config.yaml
 kubectl apply -f ./services/dev/rabbitmq/secret.yaml
 
-kubectl apply -f /tmp/scdf/skipper.yaml
+kubectl apply -f ./services/dev/skipper.yaml
 kubectl wait pod -l=app=skipper --for=condition=Ready
 
-kubectl apply -f /tmp/scdf/data-flow.yaml
+kubectl apply -f ./services/dev/data-flow.yaml
 kubectl wait pod -l=app=scdf-server --for=condition=Ready
 
 kubectl apply -f ./services/dev/monitoring-proxy
