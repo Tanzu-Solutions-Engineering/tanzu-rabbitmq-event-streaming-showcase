@@ -48,7 +48,12 @@ kubectl create secret docker-registry regsecret \
 --docker-password=$HARBOR_PASSWORD
 
 helm install --wait postgres-operator /tmp/postgres-operator/
+sleep 30s
 
+cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+k apply -f cloud/k8/data-services/postgres
+sleep 1m
+kubectl exec -it postgres-0 -- psql -c "ALTER USER postgres PASSWORD 'CHANGEME'"
 
 ## SCDF
 cd ~/dataServices/scdf

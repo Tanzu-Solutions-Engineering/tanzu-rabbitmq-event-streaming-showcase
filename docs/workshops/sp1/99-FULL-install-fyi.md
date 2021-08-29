@@ -48,8 +48,7 @@ cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
 git pull
 k apply -f cloud/k8/data-services/postgres
 
-kubectl exec -it postgres-0 -- psql
-ALTER USER postgres PASSWORD 'CHANGEME';
+kubectl exec -it postgres-0 -- psql -c "ALTER USER postgres PASSWORD 'CHANGEME'"
 
 
 -------
