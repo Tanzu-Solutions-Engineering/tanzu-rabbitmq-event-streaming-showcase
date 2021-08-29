@@ -1,0 +1,16 @@
+server:
+  port: 8082
+spring:
+  rabbitmq:
+    publisher-confirm-type: simple
+  application:
+    name: account-generator-source
+  cloud:
+    function.definition: accountGeneratorSupplier
+    stream:
+      bindings:
+        accountGeneratorSupplier-out-0:
+          destination: banking.account
+      rabbit:
+        default:
+          quorum.enabled: true
