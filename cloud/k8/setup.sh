@@ -2,6 +2,11 @@
 
 set -x #echo on
 
+kind delete cluster
+
+cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+git pull
+
 cd ~
 kind create cluster  --config k8-1wnode.yaml
 
@@ -29,6 +34,9 @@ kubectl create rolebinding psp-gemfire --clusterrole=psp:vmware-system-privilege
 sleep 40
 helm install gemfire-operator ~/gemfire-operator-1.0.1.tgz --namespace gemfire-system
 
+sleep 30s
+cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+kubectl apply -f cloud/k8/data-services/geode/gemfire.yml
 
 
 # Install Postgres
@@ -51,7 +59,7 @@ helm install --wait postgres-operator /tmp/postgres-operator/
 sleep 30s
 
 cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
-k apply -f cloud/k8/data-services/postgres
+kubectl apply -f cloud/k8/data-services/postgres
 sleep 1m
 kubectl exec -it postgres-0 -- psql -c "ALTER USER postgres PASSWORD 'CHANGEME'"
 
