@@ -63,7 +63,7 @@ watch kubectl get pods
 
 ## step 1 - port forward to access source
 
-k port-forward service/account-http-source-service 8080:80 &
+k port-forward deployment/account-http-source 8080:8080 &
 
 
 ## step 2 - port forward Rabbit Cluster dashboard
@@ -81,6 +81,7 @@ password: CHANGEME
 In Web browser open
 http://localhost:8080
 
+Try account-publisher
 
 ```shell
 k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml

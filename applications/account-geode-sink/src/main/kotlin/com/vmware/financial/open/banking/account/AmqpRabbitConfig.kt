@@ -52,7 +52,6 @@ class AmqpRabbitConfig {
     }
 
     @Bean
-
     fun convert() : MessageConverter
     {
         return Jackson2JsonMessageConverter();
