@@ -1,6 +1,7 @@
 package com.vmware.financial.open.banking.account.service
 
 import com.vmware.financial.open.banking.account.domain.Account
+import org.apache.logging.log4j.LogManager
 import org.springframework.data.gemfire.GemfireTemplate
 import org.springframework.stereotype.Service
 import java.util.*
@@ -10,6 +11,7 @@ import java.util.*
  */
 @Service
 class AccountDataService(private val gemFireTemplate: GemfireTemplate) : AccountService  {
+    private val log = LogManager.getLogger(AccountDataService::class.java)
     fun toKey(bankId: String, accountId: String): String {
         return "$bankId|$accountId"
     }
@@ -19,6 +21,8 @@ class AccountDataService(private val gemFireTemplate: GemfireTemplate) : Account
      }
 
     override fun createAccount(account: Account): Account {
+
+        log.info("SAVING account:{}",account)
         gemFireTemplate.put(toKey(account),account)
         return account
     }
