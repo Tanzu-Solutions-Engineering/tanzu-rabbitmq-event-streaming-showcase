@@ -1,4 +1,4 @@
-# Spring Add to Quorum Queues
+# Spring Add to Stream Queues
 
 ## Pre-requisite
 kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
