@@ -60,7 +60,7 @@ sleep 30s
 
 cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
 kubectl apply -f cloud/k8/data-services/postgres
-sleep 1m
+sleep 2m
 kubectl exec -it postgres-0 -- psql -c "ALTER USER postgres PASSWORD 'CHANGEME'"
 
 ## SCDF
