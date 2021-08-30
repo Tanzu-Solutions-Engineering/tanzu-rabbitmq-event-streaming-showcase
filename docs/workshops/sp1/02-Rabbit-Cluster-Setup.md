@@ -30,4 +30,6 @@ k port-forward rabbitmq-server-0 15672:15672
 CHROME
 open http://localhost:15670
 
+app CHANGEME
+
 ```
