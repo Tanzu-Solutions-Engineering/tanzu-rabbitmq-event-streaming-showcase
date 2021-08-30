@@ -1,23 +1,5 @@
 # Spring Add to Stream Queues
 
-## Pre-requisite
-kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
- k apply -f cloud/k8/data-services/rabbitmq/rabbitmq.yml
-
-## Wait for  Rabbit to start 
-kubectl exec rabbitmq-server-0 -- rabbitmqctl add_user app CHANGEME
-
-kubectl exec rabbitmq-server-0 -- rabbitmqctl set_permissions  -p / app ".*" ".*" ".*"
-
-kubectl exec rabbitmq-server-0 -- rabbitmqctl set_user_tags app monitoring
-
-#--------------------
-# Setup GemFire data store
-
-
-## step 1 - create Account GemFire region/table 
-
-    kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "create region --name=Account --type=PARTITION"
 
 #--------------------
 # Build account-geode-sink Docker Images 
