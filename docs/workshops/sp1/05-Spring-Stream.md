@@ -8,47 +8,33 @@
 
     cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
 
-## step 2 - build docker
+## step 2 - build docker (optional if complete lab related to Quorum Queues)
     
 mvn -pl applications/account-geode-sink -am spring-boot:build-image
 
-## step 3 - load docker to kubernetes kind
+## step 3 - load docker to kubernetes kind (optional if complete lab related to Quorum Queues)
 
 kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
 
 ## step 4 - starts app
 
-k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
+k apply -f cloud/k8/apps/account-geode-sink-stream
 
-#--------------------
-# Build account-http-sourceDocker Images
-
-## step 1 - build docker
-
-    mvn -pl applications/account-http-source -am spring-boot:build-image
-
-## step 2 - load docker to kubernetes kind
-
-    kind load docker-image account-http-source:0.0.1-SNAPSHOT
-
-## step 3 - starts app
-
-  k apply -f cloud/k8/apps/account-http-source
-
-## step 4 - start app see pod with name account-geode-sink, then control^C
+## step 5 - verify deploy ccount-geode-sink-stream
 
 watch kubectl get pods
+
 
 
 #--------------------
 # Verify quorum queue publisher/consumer
 
-## step 1 - port forward to access source
+## step 1 - port forward to access source (optional)
 
 k port-forward deployment/account-http-source 8080:8080 &
 
 
-## step 2 - port forward Rabbit Cluster dashboard
+## step 2 - port forward Rabbit Cluster dashboard  (optional)
 k port-forward service/rabbitmq 15672:15672 &
 
 ## step 3 - Access Rabbit Cluster dashboard
@@ -58,12 +44,15 @@ k port-forward service/rabbitmq 15672:15672 &
 user: app
 password: CHANGEME
 
+Verify Queue banking.account.bankingAccountStream created
+
+
 ## step 4 - Access Source App
 
 In Web browser open
 http://localhost:8080
 
-Try account-publisher
+Try account-publisher (will also be sent to stream)
 
 
 ## step 5 - review Account data GemFire region/table
