@@ -7,4 +7,4 @@ spec:
   locators:
     replicas: 1
   servers:
-    replicas: 3
+    replicas: 1
