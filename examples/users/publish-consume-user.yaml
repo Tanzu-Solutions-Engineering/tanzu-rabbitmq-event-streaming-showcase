@@ -14,7 +14,7 @@ metadata:
   name: test-user
 spec:
   rabbitmqClusterReference:
-    name: tanzurabbit
+    name: rabbitmq
   importCredentialsSecret:
     name: test-user-credentials
 ---
@@ -30,4 +30,4 @@ spec:
     configure: ""
     read: ".*"
   rabbitmqClusterReference:
-    name: tanzurabbit
+    name: rabbitmq
