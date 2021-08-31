@@ -65,8 +65,7 @@ kubectl exec -it postgres-0 -- psql -c "ALTER USER postgres PASSWORD 'CHANGEME'"
 
 ## SCDF
 cd ~/dataServices/scdf
-wget https://github.com/mikefarah/yq/releases/download/v4.12.1/yq_linux_386.tar.gz -O - |\
-tar xz && sudo mv yq_linux_386 /usr/bin/yq
+wget https://github.com/mikefarah/yq/releases/download/3.3.0/yq_linux_386 | sudo mv yq_linux_386 /usr/bin/yq
 
 curl -OL https://github.com/vmware-tanzu/carvel-kbld/releases/download/v0.30.0/kbld-linux-amd64
 sudo mv kbld-linux-amd64 /usr/bin/kbld
