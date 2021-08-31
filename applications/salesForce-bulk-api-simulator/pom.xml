@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>account-rest-service</artifactId>
+    <artifactId>salesForce-bulk-api-simulator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>account-rest-service</name>
-    <description>account-rest-service</description>
+    <name>salesForce-bulk-api-simulator</name>
+    <description>salesForce-bulk-api-simulator</description>
     <properties>
 		<geode.version>1.13.1</geode.version>
         <java.version>11</java.version>

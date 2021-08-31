@@ -15,7 +15,7 @@
         <module>applications/account-geode-sink</module>
         <module>applications/account-generator-source</module>
         <module>applications/account-rest-service</module>
-
+        <module>applications/salesForce-bulk-api-simulator</module>
     </modules>
     <build>
         <pluginManagement>

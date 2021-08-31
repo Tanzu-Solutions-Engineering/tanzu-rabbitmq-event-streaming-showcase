@@ -71,6 +71,30 @@ kubectl exec -it postgres-0 -- psql -c "CREATE TABLE Accounts ( id varchar(255),
 #----------------------------
 
 #--------------------
+# Build account-rest-serviceDocker Images
+
+## step 1 - build docker
+
+    mvn -pl applications/account-rest-service -am spring-boot:build-image
+
+## step 2 - load docker to kubernetes kind
+
+    kind load docker-image account-rest-service:0.0.1-SNAPSHOT
+
+## step 3 - starts app
+
+k apply -f cloud/k8/apps/account-rest-service
+
+k port-forward deployment/account-rest-service 4001:4001
+
+open http://localhost:4001/index.html
+
+## step 4 - start app see pod with name account-geode-sink, then control^C
+
+watch kubectl get pods
+
+
+#--------------------
 # Build account-geode-sink Docker Images
 
 
@@ -113,4 +137,4 @@ open http://localhost:7070/pulse
 
 kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "query --query='select id, bank_id, label, number, product_code from /Account'"
 
-kubectl exec -it postgres-0 -- psql -c "insert into Accounts ( id,  bank_id, label, number, product_code) values('another-id',  'another-bank_id', 'another-label', 'another-number', 'another-product_code');"
+kubectl exec -it postgres-0 -- psql -c "insert into Accounts ( id,  bank_id, label, number, product_code) values('afa-id',  'afa-bank_id', 'another-label', 'afa-number', 'afa-product_code');"
