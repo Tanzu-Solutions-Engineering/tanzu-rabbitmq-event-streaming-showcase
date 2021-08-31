@@ -1,5 +1,29 @@
 
 
+## Install rabbitmq topology Operrator
+
+Pre-requisite 
+
+```
+kubectl apply -f https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml
+```
+
+Verify the pods are in running state
+
+```
+kubectl get po -n rabbitmq-system
+```
+
+Example
+
+NAME                                          READY   STATUS    RESTARTS   AGE
+
+messaging-topology-operator-f74cbdc5f-l96sb   1/1     Running   0          21m
+
+rabbitmq-cluster-operator-598d56f98f-8d8q5    1/1     Running   0          21m
+
+
+#-- 
 Step 1: Creating a vhost
 ```
 cd /home/ubuntu/rabbitmq-springone2021-workshop/examples/vhosts
