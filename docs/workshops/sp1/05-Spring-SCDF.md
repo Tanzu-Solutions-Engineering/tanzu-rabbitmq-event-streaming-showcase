@@ -59,7 +59,7 @@ account-generator-source --server.port=8080 | account-geode-sink --server.port=8
 
 Click Create Stream 
 
-Name: scf-account-stream
+Name: scf-acct
 
 In Terminal
 cd ~/dataServices/scdf
