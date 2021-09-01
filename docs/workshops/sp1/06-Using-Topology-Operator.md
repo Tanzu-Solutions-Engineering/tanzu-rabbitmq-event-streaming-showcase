@@ -14,17 +14,17 @@ Verify the pods are in running state
 kubectl get po -n rabbitmq-system
 ```
 
-Example
 
-NAME                                          READY   STATUS    RESTARTS   AGE
+    Example
+    
+    NAME                                          READY   STATUS    RESTARTS   AGE
+    
+    messaging-topology-operator-f74cbdc5f-l96sb   1/1     Running   0          21m
+    
+    rabbitmq-cluster-operator-598d56f98f-8d8q5    1/1     Running   0          21m
 
-messaging-topology-operator-f74cbdc5f-l96sb   1/1     Running   0          21m
-
-rabbitmq-cluster-operator-598d56f98f-8d8q5    1/1     Running   0          21m
-
-
-#-- 
-Step 1: Creating a vhost
+------------------------
+# Step 1: Creating a vhost
 ```
 cd /home/ubuntu/rabbitmq-springone2021-workshop/examples/vhosts
 
