@@ -11,7 +11,7 @@ spring:
           destination: banking.account
           group: bankingAccountStream
           consumer:
-            concurrency: 20
+            concurrency: 1
             container-type: stream
       rabbit:
         bindings:

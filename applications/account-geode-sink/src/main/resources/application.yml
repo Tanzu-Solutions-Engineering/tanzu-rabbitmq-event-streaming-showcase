@@ -11,7 +11,7 @@ spring:
           destination: banking.account
           group: bankingAccount
           consumer:
-            concurrency: 20
+            concurrency: 1
       rabbit:
         bindings:
           accountConsumer-in-0:
