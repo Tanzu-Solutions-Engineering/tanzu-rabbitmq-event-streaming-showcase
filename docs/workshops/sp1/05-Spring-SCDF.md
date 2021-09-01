@@ -115,6 +115,12 @@ stream list
 
 ## In SCDF shell
 
+
+```shell
+cd ~/dataServices/scdf
+java -jar spring-cloud-dataflow-shell-2.8.1.jar
+```
+
 ```shell
 stream destroy --name scf-acct
 ```
@@ -129,10 +135,11 @@ stream create --name scdf-account-stream-replay --definition "account-generator-
 stream deploy --name scdf-account-stream-replay --properties "deployer.account-generator-source.kubernetes.requests.memory=1Gi, deployer.account-geode-sink.kubernetes.requests.memory=1Gi, deployer.account-generator-source.kubernetes.limits.memory=1Gi, deployer.account-geode-sink.kubernetes.limits.memory=1Gi"
 ```
 
-
 ```shell
 watch kubectl get pods
 ```
+
+
 
 
 View data in GemFire 
