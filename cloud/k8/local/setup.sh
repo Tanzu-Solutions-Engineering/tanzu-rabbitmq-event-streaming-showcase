@@ -1,5 +1,13 @@
 #!/bin/bash
 
+
+STR=`pwd`
+if [[ "$STR" == *"cloud"* ]]; then
+  echo "You must execute this script from the root project directory"
+  exit 0
+fi
+
+
 #PRE_REQUISUITE
 if ! command -v yq &> /dev/null
 then
