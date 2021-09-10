@@ -1,0 +1,2 @@
+export SCDF_YAML_DIR=/Users/devtools/integration/scdf/scdf-kubernetes/commericial/spring-cloud-data-flow/
+export GEMFIRE_OPERATOR_DOWNLOAD_DIR=/Users/devtools/repositories/IMDG/gf-kubernetes/
