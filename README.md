@@ -28,4 +28,8 @@ Lab 6 - Provision RabbitMQ Topology Operation
 - Users, Permissions, Queues, Vhost, etc.
 
 
+## Local installation
+
+Execute this from the main directory ./cloud/k8/local/setup.sh
+
 

@@ -22,11 +22,6 @@ fi
 
 
 
-if [ -z $SCDF_YAML_DIR ]
-then
-  echo "Please set \$SCDF_YAML_DIR to the location where your generated service yaml exists. See https://docs.pivotal.io/scdf-k8s/1-0/"
-  exit
-fi
 
 if [ -z $GEMFIRE_OPERATOR_DOWNLOAD_DIR ]
 then
@@ -112,20 +107,20 @@ curl -sL https://github.com/operator-framework/operator-lifecycle-manager/releas
 kubectl create -f https://operatorhub.io/install/prometheus.yaml
 kubectl get csv -n operators
 
-kubectl apply -f $SCDF_YAML_DIR/services/dev/monitoring
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/monitoring
 
 
-kubectl apply -f $SCDF_YAML_DIR/services/dev/postgresql/secret.yaml
-kubectl apply -f $SCDF_YAML_DIR/services/dev/rabbitmq/config.yaml
-kubectl apply -f $SCDF_YAML_DIR/services/dev/rabbitmq/secret.yaml
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/postgresql/secret.yaml
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/rabbitmq/config.yaml
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/rabbitmq/secret.yaml
 
-kubectl apply -f $SCDF_YAML_DIR/services/dev/skipper.yaml
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/skipper.yaml
 kubectl wait pod -l=app=skipper --for=condition=Ready
 
 sleep 1m
 
-kubectl apply -f $SCDF_YAML_DIR/services/dev/data-flow.yaml
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/data-flow.yaml
 sleep 2m
-kubectl apply -f $SCDF_YAML_DIR/services/dev/monitoring-proxy
+kubectl apply -f cloud/k8/data-services/scdf/services/dev/monitoring-proxy
 
 # Create GemFire Cluster
