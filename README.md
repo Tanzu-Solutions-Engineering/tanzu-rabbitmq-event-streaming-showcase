@@ -18,6 +18,12 @@ Lab 6 - Provision RabbitMQ Topology Operation
 
 ## Local installation
 
-Execute this from the main directory ./cloud/k8/local/setup.sh
+Execute this from the main directory 
+
+See script
+
+```shell
+./cloud/k8/local/setup.sh
+```
 
 
