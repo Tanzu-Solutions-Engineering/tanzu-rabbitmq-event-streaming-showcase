@@ -1,7 +1,7 @@
 # Tanzu Rabbitmq Event Streaming Showcase
 
 
-This projects demonstrates using the [RabbitMQ](https://www.rabbitmq.com/) [Kubernetes Operator](https://www.rabbitmq.com/kubernetes/operator/operator-overview.html).
+This project demonstrates using the [RabbitMQ](https://www.rabbitmq.com/) [Kubernetes Operator](https://www.rabbitmq.com/kubernetes/operator/operator-overview.html).
 There are several [Spring Boot](https://spring.io/projects/spring-boot) applications written in Kotlin.
 
 It demonstrates [quorum queues](https://www.rabbitmq.com/quorum-queues.html) and [streams](https://www.rabbitmq.com/stream.html) application source producers and sink consumers using
