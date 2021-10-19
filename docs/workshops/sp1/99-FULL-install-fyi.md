@@ -122,8 +122,8 @@ account-http-source
 
 Generator Source
 ```shell
-    mvn -pl applications/account-generator-source -am spring-boot:build-image
-    kind load docker-image account-generator-source:0.0.1-SNAPSHOT
+    mvn -pl applications/stream-account-generator-source -am spring-boot:build-image
+    kind load docker-image stream-account-generator-source:0.0.1-SNAPSHOT
     
 ```
 
@@ -143,7 +143,7 @@ k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
 
 watch kubectl get pods
 
-k apply -f cloud/k8/apps/account-generator-source/account-generator-source.yml
+k apply -f cloud/k8/apps/stream-account-generator-source/stream-account-generator-source.yml
 
 
 

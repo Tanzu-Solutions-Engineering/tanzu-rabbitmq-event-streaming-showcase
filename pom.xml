@@ -11,9 +11,9 @@
     <name>tanzu-rabbitmq-event-streaming-showcase-parent</name>
 
     <modules>
-         <module>applications/account-http-source</module>
-        <module>applications/account-geode-sink</module>
-        <module>applications/account-generator-source</module>
+         <module>applications/stream-account-http-source</module>
+        <module>applications/stream-account-geode-sink</module>
+        <module>applications/stream-account-generator-source</module>
     </modules>
     <build>
         <pluginManagement>

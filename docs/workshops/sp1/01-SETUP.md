@@ -3,7 +3,7 @@
 # step 1 - goto  project dir
 
 ```shell
-cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
+cd $PROJECT_DIR/tanzu-rabbitmq-event-streaming-showcase/
 ```
 
 # step 2 - get latest 

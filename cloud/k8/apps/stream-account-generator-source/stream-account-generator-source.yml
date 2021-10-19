@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run:  account-http-source
-  name:  account-http-source
+    run:  stream-account-generator-source
+  name:  stream-account-generator-source
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name:  account-http-source
+      name:  stream-account-generator-source
   template:
     metadata:
       labels:
-        name:  account-http-source
+        name:  stream-account-generator-source
     spec:
       containers:
         - env:
@@ -32,5 +32,5 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
-          image: account-http-source:0.0.1-SNAPSHOT
-          name: account-http-source
+          image: cloudnativedata/stream-account-generator-source:0.0.1-SNAPSHOT
+          name: stream-account-generator-source

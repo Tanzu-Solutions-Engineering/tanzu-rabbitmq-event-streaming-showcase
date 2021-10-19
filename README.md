@@ -13,9 +13,9 @@ These examples have been verified to run using [Spring Cloud DataFlow](https://s
 
 Application                                 |   Notes
 ----------------------------------------------------------------------- | ---------------------------------
-[account-generator-source](applications/account-generator-source)       | [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) source generates account changes 
-[account-geode-sink](applications/account-geode-sink)                   | [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) sink to save account into [Apache Geode](https://geode.apache.org/). It also supports stream replay.
-[account-http-source](applications/account-http-source)                 | [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) source that produces account information based on recieved HTTP REST 
+[account-generator-source](applications/stream-account-generator-source)       | [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) source generates account changes 
+[account-geode-sink](applications/stream-account-geode-sink)                   | [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) sink to save account into [Apache Geode](https://geode.apache.org/). It also supports stream replay.
+[account-http-source](applications/stream-account-http-source)                 | [Spring Cloud Stream](https://github.com/spring-cloud/spring-cloud-stream) source that produces account information based on recieved HTTP REST 
 
 
 

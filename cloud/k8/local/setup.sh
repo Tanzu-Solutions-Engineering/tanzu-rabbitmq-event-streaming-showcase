@@ -8,6 +8,8 @@ if [[ "$STR" == *"cloud"* ]]; then
 fi
 
 
+
+
 #PRE_REQUISUITE
 if ! command -v yq &> /dev/null
 then
@@ -29,7 +31,11 @@ then
 fi
 
 
-
+if [ -z $POSTGRES_OPERATOR_DOWNLOAD_DIR ]
+then
+  echo "Please set \POSTGRES_OPERATOR_DOWNLOAD_DIR to the location where your download postgres operator See http://network.pivotal.io"
+  exit
+fi
 
 if [ -z $GEMFIRE_OPERATOR_DOWNLOAD_DIR ]
 then

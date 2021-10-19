@@ -19,46 +19,22 @@
     cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/
 ```
 
-## step 2 - build docker
-    
-```shell
-mvn -pl applications/account-geode-sink -am spring-boot:build-image
-```
-
-## step 3 - load docker to kubernetes kind
-
-```shell
-kind load docker-image account-geode-sink:0.0.1-SNAPSHOT
-```
-
 ## step 4 - starts app
 
 ```shell
-k apply -f cloud/k8/apps/account-geode-sink/account-geode-sink.yml
+k apply -f cloud/k8/apps/stream-account-geode-sink
 ```
 
 #--------------------
 # Build account-http-sourceDocker Images
 
-## step 1 - build docker
+## step 1 - starts app
 
 ```shell
-    mvn -pl applications/account-http-source -am spring-boot:build-image
+  k apply -f cloud/k8/apps/stream-account-http-source
 ```
 
-## step 2 - load docker to kubernetes kind
-
-```shell
-    kind load docker-image account-http-source:0.0.1-SNAPSHOT
-```
-
-## step 3 - starts app
-
-```shell
-  k apply -f cloud/k8/apps/account-http-source
-```
-
-## step 4 - start app see pod with name account-geode-sink, then control^C
+## step 2 - start app see pod with name account-geode-sink, then control^C
 
 ```shell
 watch kubectl get pods
@@ -71,7 +47,7 @@ watch kubectl get pods
 ## step 1 - port forward to access source
 
 ```shell
-k port-forward deployment/account-http-source 8080:8080 &
+k port-forward deployment/stream-account-http-source 8080:8080 &
 ```
 
 

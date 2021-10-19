@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>account-http-source</artifactId>
+    <artifactId>stream-account-http-source</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>account-http-source</name>
-    <description>account-http-source</description>
+    <name>stream-account-http-source</name>
+    <description>stream-account-http-source</description>
     <properties>
 		<geode.vrsion>1.13.1</geode.vrsion>
         <java.version>11</java.version>
