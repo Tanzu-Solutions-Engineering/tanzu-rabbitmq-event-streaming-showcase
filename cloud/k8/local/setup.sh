@@ -138,3 +138,7 @@ sleep 2m
 kubectl apply -f cloud/k8/data-services/scdf/services/dev/monitoring-proxy
 
 # Create GemFire Cluster
+
+# Postgres
+
+kubectl exec -it postgres-0 -- psql -c "ALTER USER postgres PASSWORD 'CHANGEME'"

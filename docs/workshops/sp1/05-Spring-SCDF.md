@@ -61,6 +61,7 @@ Name: scf-acct
 In Terminal
 
 ```shell
+mkdir -p ~/dataServices/scdf
 cd ~/dataServices/scdf
 curl -OL https://cloud-native-data.s3.amazonaws.com/spring-cloud-dataflow-shell-2.8.1.jar
 java -jar spring-cloud-dataflow-shell-2.8.1.jar
