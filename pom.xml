@@ -14,6 +14,7 @@
          <module>applications/stream-account-http-source</module>
         <module>applications/stream-account-geode-sink</module>
         <module>applications/stream-account-generator-source</module>
+        <module>applications/performance/rabbit-spring-perf-test</module>
     </modules>
     <build>
         <pluginManagement>

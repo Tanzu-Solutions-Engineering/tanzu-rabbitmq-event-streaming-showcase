@@ -9,7 +9,8 @@ data class Account(var id : String = "",
                    var account_routings : Array<AccountRouting>? = null,
                    var views_basic : Array<String>? = null,
                    var key : String  =""
-) {
+)
+{
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

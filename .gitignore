@@ -1,2 +1,29 @@
-export SCDF_YAML_DIR=/Users/devtools/integration/scdf/scdf-kubernetes/commericial/spring-cloud-data-flow/
-export GEMFIRE_OPERATOR_DOWNLOAD_DIR=/Users/devtools/repositories/IMDG/gf-kubernetes/
+nohup.out
+target/
+build/
+pom.xml.tag
+*.gfs.csv
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+gradle.properties
+pom.xml.next
+secret/
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+runtime/
+*.log
+*.jks
+.project
+.settings/
+*.keystore
+junit-tools-generatedsrc/
+.DS_Store
+.idea/
+*.iml
+
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!/.mvn/wrapper/maven-wrapper.jar
+
