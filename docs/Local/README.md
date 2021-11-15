@@ -1,4 +1,11 @@
 
+## Rabbit Cleannup 
+
+Remove
+- Exchange - banking.account
+
+## Gfsh Setup 
+
 ```shell
 cd /Users/devtools/repositories/IMDG/geode/apache-geode-1.13.1/bin
 ./gfsh
@@ -11,15 +18,34 @@ start server --name=server1
 ```
 
 ```shell
-create region --name=Account --type=PARTITION
+destroy region --name=Account
+destroy region --name=AccountStream
+destroy region --name=AccountReplay
 ```
 
+```shell
+create region --name=Account --type=PARTITION
+create region --name=AccountStream --type=PARTITION
+create region --name=AccountReplay --type=PARTITION
+```
+
+-------------------
 
 Start Publisher
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 java -jar applications/stream-account-http-source/target/stream-account-http-source-0.0.1-SNAPSHOT.jar
+```
+
+Open RabbitMQ dashboard guest/guest
+```shell
+open http://localhost:15672/
+```
+
+
+```shell
+open http://localhost:8080
 ```
 
 Start Consumers Quorum
@@ -29,6 +55,11 @@ java -jar applications/stream-account-geode-sink/target/stream-account-geode-sin
 ```
 
 
+
+
+
+In Gfsh 
+
 ```shell
 query --query="select id, balance, bank_id, label from /Account"
 ```
@@ -37,12 +68,8 @@ Start Consumers Stream
 
 
 ```shell
-create region --name=AccountStream --type=PARTITION
-```
-
-```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --server.port=0 --gemfire.region.name=AccountStream
+java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --server.port=0 --gemfire.region.name=AccountStream --spring.application.name=account-geode-sink-stream
 ```
 
 In Gfsh
@@ -51,29 +78,29 @@ In Gfsh
 query --query="select id, balance, bank_id, label from /AccountStream"
 ```
 
-Reply
+
+Reply (empty)
 
 ```shell
-destroy region --name=/AccountStream
-create region --name=AccountStream --type=PARTITION
 query --query="select id, balance, bank_id, label from /AccountStream"
 ```
 
 ```shell
-java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --server.port=0 --gemfire.region.name=AccountStream --rabbitmq.streaming.replay=true
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
+java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --server.port=0 --gemfire.region.name=AccountReplay --rabbitmq.streaming.replay=true --spring.application.name=account-geode-sink-replay
 ```
 
 
 ```shell
-query --query="select id, balance, bank_id, label from /AccountStream"
+query --query="select id, balance, bank_id, label from /AccountReplay"
 ```
 
 
 Adding routing binding
 
 ```
- Routing Key: *.vmware.*	
  Queue: test-quorum
+ Routing Key: *.vmware.*	
 ```
 
-Testing with bankId 1.vmware.1
+Testing with bankId 3.vmware.3
