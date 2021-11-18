@@ -31,11 +31,11 @@ create region --name=AccountReplay --type=PARTITION
 
 -------------------
 
-Start Publisher
 
+Start Consumers Quorum
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/stream-account-http-source/target/stream-account-http-source-0.0.1-SNAPSHOT.jar
+java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar
 ```
 
 Open RabbitMQ dashboard guest/guest
@@ -43,16 +43,18 @@ Open RabbitMQ dashboard guest/guest
 open http://localhost:15672/
 ```
 
+Start Publisher
+
+```shell
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
+java -jar applications/stream-account-http-source/target/stream-account-http-source-0.0.1-SNAPSHOT.jar
+```
+
 
 ```shell
 open http://localhost:8080
 ```
 
-Start Consumers Quorum
-```shell
-cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar
-```
 
 
 
@@ -69,7 +71,7 @@ Start Consumers Stream
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --server.port=0 --gemfire.region.name=AccountStream --spring.application.name=account-geode-sink-stream
+java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --gemfire.region.name=AccountStream --spring.profiles.active=stream --server.port=0  --spring.application.name=account-geode-sink-stream
 ```
 
 In Gfsh
@@ -79,15 +81,19 @@ query --query="select id, balance, bank_id, label from /AccountStream"
 ```
 
 
-Reply (empty)
+```shell
+query --query="select id, balance, bank_id, label from /Account"
+```
+
+## Replay
 
 ```shell
-query --query="select id, balance, bank_id, label from /AccountStream"
+query --query="select id, balance, bank_id, label from /AccountReplay"
 ```
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --server.port=0 --gemfire.region.name=AccountReplay --rabbitmq.streaming.replay=true --spring.application.name=account-geode-sink-replay
+java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar --gemfire.region.name=AccountReplay --spring.profiles.active=stream --server.port=0  --rabbitmq.streaming.replay=true --spring.application.name=account-geode-sink-replay
 ```
 
 
