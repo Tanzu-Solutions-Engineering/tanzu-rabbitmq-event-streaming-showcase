@@ -8,12 +8,21 @@ Remove
 
 ```shell
 cd /Users/devtools/repositories/IMDG/geode/apache-geode-1.13.1/bin
+```
+
+```shell
 ./gfsh
 ```
 
 ```shell
 start locator --name=locator
+```
+
+```shell
 configure pdx --read-serialized=true --disk-store=DEFAULT
+```
+
+```shell
 start server --name=server1
 ```
 
@@ -33,8 +42,11 @@ create region --name=AccountReplay --type=PARTITION
 
 
 Start Consumers Quorum
+
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
+```
+```shell
 java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar
 ```
 
@@ -84,6 +96,14 @@ query --query="select id, balance, bank_id, label from /AccountStream"
 ```shell
 query --query="select id, balance, bank_id, label from /Account"
 ```
+
+Post data here 
+
+```shell
+open http://localhost:8080
+```
+
+
 
 ## Replay
 
