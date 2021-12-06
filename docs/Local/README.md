@@ -4,6 +4,14 @@
 Remove
 - Exchange - banking.account
 
+
+```shell
+rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream
+rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream.dlq
+rabbitmqctl --node rabbit delete_queue banking.atm.atmBankStream
+rabbitmqctl --node rabbit delete_queue banking.bank.bankingBankStream
+```
+
 ## Gfsh Setup 
 
 ```shell
@@ -55,6 +63,13 @@ Open RabbitMQ dashboard guest/guest
 open http://localhost:15672/
 ```
 
+
+In Gfsh
+
+```shell
+query --query="select id, balance, bank_id, label from /Account"
+```
+
 Start Publisher
 
 ```shell
@@ -68,17 +83,12 @@ open http://localhost:8080
 ```
 
 
-
-
-
-
 In Gfsh 
 
 ```shell
 query --query="select id, balance, bank_id, label from /Account"
 ```
 
-Start Consumers Stream
 
 
 ```shell
@@ -93,14 +103,20 @@ query --query="select id, balance, bank_id, label from /AccountStream"
 ```
 
 
-```shell
-query --query="select id, balance, bank_id, label from /Account"
-```
-
-Post data here 
+Post data here
 
 ```shell
 open http://localhost:8080
+```
+
+
+```shell
+query --query="select id, balance, bank_id, label from /AccountStream"
+```
+
+
+```shell
+query --query="select id, balance, bank_id, label from /Account"
 ```
 
 
