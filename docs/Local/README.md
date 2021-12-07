@@ -10,6 +10,11 @@ rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream
 rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream.dlq
 rabbitmqctl --node rabbit delete_queue banking.atm.atmBankStream
 rabbitmqctl --node rabbit delete_queue banking.bank.bankingBankStream
+rabbitmqctl --node rabbit delete_queue banking.account.bankingAccount
+rabbitmqctl --node rabbit delete_queue banking.account.bankingAccount.dlq
+rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream.dlq
+rabbitmqadmin delete exchange name=banking.account
+
 ```
 
 ## Gfsh Setup 
