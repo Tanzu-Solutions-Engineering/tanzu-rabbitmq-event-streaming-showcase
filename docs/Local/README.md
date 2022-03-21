@@ -1,8 +1,7 @@
 
-## Rabbit Cleannup 
+## Rabbit Cleanup 
 
-Remove
-- Exchange - banking.account
+Remove objects
 
 
 ```shell
@@ -20,11 +19,11 @@ rabbitmqadmin delete exchange name=banking.account
 ## Gfsh Setup 
 
 ```shell
-cd /Users/devtools/repositories/IMDG/geode/apache-geode-1.13.1/bin
+cd /Users/devtools/repositories/IMDG/geode/apache-geode-1.13.7/bin
 ```
 
 ```shell
-./gfsh
+./gfsh 
 ```
 
 ```shell

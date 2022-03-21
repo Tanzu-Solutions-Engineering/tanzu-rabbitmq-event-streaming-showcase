@@ -1,10 +1,7 @@
 package com.vmware.financial.open.banking.account
 
-import com.vmware.financial.open.banking.account.domain.Account
-import nyla.solutions.core.data.collections.QueueSupplier
 import org.springframework.amqp.core.Exchange
 import org.springframework.amqp.core.TopicExchange
-import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy
 import org.springframework.amqp.rabbit.connection.RabbitConnectionFactoryBean

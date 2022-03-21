@@ -144,5 +144,5 @@ Default
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/performance/lib/stream-perf-test-latest.jar
+java -jar applications/performance/lib/stream-perf-test-0.5.0.jar
 ```
