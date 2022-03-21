@@ -71,7 +71,7 @@ open http://localhost:15672/
 In Gfsh
 
 ```shell
-query --query="select id, balance, bank_id, label from /Account"
+query --query="select * from /Account"
 ```
 
 Start Publisher
@@ -90,7 +90,7 @@ open http://localhost:8080
 In Gfsh 
 
 ```shell
-query --query="select id, balance, bank_id, label from /Account"
+query --query="select * from /Account"
 ```
 
 
@@ -103,7 +103,7 @@ java -jar applications/stream-account-geode-sink/target/stream-account-geode-sin
 In Gfsh
 
 ```shell
-query --query="select id, balance, bank_id, label from /AccountStream"
+query --query="select * from /AccountStream"
 ```
 
 
@@ -115,12 +115,12 @@ open http://localhost:8080
 
 
 ```shell
-query --query="select id, balance, bank_id, label from /AccountStream"
+query --query="select * from /AccountStream"
 ```
 
 
 ```shell
-query --query="select id, balance, bank_id, label from /Account"
+query --query="select * from /Account"
 ```
 
 
@@ -128,7 +128,7 @@ query --query="select id, balance, bank_id, label from /Account"
 ## Replay
 
 ```shell
-query --query="select id, balance, bank_id, label from /AccountReplay"
+query --query="select * from /AccountReplay"
 ```
 
 ```shell
@@ -138,7 +138,7 @@ java -jar applications/stream-account-geode-sink/target/stream-account-geode-sin
 
 
 ```shell
-query --query="select id, balance, bank_id, label from /AccountReplay"
+query --query="select * from /AccountReplay"
 ```
 
 

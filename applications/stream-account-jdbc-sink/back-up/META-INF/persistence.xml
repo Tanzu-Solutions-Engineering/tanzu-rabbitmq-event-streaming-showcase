@@ -1,0 +1,10 @@
+<persistence>
+    <persistence-unit name="Accounts">
+        <description>This unit manages orders and customers.
+            It does not rely on any vendor-specific features and can
+            therefore be deployed to any persistence provider.
+        </description>
+        <class>com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account</class>
+        <class>com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Location</class>
+    </persistence-unit>
+</persistence>

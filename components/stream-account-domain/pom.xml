@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>stream-account-http-source</artifactId>
+    <artifactId>stream-account-domain</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>stream-account-http-source</name>
-    <description>stream-account-http-source</description>
+    <name>stream-account-domain</name>
+    <description>stream-account-domain</description>
     <properties>
 		<geode.vrsion>1.13.1</geode.vrsion>
         <java.version>11</java.version>
@@ -92,11 +92,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.vmware</groupId>
-            <artifactId>stream-account-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -114,10 +109,10 @@
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
