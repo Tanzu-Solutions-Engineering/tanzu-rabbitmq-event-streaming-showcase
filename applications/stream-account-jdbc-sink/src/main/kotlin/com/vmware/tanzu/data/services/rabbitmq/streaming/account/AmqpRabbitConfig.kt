@@ -59,7 +59,6 @@ class AmqpRabbitConfig {
 
 
     @Bean
-    @Profile("stream")
     @ConditionalOnProperty(name = ["rabbitmq.streaming.replay"],havingValue = "true")
     fun customizer(): ListenerContainerCustomizer<MessageListenerContainer>? {
         return ListenerContainerCustomizer { cont: MessageListenerContainer, dest: String?, group: String? ->
