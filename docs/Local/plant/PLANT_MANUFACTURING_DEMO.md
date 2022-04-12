@@ -1,5 +1,13 @@
 
-# Setup 
+# Setup
+
+## Start Config service
+
+```shell
+cd /Users/Projects/VMware/Tanzu/SCDF/dev/scdf-extensions
+java -jar applications/config-server/target/config-server-0.0.1-SNAPSHOT.jar --server.port=8888 --spring.cloud.config.server.git.uri=file://$HOME/config-repo
+```
+
 
 ## RabbitMQ
 
@@ -35,6 +43,11 @@ cd /Users/devtools/integration/scdf/
 
 # START DEMO
 # Kubernetes
+
+- Is Docker or Kubernetes supported
+- Management Dashboard/API
+- Scaleup
+
 
 ```shell
 cd Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase$
@@ -112,6 +125,7 @@ open http://localhost:9393/dashboard
 
 
 ```shell
+
 rm /tmp/scdf/*.csv
 ```
 
@@ -132,55 +146,61 @@ stream create --name http-to-rabbitmq --definition "http --port=9990 | rabbit --
 ```
 
 ```shell
-curl http://localhost:9990 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{\"name\": \"Foo\"}"
+curl http://localhost:9990 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{\"id\": \"1\",\"name\": \"ABC\",\"computerName\": \"Station456\",\"val1\": \"0.118\"}"
 ```
+
 
 
 ## Example CSV
 
-```sqlite-sql
-CREATE DATABASE test;
-USE test;
-CREATE TABLE names
-(
-name varchar(255)
-);
-```
+
 
 ```shell
 mysql -h localhost -u $MYSQL_USER --password=$MYSQL_DB_PASSWORD
 ```
 
+```sqlite-sql
+CREATE DATABASE test;
+USE test;
+
+CREATE TABLE measurements
+(
+    id varchar(255),
+    name varchar(255),
+    computer_nm varchar(255),
+    val1 varchar(255)
+);
+```
+
+## Example JDBC database
+
 ```shell
-stream create --name file-to-rdbms --definition "file --filename-regex=.*.txt --directory='/tmp/scdf'   --mode=lines | jdbc  --tableName=names --columns=name --spring.application.name=jdbc-sink-mysql --spring.datasource.driver-class-name=org.mariadb.jdbc.Driver --spring.datasource.url='jdbc:mysql://localhost:3306/test'" --deploy
+stream create --name http-to-rdbms --definition "http --port=9991 | jdbc  --tableName=measurements --columns=id,name,computer_nm:computerName,val1 --spring.application.name=jdbc-sink-mysql --spring.datasource.driver-class-name=org.mariadb.jdbc.Driver --spring.datasource.url='jdbc:mysql://localhost:3306/test'" --deploy
 ```
 
 
-File 
-
-name.txt
-
-```json
-{"name": "Spring Boot"}
+```shell
+curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{\"id\": \"1\",\"name\": \"ABC\",\"computerName\": \"Station456\",\"val1\": \"0.118\"}"
 ```
 
 
 ```sqlite-sql
-select * from names;
+select * from measurements;
 ```
 
--------------
 
-Programming languages
-
-Is Docker or Kubernetes supported
-
-Federation
+## Example to file
 
 
-Management Dashboard/API
+```shell
+stream create --name http-to-rdbms-to-file --definition ":http-to-rdbms.http > file --directory=/tmp/scdf/out/ --name=measurements-out.txt" --deploy
+```
 
-Scaleup
+stream destroy --name http-to-rdbms-to-file
+
+```shell
+curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{\"id\": \"2\",\"name\": \"ABC2\",\"computerName\": \"Station22\",\"val1\": \"0.218\"}"
+```
 
 --------------------------------
 
