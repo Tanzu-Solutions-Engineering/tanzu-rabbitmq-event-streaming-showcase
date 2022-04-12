@@ -14,6 +14,8 @@ kind create cluster  --config k8-1wnode.yaml
 
 kubectl create namespace cert-manager
 
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.7.1/cert-manager.yaml
+
 helm repo add jetstack https://charts.jetstack.io
 
 helm repo update
@@ -32,7 +34,7 @@ kubectl create rolebinding psp-gemfire --clusterrole=psp:vmware-system-privilege
 
 # Install the GemFire Operator
 sleep 40
-helm install gemfire-operator ~/gemfire-operator-1.0.1.tgz --namespace gemfire-system
+helm install gemfire-operator ~/gemfire-operator-1.0.3.tgz --namespace gemfire-system
 
 sleep 30s
 cd ~/projects/rabbitmq/tanzu-rabbitmq-event-streaming-showcase/

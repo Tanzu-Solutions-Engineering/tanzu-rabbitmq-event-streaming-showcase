@@ -3,7 +3,7 @@ kind: RabbitmqCluster
 metadata:
   name: rabbitmq
 spec:
-  replicas: 3
+  replicas: 1
   image: pivotalrabbitmq/rabbitmq-stream
   resources:
     requests:
@@ -19,5 +19,6 @@ spec:
       - rabbitmq_mqtt
       - rabbitmq_shovel
       - rabbitmq_stream
+      - rabbitmq_management
       - rabbitmq_stream_management
       - rabbitmq_stream_prometheus

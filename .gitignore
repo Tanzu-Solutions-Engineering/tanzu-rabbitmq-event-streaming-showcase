@@ -27,3 +27,4 @@ junit-tools-generatedsrc/
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
 
+/cloud/k8/tmc/
