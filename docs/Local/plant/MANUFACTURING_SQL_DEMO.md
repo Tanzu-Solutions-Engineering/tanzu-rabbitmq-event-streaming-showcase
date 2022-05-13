@@ -124,59 +124,6 @@ open http://localhost:9393/dashboard
 
 # What protocols are supported? (OPC, CSV, JSON, HTTP(S), REST, etc…)
 
-## Example CSV to log
-
-
-```shell
-
-rm /tmp/scdf/*.csv
-```
-
-```shell
-stream create --name csv-to-log --definition "file --filename-regex='.*.csv' --directory='/tmp/scdf' --mode=lines | log"
-```
-
-Deploy Stream
-
-```shell
-cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-cp docs/Local/plant/input/measurements.csv /tmp/scdf
-```
-
-
-## Example JSON, HTTP(S), REST
-
-```shell
-stream create --name http-to-rabbitmq --definition "http --port=9990 | rabbit --exchange=test --routing-key-expression=''" --deploy
-```
-
-```shell
-curl http://localhost:9990 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{\"id\": \"1\",\"name\": \"ABC\",\"computerName\": \"Station456\",\"val1\": \"0.118\"}"
-```
-
-
-
-## Example CSV
-
-
-
-```shell
-mysql -h localhost -u $MYSQL_USER --password=$MYSQL_DB_PASSWORD
-```
-
-```sqlite-sql
-CREATE DATABASE test;
-USE test;
-
-CREATE TABLE measurements
-(
-    id varchar(255),
-    name varchar(255),
-    computer_nm varchar(255),
-    val1 varchar(255)
-);
-```
-
 ## Example JDBC database
 
 ```shell
@@ -190,6 +137,7 @@ curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type:
 
 
 ```sqlite-sql
+use test;
 select * from measurements;
 ```
 
@@ -205,37 +153,13 @@ stream create --name http-to-rdbms-to-file --definition ":http-to-rdbms.http > f
 curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{\"id\": \"2\",\"name\": \"ABC2\",\"computerName\": \"Station22\",\"val1\": \"0.218\"}"
 ```
 
-## MQTT Generator (simulate device)
-
 
 ```shell
-cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -Dconfig.properties=docs/Local/plant/input/generator-template.properties -jar applications/generator-mqtt-source/target/generator-mqtt-source-0.0.1-SNAPSHOT.jar  
+tail -f /tmp/scdf/out/measurements-out.tx
 ```
 
-In Mysql 
-```shell
+
+```sqlite-sql
+use test;
 select * from measurements;
 ```
-
-Bind 
-
-```yaml
-exchange: amq.topic
-routing_key: mqtt-generator 
-queue: csv-to-log.file.csv-to-log
-```
-
-
-View Log In SCDF
-
-
---------------------------------
-
-
-What pre-built connectors are available to communicate with other softwares? (Oracle, MySql, MSSQL, PI, Boomi, SAP, Ignition)
-What programming languages are supported? (Python, Java, PHP, etc…)
-Is Docker, Kubernetes or similair type container software supported?
-Does the software have the ability to Federate and Centralize?
-How is the configuration/software managed? (Centralized console on a server, web api, mobile, etc…)
-How easy is it to configure/map data? (Adding new nodes, editing/map exsiting, etc...) 

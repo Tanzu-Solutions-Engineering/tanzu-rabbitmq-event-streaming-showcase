@@ -1,0 +1,1 @@
+{"id": ${id}, "name" : "${name}", "computer_nm" : "Station#${id}", "val1" : 0.002}

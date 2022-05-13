@@ -17,6 +17,7 @@
         <module>applications/stream-account-jdbc-sink</module>
         <module>applications/stream-account-generator-source</module>
         <module>applications/performance/rabbit-spring-perf-test</module>
+        <module>applications/generator-mqtt-source</module>
     </modules>
     <build>
         <pluginManagement>
