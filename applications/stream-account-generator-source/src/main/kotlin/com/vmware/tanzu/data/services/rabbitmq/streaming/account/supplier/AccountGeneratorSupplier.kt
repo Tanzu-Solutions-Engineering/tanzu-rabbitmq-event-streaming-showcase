@@ -12,16 +12,26 @@ import java.util.function.Supplier
  */
 @Component
 class AccountGeneratorSupplier(
-    @Value("\${account.generator.sleepMs:3000}")private val sleepMs: Long = 3000) : Supplier<Account> {
+    @Value("\${account.generator.sleepMs:3000}") private val sleepMs: Long = 3000,
+    @Value("\${account.generator.maxAccountCnt:500000}")  private val maxAccountCnt: Long = 50000)
+    : Supplier<Account> {
 
+    private var account = JavaBeanGeneratorCreator.of(Account::class.java).create()
+
+    private var currentCount = 1L
     override fun get(): Account {
         return nextAccount()
     }
 
     private fun nextAccount() : Account {
         Thread.sleep(sleepMs)
-        var account = JavaBeanGeneratorCreator.of(Account::class.java).create()
-        log.info("account: account {}",account)
+
+        account.id = currentCount.toString()
+        account.location.id = account.id
+
+        currentCount++
+        currentCount %= maxAccountCnt
+
         return account
     }
 

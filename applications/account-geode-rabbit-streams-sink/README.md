@@ -28,7 +28,7 @@ configure pdx --read-serialized=true --disk-store
 ```
 
 ```shell
-start server --name=server --start-rest-api=true --http-service-port=7001
+start server --name=server --start-rest-api=true --http-service-port=7001 --initial-heap=2g --max-heap=2g
 ```
 
 

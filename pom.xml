@@ -18,6 +18,8 @@
         <module>applications/stream-account-generator-source</module>
         <module>applications/performance/rabbit-spring-perf-test</module>
         <module>applications/generator-mqtt-source</module>
+        <module>applications/stream-account-generator-source-perf</module>
+        <module>applications/account-geode-rabbit-streams-sink</module>
     </modules>
     <build>
         <pluginManagement>
