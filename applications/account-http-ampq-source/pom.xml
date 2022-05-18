@@ -9,12 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>stream-account-generator-source</artifactId>
+    <artifactId>account-http-ampq-source</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>stream-account-generator-source</name>
-    <description>stream-account-generator-source</description>
+    <name>account-http-ampq-source</name>
+    <description>account-http-ampq-source</description>
     <properties>
-		<geode.version>1.13.1</geode.version>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.0-M1</spring-cloud.version>
         <kotlin.version>1.5.21</kotlin.version>
@@ -36,16 +35,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

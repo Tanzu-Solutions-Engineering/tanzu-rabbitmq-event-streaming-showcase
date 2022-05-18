@@ -20,6 +20,9 @@ import org.springframework.rabbit.stream.listener.StreamListenerContainer
 @Configuration
 class RabbitStreamConfig {
 
+    @Value("\${account.sink.stream.name:event-streaming-showcase.accounts}")
+    private val streamName: String ="event-streaming-showcase.accounts"
+
     @Value("\${spring.rabbitmq.username:guest}")
     private var username: String = "guest";
 
@@ -41,7 +44,7 @@ class RabbitStreamConfig {
             .username(username)
             .password(password).build()
 
-        env.streamCreator().stream("event-streaming-showcase.stream-account-geode-sink-stream").create()
+        env.streamCreator().stream(streamName).create()
 
         return env
 

@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class AccountGeneratorPerfSourceApp
+class AccountGeneratorStreamsSourceApp
 
 fun main(args: Array<String>) {
-	runApplication<AccountGeneratorPerfSourceApp>(*args)
+	runApplication<AccountGeneratorStreamsSourceApp>(*args)
 }

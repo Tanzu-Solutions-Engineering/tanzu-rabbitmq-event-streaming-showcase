@@ -1,10 +1,13 @@
+account:
+  generate:
+    count: 100000
 server:
-  port: 8082
+  port: 0
 spring:
   rabbitmq:
     publisher-confirm-type: simple
   application:
-    name: stream-account-generator-source
+    name: account-generator-streams-source
   cloud:
     function.definition: accountGeneratorSupplier
     stream:

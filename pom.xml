@@ -12,10 +12,10 @@
 
     <modules>
         <module>components/stream-account-domain</module>
-         <module>applications/stream-account-http-source</module>
+         <module>applications/account-http-ampq-source</module>
         <module>applications/account-geode-amqp-sink</module>
         <module>applications/stream-account-jdbc-sink</module>
-        <module>applications/stream-account-generator-source</module>
+        <module>applications/account-generator-amqp-source</module>
         <module>applications/performance/rabbit-spring-perf-test</module>
         <module>applications/generator-mqtt-source</module>
         <module>applications/account-generator-streams-source</module>

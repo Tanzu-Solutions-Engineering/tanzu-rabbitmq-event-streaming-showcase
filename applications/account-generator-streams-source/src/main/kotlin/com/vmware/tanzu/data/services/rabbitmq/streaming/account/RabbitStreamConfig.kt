@@ -23,8 +23,8 @@ class RabbitStreamConfig() {
     @Value("\${spring.rabbitmq.username:guest}")
     private var username: String = "guest";
 
-    @Value("\${account.generator.stream.name:event-streaming-showcase.stream-account-geode-sink-stream}")
-    private val streamName: String = "event-streaming-showcase.stream-account-geode-sink-stream"
+    @Value("\${account.generator.stream.name:event-streaming-showcase.accounts}")
+    private val streamName: String = "event-streaming-showcase.accounts"
 
     @Value("\${spring.rabbitmq.password:guest}")
     private var password:  String = "guest";
@@ -50,7 +50,6 @@ class RabbitStreamConfig() {
 //       }
 //       catch(e : StreamException)
 //       {
-//           //Stream already Created
 //       }
 
         return env
