@@ -5,22 +5,9 @@ Remove objects
 
 
 ```shell
-rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream
-rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream.dlq
-rabbitmqctl --node rabbit delete_queue banking.atm.atmBankStream
-rabbitmqctl --node rabbit delete_queue banking.bank.bankingBankStream
+rabbitmqctl --node rabbit delete_queue event-streaming-showcase.accounts
+rabbitmqctl --node rabbit delete_queue event-streaming-showcase.accounts.dlq
 
-rabbitmqctl --node rabbit delete_queue banking.account.bankingAccount
-rabbitmqctl --node rabbit delete_queue banking.account.bankingAccount.dlq
-rabbitmqctl --node rabbit delete_queue banking.account.bankingAccountStream.dlq
-rabbitmqctl --node rabbit delete_queue event-streaming-showcase.stream-account-geode-sink
-rabbitmqctl --node rabbit delete_queue event-streaming-showcase.stream-account-geode-sink.dlq
-rabbitmqctl --node rabbit delete_queue event-streaming-showcase.stream-stream-account-jdbc-sink-stream
-rabbitmqctl --node rabbit delete_queue event-streaming.stream-account-geode-sink
-rabbitmqctl --node rabbit delete_queue event-streaming.stream-account-geode-sink.dlq
-rabbitmqctl --node rabbit delete_queue stream-account-geode-sink.event-streaming
-rabbitmqadmin delete exchange name=banking.account
-rabbitmqadmin delete exchange name=event-streaming-showcase
 ```
 
 ## Postgres Cleanup
@@ -53,7 +40,7 @@ configure pdx --read-serialized=true --disk-store=DEFAULT
 ```
 
 ```shell
-start server --name=server1
+start server --name=server --start-rest-api=true --http-service-port=7001 --initial-heap=2g --max-heap=2g
 ```
 
 ```shell
@@ -83,13 +70,13 @@ java -jar applications/performance/lib/stream-perf-test-0.5.0.jar
 
 --------------------
 
-Start Consumers Quorum
+Start GemFire/Geode Consumers 
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 ```
 ```shell
-java -jar applications/stream-account-geode-sink/target/stream-account-geode-sink-0.0.1-SNAPSHOT.jar
+java -jar applications/account-geode-rabbit-streams-sink/target/account-geode-rabbit-streams-sink-0.0.1-SNAPSHOT.jar
 ```
 
 Open RabbitMQ dashboard guest/guest
@@ -98,30 +85,58 @@ open http://localhost:15672/
 ```
 
 
-In Gfsh
-
 ```shell
-query --query="select * from /Account"
+open http://localhost:7070/pulse/clusterDetail.html
 ```
+
+
 
 Start Publisher
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/stream-account-http-source/target/stream-account-http-source-0.0.1-SNAPSHOT.jar
+java -jar applications/account-generator-streams-source/target/account-generator-streams-source-0.0.1-SNAPSHOT.jar
 ```
 
+In Pulse Data Browser
+
+```sqlite-sql
+select * from /Account limit 10
+```
+
+
+--------------------------------------
+## REPLAY Message to Store in GemFire
+
+STOP consumer
+
+
+In Gfsh
 
 ```shell
-open http://localhost:8080
+shutdown
 ```
-
-
-In Gfsh 
 
 ```shell
-query --query="select * from /Account"
+start server --name=server --start-rest-api=true --http-service-port=7001 --initial-heap=2g --max-heap=2g
 ```
+
+
+
+Start Consumers with REPLAY option
+
+```shell
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
+```
+```shell
+java -jar applications/account-geode-rabbit-streams-sink/target/account-geode-rabbit-streams-sink-0.0.1-SNAPSHOT.jar --rabbitmq.streaming.replay=true
+```
+
+
+
+----------------------
+
+## Load new Data source
 
 Start PSQL 
 
@@ -141,13 +156,6 @@ select * from evt_locations;
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 java -jar applications/stream-account-jdbc-sink/target/stream-account-jdbc-sink-0.0.1-SNAPSHOT.jar
 ```
-
-
-Post data
-```shell
-open http://localhost:8080
-```
-
 
 
 ```shell

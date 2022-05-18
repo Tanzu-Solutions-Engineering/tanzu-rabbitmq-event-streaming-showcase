@@ -2,6 +2,7 @@ package com.vmware.tanzu.data.services.rabbitmq.streaming.account
 
 import com.rabbitmq.stream.ConsumerBuilder
 import com.rabbitmq.stream.OffsetSpecification
+import nyla.solutions.core.util.Text
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
 import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy
 import org.springframework.amqp.rabbit.connection.RabbitConnectionFactoryBean
@@ -57,13 +58,30 @@ class AmqpRabbitConfig {
         return Jackson2JsonMessageConverter();
     }
 
-
     @Bean
-    @ConditionalOnProperty(name = ["rabbitmq.streaming.replay"],havingValue = "true")
+    @ConditionalOnProperty(name = ["rabbitmq.streaming.replay"],havingValue = "false",matchIfMissing = true)
     fun customizer(): ListenerContainerCustomizer<MessageListenerContainer>? {
         return ListenerContainerCustomizer { cont: MessageListenerContainer, dest: String?, group: String? ->
             val container = cont as StreamListenerContainer
             container.setConsumerCustomizer { name: String?, builder: ConsumerBuilder ->
+
+                builder.name(applicationName)
+                builder.offset(
+                    OffsetSpecification.next()
+                )
+            }
+        }
+    }
+
+    @Bean
+    @ConditionalOnProperty(name = ["rabbitmq.streaming.replay"],havingValue = "true")
+    fun customizerReplay(): ListenerContainerCustomizer<MessageListenerContainer>? {
+        return ListenerContainerCustomizer { cont: MessageListenerContainer, dest: String?, group: String? ->
+            val container = cont as StreamListenerContainer
+            container.setConsumerCustomizer { name: String?, builder: ConsumerBuilder ->
+
+                builder.name(Text.generateId())
+
                 builder.offset(
                     OffsetSpecification.first()
                 )
