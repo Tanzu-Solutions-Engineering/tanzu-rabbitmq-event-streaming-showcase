@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>stream-account-geode-sink</artifactId>
+    <artifactId>account-geode-amqp-sink</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>stream-account-geode-sink</name>
-    <description>stream-account-geode-sink</description>
+    <name>account-geode-amqp-sink</name>
+    <description>account-geode-amqp-sink</description>
     <properties>
 		<geode.version>1.13.7</geode.version>
         <java.version>11</java.version>

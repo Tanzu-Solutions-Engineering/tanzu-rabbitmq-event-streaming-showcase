@@ -13,12 +13,12 @@
     <modules>
         <module>components/stream-account-domain</module>
          <module>applications/stream-account-http-source</module>
-        <module>applications/stream-account-geode-sink</module>
+        <module>applications/account-geode-amqp-sink</module>
         <module>applications/stream-account-jdbc-sink</module>
         <module>applications/stream-account-generator-source</module>
         <module>applications/performance/rabbit-spring-perf-test</module>
         <module>applications/generator-mqtt-source</module>
-        <module>applications/stream-account-generator-source-perf</module>
+        <module>applications/account-generator-streams-source</module>
         <module>applications/account-geode-rabbit-streams-sink</module>
     </modules>
     <build>

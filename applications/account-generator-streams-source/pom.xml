@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>stream-account-generator-source-perf</artifactId>
+    <artifactId>account-generator-streams-source</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>stream-account-generator-source-perf</name>
-    <description>stream-account-generator-source-perf</description>
+    <name>account-generator-streams-source</name>
+    <description>account-generator-streams-source</description>
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.6.21</kotlin.version>
