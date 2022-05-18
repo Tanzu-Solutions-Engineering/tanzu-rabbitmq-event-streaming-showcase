@@ -1,10 +1,6 @@
 package com.vmware.tanzu.data.services.rabbitmq.streaming.account
 
-import com.rabbitmq.stream.ConsumerBuilder
-import com.rabbitmq.stream.Environment
-import com.rabbitmq.stream.OffsetSpecification
-import com.rabbitmq.stream.ProducerBuilder
-import org.springframework.amqp.rabbit.annotation.RabbitListener
+import com.rabbitmq.stream.*
 import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.amqp.support.converter.MessageConverter
@@ -43,12 +39,24 @@ class RabbitStreamConfig() {
     @Bean
     fun rabbitStreamEnvironment(): Environment {
 
-        return Environment.builder()
+        val env =  Environment.builder()
             .host(hostname)
             .username(username)
             .password(password).build()
 
+
+//       try{
+//           env.streamCreator().stream(streamName).create()
+//       }
+//       catch(e : StreamException)
+//       {
+//           //Stream already Created
+//       }
+
+        return env
+
     }
+
     @Bean
     fun streamTemplate(env: Environment): RabbitStreamTemplate {
         val template = RabbitStreamTemplate(env, streamName)
@@ -63,22 +71,22 @@ class RabbitStreamConfig() {
         return template
     }
 
-    @Bean
-    fun nativeFactory( env : Environment)  : RabbitListenerContainerFactory<StreamListenerContainer>{
-        var factory =  StreamRabbitListenerContainerFactory(env);
-        factory.setNativeListener(true);
-
-
-        env.streamCreator().stream("test.stream.queue1").create()
-
-        val cc : ConsumerCustomizer = ConsumerCustomizer{ id: String, builder: ConsumerBuilder ->
-            builder.name("myConsumer")
-                .offset(OffsetSpecification.first())
-                .manualTrackingStrategy();
-        }
-        factory.setConsumerCustomizer(cc);
-        return factory;
-    }
+//    @Bean
+//    fun nativeFactory( env : Environment)  : RabbitListenerContainerFactory<StreamListenerContainer> {
+//        var factory =  StreamRabbitListenerContainerFactory(env);
+//        factory.setNativeListener(true);
+//
+//
+////        env.streamCreator().stream(streamName).
+//
+//        val cc : ConsumerCustomizer = ConsumerCustomizer{ id: String, builder: ConsumerBuilder ->
+//            builder.name("myConsumer")
+//                .offset(OffsetSpecification.first())
+//                .manualTrackingStrategy();
+//        }
+//        factory.setConsumerCustomizer(cc);
+//        return factory;
+//    }
 
     @Primary
     @Bean

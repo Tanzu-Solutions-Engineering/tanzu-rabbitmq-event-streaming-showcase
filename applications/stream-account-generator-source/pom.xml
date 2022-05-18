@@ -14,7 +14,7 @@
     <name>stream-account-generator-source</name>
     <description>stream-account-generator-source</description>
     <properties>
-		<geode.vrsion>1.13.1</geode.vrsion>
+		<geode.version>1.13.1</geode.version>
         <java.version>11</java.version>
         <spring-cloud.version>2021.0.0-M1</spring-cloud.version>
         <kotlin.version>1.5.21</kotlin.version>

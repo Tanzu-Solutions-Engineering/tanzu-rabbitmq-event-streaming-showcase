@@ -20,11 +20,15 @@ internal class AccountGeneratorRunnerTest{
         val args = mock<ApplicationArguments>()
         val builder = mock<MessageBuilder>()
         val message = mock<Message>()
+        val properties = mock<MessageBuilder.PropertiesBuilder>()
 
 
         whenever(template.messageBuilder()).thenReturn(builder)
         whenever(builder.addData(any())).thenReturn(builder)
         whenever(builder.build()).thenReturn(message)
+        whenever(builder.properties()).thenReturn(properties)
+        whenever(properties.contentType(any())).thenReturn(properties)
+        whenever(properties.messageBuilder()).thenReturn(builder)
 
         var subject = AccountGeneratorRunner(template, count)
 

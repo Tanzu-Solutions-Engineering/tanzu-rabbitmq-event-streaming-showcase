@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.rabbit.stream.producer.RabbitStreamTemplate
 import org.springframework.stereotype.Component
+import java.text.DecimalFormat
 import java.util.concurrent.Callable
 import java.util.concurrent.Future
 
@@ -20,7 +21,7 @@ import java.util.concurrent.Future
 @Component
 class AccountGeneratorRunner(
     private val template: RabbitStreamTemplate,
-    @Value("\${account.generate.count:1000000}")
+    @Value("\${account.generate.count:100000}")
     private val count: Long) : ApplicationRunner {
     private var futures: Future<*>? = null
     private var account : Account = JavaBeanGeneratorCreator.of(Account::class.java).create()
@@ -52,7 +53,7 @@ class AccountGeneratorRunner(
         var totalTime = endTime - startTime
 
 
-        logger.info("Completed $totalTime milliseconds")
+        logger.info("Completed loading {} records",DecimalFormat("#,###.##").format(count))
 
 
     }
