@@ -24,7 +24,7 @@ import org.springframework.rabbit.stream.listener.StreamListenerContainer
  * @author Gregory Green
  */
 @Configuration
-class AmqpRabbitConfig {
+class RabbitConfig {
 
     @Value("\${spring.rabbitmq.username:guest}")
     private var username: String = "guest";
@@ -58,23 +58,8 @@ class AmqpRabbitConfig {
         return Jackson2JsonMessageConverter();
     }
 
-    @Bean
-    @ConditionalOnProperty(name = ["rabbitmq.streaming.replay"],havingValue = "false",matchIfMissing = true)
-    fun customizer(): ListenerContainerCustomizer<MessageListenerContainer>? {
-        return ListenerContainerCustomizer { cont: MessageListenerContainer, dest: String?, group: String? ->
-            val container = cont as StreamListenerContainer
-            container.setConsumerCustomizer { name: String?, builder: ConsumerBuilder ->
-
-                builder.name(applicationName)
-                builder.offset(
-                    OffsetSpecification.next()
-                )
-            }
-        }
-    }
 
     @Bean
-    @ConditionalOnProperty(name = ["rabbitmq.streaming.replay"],havingValue = "true")
     fun customizerReplay(): ListenerContainerCustomizer<MessageListenerContainer>? {
         return ListenerContainerCustomizer { cont: MessageListenerContainer, dest: String?, group: String? ->
             val container = cont as StreamListenerContainer

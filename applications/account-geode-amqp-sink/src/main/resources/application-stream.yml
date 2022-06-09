@@ -1,0 +1,26 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: account-geode-sink
+  cloud:
+    function.definition: accountConsumer
+    stream:
+      bindings:
+        accountConsumer-in-0:
+          destination: event-streaming-showcase
+          group: stream-account-geode-sink-stream
+          consumer:
+            concurrency: 3
+            container-type: stream
+      rabbit:
+        bindings:
+          accountConsumer-in-0:
+            consumer:
+              container-type: stream
+
+  rabbitmq:
+    listener:
+      type: stream
+    stream:
+      host: localhost
