@@ -12,8 +12,12 @@ docker push cloudnativedata/stream-account-geode-sink:0.0.1-SNAPSHOT
 ## Using Streams
 
 See src/main/resources/application-stream.yml
-I set runtime arguments
---rabbitmq.streaming.replay=true --spring.profiles.active=stream
+
+Set runtime arguments
+
+```shell
+java -jar applications/account-geode-rabbit-streams-sink/target/account-geode-rabbit-streams-sink-0.0.1-SNAPSHOT.jar --rabbitmq.streaming.replay=true --spring.profiles.active=stream
+```
 
 ## Apache Geode/GemFire
 
