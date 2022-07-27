@@ -1,0 +1,44 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: federation-bunny
+  namespace: default
+spec:
+  replicas: 1
+  service:
+    type: LoadBalancer
+  resources:
+    requests:
+      cpu: "1"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+  imagePullSecrets:
+    - name: tanzu-rabbitmq-registry-creds
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_mqtt
+      - rabbitmq_shovel_management
+      - rabbitmq_stream
+      - rabbitmq_stream_management
+      - rabbitmq_stream_prometheus
+      - rabbitmq_federation_management
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers: []
+            securityContext:
+              runAsUser: 999
+              runAsGroup: 999
+              fsGroup: 999
+#---
+#apiVersion: rabbitmq.com/v1beta1
+#kind: RabbitmqCluster
+#metadata:
+#  name: federation-bunny
+#spec:
+#  service:
+#    type: LoadBalancer
