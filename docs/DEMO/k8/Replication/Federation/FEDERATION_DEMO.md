@@ -25,3 +25,11 @@ kubectl exec -it federation-bunny-server-0 -- rabbitmqctl set_parameter federati
 kubectl exec -it federation-bunny-server-0 -- rabbitmqctl set_policy --apply-to exchanges federate-hare "^amq\." '{"federation-upstream-set":"all"}'
 
 ## Published message in hare will replicate to bunny
+
+Binding RULE
+stream
+
+
+```json
+{"id":"1", "stock","VMW"}
+```
