@@ -4,6 +4,8 @@ metadata:
   name: rabbitmq
 spec:
   replicas: 1
+  service:
+    type: LoadBalancer
   image: pivotalrabbitmq/rabbitmq-stream
   resources:
     requests:
