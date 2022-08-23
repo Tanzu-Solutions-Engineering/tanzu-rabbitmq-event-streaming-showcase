@@ -1,0 +1,10 @@
+spring:
+  rabbitmq:
+    vhost: "/"
+  application:
+    name: http-amqp-source
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health

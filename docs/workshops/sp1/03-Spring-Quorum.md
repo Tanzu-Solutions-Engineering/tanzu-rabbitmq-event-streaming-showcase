@@ -31,7 +31,7 @@ k apply -f cloud/k8/apps/stream-account-geode-sink
 ## step 1 - starts app
 
 ```shell
-  k apply -f cloud/k8/apps/stream-account-http-source
+  kubectl apply -f cloud/k8/apps/stream-account-http-source
 ```
 
 ## step 2 - start app see pod with name account-geode-sink, then control^C

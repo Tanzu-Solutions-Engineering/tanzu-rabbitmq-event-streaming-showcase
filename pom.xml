@@ -20,6 +20,7 @@
         <module>applications/generator-mqtt-source</module>
         <module>applications/account-generator-streams-source</module>
         <module>applications/account-geode-rabbit-streams-sink</module>
+        <module>applications/http-amqp-source</module>
     </modules>
     <build>
         <pluginManagement>

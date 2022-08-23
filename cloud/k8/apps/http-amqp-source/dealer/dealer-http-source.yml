@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  dealer-http-amqp-source
+    app.kubernetes.io/name: dealer-http-amqp-source
+  name:  dealer-http-amqp-source
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  dealer-http-amqp-source
+  template:
+    metadata:
+      labels:
+        name:  dealer-http-amqp-source
+    spec:
+      containers:
+        - env:
+            - name: spring.rabbitmq.virtual-host
+              value: "Dealer1"
+            - name: spring.rabbitmq.vhost
+              value: "Dealer1"
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: server.port
+              value: "8080"
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-dealer1-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-dealer1-user
+                  key: password
+          image: cloudnativedata/http-amqp-source:0.0.2-SNAPSHOT
+          name: dealer-http-amqp-source
+          imagePullPolicy: Always
+#          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dealer-http-amqp-source-service
+spec:
+  selector:
+    name:  dealer-http-amqp-source
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
