@@ -39,7 +39,7 @@ kubectl create secret generic rabbitmq-dealer1-user \
 ```
 
 
-# Messaging - Loosely couples
+# Messaging - Loosely coupled
 
 - Login as *dealer1/dealer1*
 - Create queue **dealer1.workOrder.purchase**
@@ -51,7 +51,8 @@ Create binding rules
 Deploy app
 
 ```shell
-k apply -f cloud/k8/apps/http-amqp-source/dealer/dealer-http-source.yml
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
+kubectl apply -f cloud/k8/apps/http-amqp-source/dealer/dealer-http-source.yml
 ```
 
 Publish 
@@ -72,32 +73,41 @@ routing_key= workOrder.purchase.event001
 Create queue **dealer1.workOrder.sale**
 Create queue **dealer1.workOrder.repair**
 
-- dealer1.event -> queue: dealer1.workOrder.sale -> routingKey: workOrder.sale.#
-- dealer1.event -> queue: dealer1.workOrder.repair -> routingKey: workOrder.repair.#
+- dealer1.topic -> queue: dealer1.workOrder.sale -> routingKey: workOrder.sale.#
+- dealer1.topic -> queue: dealer1.workOrder.repair -> routingKey: workOrder.repair.#
 
 ```shell
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 kubectl apply -f cloud/k8/apps/http-amqp-source/dealer/messageTopology/dealer-message-topology.yml
 ```
 
+exchange: dealer1.topic
+routing_key= workOrder.sale.001
 
-
-
-
-
-```shell
-kubectl apply -f cloud/k8/apps/stream-account-http-source
+```json
+{
+    "eventId" : "1",
+    "eventDate" : "3-20-2022 00:00:00:000",
+    "dateId" : "1",
+    "objectName" : "workOrder.sale"
+}
 ```
 
 
 
+exchange: dealer1.topic
+routing_key= workOrder.repair.001
 
-- RabbitMQ on cloud or onpromise
-- One cloud dealers - Informatical Cloud – AWS
+```json
+{
+    "eventId" : "1",
+    "eventDate" : "3-20-2022 00:00:00:000",
+    "dateId" : "1",
+    "objectName" : "workOrder.repair"
+}
+```
 
-
-- Security encryption – inflight
-- Dealer expected an API to message
-- Each dealer has its own cloud POD – instance per cluster
+See docs/DEMO/k8/TLS/TLS_demo.md
 
 
 
