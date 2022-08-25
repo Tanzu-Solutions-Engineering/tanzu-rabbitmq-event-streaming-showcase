@@ -1,4 +1,6 @@
+```shell
 kubectl create secret docker-registry tanzu-vmware-secret --docker-server=registry.tanzu.vmware.com --docker-username=$HARBOR_USER --docker-password=$HARBOR_PASSWORD
+```
 
 See https://github.com/rabbitmq/cluster-operator/tree/main/docs/examples/tls
 
@@ -7,7 +9,7 @@ k apply -f cloud/k8/data-services/rabbitmq/certificates/rabbitmq-self-sign-cert.
 ```
 
 ```shell
-kubectl apply -f cloud/k8/data-services/rabbitmq/certificates/rabbit-cls-tls.yml
+kubectl apply -f cloud/k8/data-services/rabbitmq/certificates/rabbit-cluster-tls.yml
 ```
 
 

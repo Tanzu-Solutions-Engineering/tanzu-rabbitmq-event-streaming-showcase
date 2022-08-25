@@ -108,6 +108,7 @@ $kubectl apply -f https://github.com/vmware-tanzu/carvel-secretgen-controller/re
 echo "INSTALLING CERT-MANAGER" # @Param: version
 $kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v$certmanagervsersion/cert-manager.yaml --request-timeout=$requesttimeout
 
+
 echo "CREATING VMWARE CONTAINER REGISTRY SECRET"
 export RMQ_docker__username="$vmwareuser"
 export RMQ_docker__password="$vmwarepassword"
@@ -152,3 +153,5 @@ echo "INSTALLING CLUSTERS MONITOR..."
 $kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-servicemonitor.yml
 echo "INSTALLING OPERATORS MONITOR..."
 $kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-cluster-operator-podmonitor.yml
+
+kubectl apply -f /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/cloud/k8/data-services/rabbitmq/secret/secrets.yml

@@ -1,6 +1,6 @@
 
 ```shell
-k apply -f cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+k apply -f cloud/k8/data-services/rabbitmq/vmware-rabbitmq-1-node.yml
 ```
 
 Get Public URL
@@ -34,36 +34,27 @@ Create new user dealer
 ```shell
 kubectl create secret generic rabbitmq-dealer1-user \
   --from-literal=username=dealer1 \
-  --from-literal=password='dealer1'
+  --from-literal=password=dealer1 \
+  --from-literal=uri='http://rabbitmq.default.svc:15672'
 ```
-Logger
+
 
 # Messaging - Loosely couples
 
-Login as *dealer1/dealer1*
-
-
-Create queue **dealer1.workOrder.purchase**
-Create queue **dealer1.workOrder.sale**
-Create queue **dealer1.workOrder.repair**
-
-Create exchange **dealer1.event**
+- Login as *dealer1/dealer1*
+- Create queue **dealer1.workOrder.purchase**
+- Create exchange **dealer1.event**
 
 Create binding rules 
 - dealer1.event -> queue: dealer1.workOrder.purchase -> routingKey: workOrder.purchase.#
-- dealer1.event -> queue: dealer1.workOrder.sale -> routingKey: workOrder.sale.#
-- dealer1.event -> queue: dealer1.workOrder.repair -> routingKey: workOrder.repair.#
 
-
-
-
-
-
-
+Deploy app
 
 ```shell
 k apply -f cloud/k8/apps/http-amqp-source/dealer/dealer-http-source.yml
 ```
+
+Publish 
 
 exchange: dealer1.event
 routing_key= workOrder.purchase.event001
@@ -76,6 +67,22 @@ routing_key= workOrder.purchase.event001
     "objectName" : "workOrder.purchase"
 }
 ```
+
+
+Create queue **dealer1.workOrder.sale**
+Create queue **dealer1.workOrder.repair**
+
+- dealer1.event -> queue: dealer1.workOrder.sale -> routingKey: workOrder.sale.#
+- dealer1.event -> queue: dealer1.workOrder.repair -> routingKey: workOrder.repair.#
+
+```shell
+kubectl apply -f cloud/k8/apps/http-amqp-source/dealer/messageTopology/dealer-message-topology.yml
+```
+
+
+
+
+
 
 ```shell
 kubectl apply -f cloud/k8/apps/stream-account-http-source
