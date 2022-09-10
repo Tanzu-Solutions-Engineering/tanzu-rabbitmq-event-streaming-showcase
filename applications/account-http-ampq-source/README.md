@@ -1,7 +1,9 @@
 ## Docker building image
 
 ```shell
-mvn -pl applications/account-http-ampq-source -am spring-boot:build-image
+mvn install
+cd applications/account-http-ampq-source
+mvn spring-boot:build-image
 ```
 
 ```shell

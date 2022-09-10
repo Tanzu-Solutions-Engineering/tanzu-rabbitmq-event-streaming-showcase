@@ -2,24 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run:  stream-account-http-source
-  name:  stream-account-http-source
+    app.kubernetes.io/name: account-http-ampq-source
+    run:  account-http-ampq-source
+  name:  account-http-ampq-source
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name:  stream-account-http-source
+      name:  account-http-ampq-source
   template:
     metadata:
       labels:
-        name:  stream-account-http-source
+        name:  account-http-ampq-source
     spec:
       containers:
         - env:
             - name: spring.profiles.active
               value: stream
-            - name: gemfire.region.name
-              value: AccountStream
             - name: spring.rabbitmq.host
               value: rabbitmq
             - name: server.port
@@ -34,5 +33,18 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
-          image: cloudnativedata/stream-account-http-source:0.0.1-SNAPSHOT
-          name: stream-account-http-source
+          image: cloudnativedata/account-http-ampq-source:0.0.1-SNAPSHOT
+          name: account-http-ampq-source
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-http-ampq-source
+spec:
+  selector:
+    name: account-http-ampq-source
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
