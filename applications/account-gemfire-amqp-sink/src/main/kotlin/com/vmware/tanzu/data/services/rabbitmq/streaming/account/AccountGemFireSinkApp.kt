@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class AccountGeodeSinkApp
+class AccountGemFireSinkApp
 
 fun main(args: Array<String>) {
-	runApplication<AccountGeodeSinkApp>(*args)
+	runApplication<AccountGemFireSinkApp>(*args)
 }

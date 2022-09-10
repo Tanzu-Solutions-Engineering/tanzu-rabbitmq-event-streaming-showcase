@@ -19,8 +19,11 @@ import org.springframework.data.gemfire.config.annotation.EnableContinuousQuerie
  */
 @Configuration
 @ClientCacheApplication(subscriptionEnabled = true)
-@EnableContinuousQueries
-class GeodeConfig {
+//@EnableContinuousQueries
+class GemFireConfig {
+
+    @Value("\${gemfire.region.name:Account}")
+    private var regionName : String = "Account"
 
     @Bean("Account")
     fun accountRegion(gemFireCache: GemFireCache) : ClientRegionFactoryBean<String,Account>
@@ -34,8 +37,7 @@ class GeodeConfig {
     }
 
     @Bean
-    fun gemfireTemple(gemFireCache : GemFireCache,
-     @Value("\${gemfire.region.name:Account}") regionName : String) : GemfireTemplate
+    fun gemfireTemple(gemFireCache : GemFireCache) : GemfireTemplate
     {
         return GemfireTemplate<String, Account>(
             ClientCacheFactory

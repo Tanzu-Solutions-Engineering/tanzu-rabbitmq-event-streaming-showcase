@@ -134,6 +134,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/name: account-http-ampq-source
     run:  account-http-ampq-source
   name:  account-http-ampq-source
 spec:
@@ -170,17 +171,78 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-http-ampq-source-service
+  name: account-http-ampq-source
 spec:
   selector:
-    run:  account-http-ampq-source
+    name: account-http-ampq-source
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
   type: LoadBalancer
 ```
 
+
+```shell
+kubectl get services
+```
+
 ```shell
 /Users/devtools/integration/messaging/rabbit/rabbit-devOps/kubernetes/getcredentials.sh
+```
+
+
+## Provision GemFire for Apps
+
+
+```shell
+./cloud/k8/data-services/gemfire/gf-app-setup.sh
+```
+
+Example create a region
+```text
+kubectl  exec -it gemfire1-locator-0 -- gfsh -e "connect --locator=gemfire1-locator-0.gemfire1-locator.default.svc.cluster.local[10334]" -e "create region --name=Account --type=PARTITION_PERSISTENT"
+```
+
+
+Deploy Application
+
+```shell
+kubectl apply -f cloud/k8/apps/account-gemfire-amqp-sink/account-gemfire-amqp-sink.yml
+```
+
+
+```json
+{
+  "id": "01",
+  "name": "Acct1",
+  "accountType": "Student",
+  "status": "OPEN",
+  "notes": "This is just a test",
+  "location": {
+    "id": "L01",
+    "address": "123 Straight Street",
+    "cityTown": "Emerald City",
+    "stateProvince": "NJ",
+    "zipPostalCode": "12345",
+    "countryCode": "US"
+  }
+}
+```
+
+```sqlite-sql
+select * from /Account
+```
+
+Open GemFire pulse
+
+```shell
+open http://<HOSTNAME>:7070/pulse
+```
+
+
+Rest GemFire API
+
+```shell
+open http://<HOSTNAME>:7070/pulse
 ```
