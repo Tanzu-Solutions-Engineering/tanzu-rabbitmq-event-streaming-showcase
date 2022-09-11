@@ -9,10 +9,10 @@
         <relativePath/>
     </parent>
     <groupId>com.vmware</groupId>
-    <artifactId>stream-account-jdbc-sink</artifactId>
+    <artifactId>account-jdbc-amqp-sink</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>stream-account-jdbc-sink</name>
-    <description>stream-account-jdbc-sink</description>
+    <name>account-jdbc-amqp-sink</name>
+    <description>account-jdbc-amqp-sink</description>
     <properties>
         <java.version>11</java.version>
         <kotlin.version>1.5.21</kotlin.version>

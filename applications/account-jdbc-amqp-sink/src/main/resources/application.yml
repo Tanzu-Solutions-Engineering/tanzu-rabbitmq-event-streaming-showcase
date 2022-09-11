@@ -1,0 +1,35 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: account-jdbc-amqp-sink
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: security
+  cloud:
+    function.definition: accountConsumer
+    stream:
+      bindings:
+        accountConsumer-in-0:
+          destination: event-streaming-showcase
+          group: account-jdbc-amqp-sink
+#          group: stream-account-jdbc-amqp-sink-stream
+          consumer:
+            concurrency: 1
+            container-type: stream
+      rabbit:
+        bindings:
+          accountConsumer-in-0:
+            consumer:
+              container-type: stream
+  rabbitmq:
+    listener:
+      type: stream
+    stream:
+      host: localhost

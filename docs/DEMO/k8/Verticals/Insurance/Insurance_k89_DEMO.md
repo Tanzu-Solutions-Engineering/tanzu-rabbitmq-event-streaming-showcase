@@ -230,9 +230,7 @@ kubectl apply -f cloud/k8/apps/account-gemfire-amqp-sink/account-gemfire-amqp-si
 }
 ```
 
-```sqlite-sql
-select * from /Account
-```
+
 
 Open GemFire pulse
 
@@ -241,8 +239,47 @@ open http://<HOSTNAME>:7070/pulse
 ```
 
 
-Rest GemFire API
+Data Browser
+
+```sqlite-sql
+select * from /Account
+```
+
+## JDBC
 
 ```shell
-open http://<HOSTNAME>:7070/pulse
+kubectl apply -f cloud/k8/apps/account-jdbc-amqp-sink
+```
+
+Connect to Postgres
+
+```shell
+psql  postgres-db
+```
+
+```json
+{
+  "id": "02",
+  "name": "Acct2",
+  "accountType": "Student",
+  "status": "OPEN",
+  "notes": "This is just a JDBC test",
+  "location": {
+    "id": "L02",
+    "address": "321 Straight Street",
+    "cityTown": "Oz",
+    "stateProvince": "NJ",
+    "zipPostalCode": "52345",
+    "countryCode": "US"
+  }
+}
+```
+
+
+```sqlite-sql
+select * from evt_accounts;
+```
+
+```sqlite-sql
+select * from evt_locations;
 ```

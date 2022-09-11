@@ -14,7 +14,7 @@
         <module>components/stream-account-domain</module>
          <module>applications/account-http-ampq-source</module>
         <module>applications/account-gemfire-amqp-sink</module>
-        <module>applications/stream-account-jdbc-sink</module>
+        <module>applications/account-jdbc-amqp-sink</module>
         <module>applications/account-generator-amqp-source</module>
         <module>applications/performance/rabbit-spring-perf-test</module>
         <module>applications/generator-mqtt-source</module>
