@@ -20,6 +20,7 @@ GemFire
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/cloud/k8/data-services/gemfire
 ./gf-k8-setup.sh
 ```
+-------------------------------------------------------
 
 # DEMO 
 
@@ -91,18 +92,8 @@ spec:
 
 
 ```shell
-apiVersion: sql.tanzu.vmware.com/v1
-kind: Postgres
-metadata:
-  name: postgres-db
-spec:
-  memory: 800Mi
-  cpu: "0.8"
-  storageClassName: standard
-  storageSize: 3G
-  serviceType: LoadBalancer
-  highAvailability:
-    enabled: true
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
+kubectl apply -f cloud/k8/data-services/postgres/postgres.yml
 ```
 
 
@@ -208,6 +199,7 @@ kubectl  exec -it gemfire1-locator-0 -- gfsh -e "connect --locator=gemfire1-loca
 Deploy Application
 
 ```shell
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 kubectl apply -f cloud/k8/apps/account-gemfire-amqp-sink/account-gemfire-amqp-sink.yml
 ```
 
@@ -248,6 +240,7 @@ select * from /Account
 ## JDBC
 
 ```shell
+cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 kubectl apply -f cloud/k8/apps/account-jdbc-amqp-sink
 ```
 
@@ -282,4 +275,51 @@ select * from evt_accounts;
 
 ```sqlite-sql
 select * from evt_locations;
+```
+
+
+## Scalings
+
+Increase for 2 Sink Instances
+
+```shell
+kubectl edit deployment account-gemfire-amqp-sink
+```
+
+
+Increase RabbitMQ nodes
+
+```shell
+kubectl edit RabbitMQCluster rabbitmq
+```
+
+
+Increase GemFire data node servers
+
+```shell
+kubectl edit GemFireCluster gemfire1
+```
+
+# High Availability
+
+Kill RabbitMQ Node
+
+
+Delete Postgres
+
+```shell
+k delete pod postgres-db-0
+```
+
+Kill GemFire Server
+
+```shell
+kubectl delete pod gemfire1-server-0
+```
+
+
+# Cleanup
+
+```shell
+./cloud/k8/CLEANUP.sh
 ```

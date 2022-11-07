@@ -1,9 +1,0 @@
----
-apiVersion: rabbitmq.com/v1beta1
-kind: RabbitmqCluster
-metadata:
-  name: rabbit
-spec:
-  replicas: 3
-  persistence:
-    storage: 10Gi

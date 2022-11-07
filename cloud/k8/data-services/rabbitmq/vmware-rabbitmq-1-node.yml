@@ -19,3 +19,7 @@ spec:
   rabbitmq:
     additionalPlugins:
       - rabbitmq_stream
+      - rabbitmq_stream_management
+      - rabbitmq_shovel_management
+      - rabbitmq_federation_management
+      - rabbitmq_mqtt

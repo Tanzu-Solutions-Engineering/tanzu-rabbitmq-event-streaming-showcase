@@ -1,0 +1,40 @@
+# More on fanout exchange and other exchange types, see: https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchanges.
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: pos.product
+spec:
+  name: pos.product # name of the exchange
+  vhost: "/" # default to '/' if not provided
+  type: topic # default to 'direct' if not provided
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq # rabbitmqCluster must exist in the same namespace as this resource
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: pos-product-catalog
+spec:
+  name: pos-product-catalog # name of the queue
+  vhost: "/" # default to '/' if not provided
+  type: quorum # without providing a queue type, rabbitmq creates a classic queue
+  autoDelete: false
+  durable: true # seting 'durable' to false means this queue won't survive a server restart
+  rabbitmqClusterReference:
+    name: rabbitmq # rabbitmqCluster must exist in the same namespace as this resource
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: pos.product
+spec:
+  vhost: "/" # default to '/' if not provided
+  source: pos.product # an existing exchange
+  destination: pos-product-catalog # an existing queue or exchange
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "#"
+  rabbitmqClusterReference:
+    name: rabbitmq # rabbitmqCluster must exist in the same namespace as this resource

@@ -1,0 +1,1 @@
+docker run -it --rm -h hare --network edge --name hare -v "$PWD/rabbitmq_enabled_plugins:/etc/rabbitmq/enabled_plugins" -p 5670:5672 -p 5550:5552 -p 15670:15672  -p  1880:1883 rabbitmq:3.10.10-management
