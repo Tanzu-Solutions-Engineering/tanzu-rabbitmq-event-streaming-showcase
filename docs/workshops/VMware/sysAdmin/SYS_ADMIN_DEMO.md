@@ -1,4 +1,4 @@
-Prerequiste
+Prerequisite
 
 - Install RabbitMQ Commercial
 
@@ -58,7 +58,7 @@ rabbitmqctl set_policy exchange-federation "^pos\." '{"federation-upstream-set":
 
 - Create exchange Locally
 - pos.product
-- Create queues: pos-product-catalog
+- Create queues: pos.products.consumer
 - Publish Message in Cloud
 
 
@@ -84,9 +84,10 @@ rabbitmqctl set_policy exchange-federation "^pos\." '{"federation-upstream-set":
 
 Shovel Example
 
-Create queue local
+Create quorum queue local
 
-- Create queues: pos-product-catalog-dr
+- Create queues: pos.products.consumer.dr
+- Adding binding rule for exchange: pos.products routingkey: #
 
 
 cd deployment/local/docker
@@ -100,10 +101,10 @@ http://localhost:15670
 
 Create queue
 
-- pos-product-catalog
+- pos.products.consumer
 
 ```shell
-rabbitmqctl set_parameter shovel pos-shovel '{"src-protocol": "amqp091", "src-uri": "amqp://", "src-queue": "pos-product-catalog-dr", "dest-protocol": "amqp091", "dest-uri": "amqp://localhost:5670", "dest-queue": "pos-product-catalog"}'
+rabbitmqctl set_parameter shovel pos-shovel '{"src-protocol": "amqp091", "src-uri": "amqp://", "src-queue": "pos.products.consumer.dr", "dest-protocol": "amqp091", "dest-uri": "amqp://localhost:5670", "dest-queue": "pos.products.consumer"}'
 ```
 
 Set Shovel Status

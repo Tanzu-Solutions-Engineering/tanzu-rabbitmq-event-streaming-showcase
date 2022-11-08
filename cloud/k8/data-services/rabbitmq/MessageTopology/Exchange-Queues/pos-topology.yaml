@@ -3,9 +3,9 @@
 apiVersion: rabbitmq.com/v1beta1
 kind: Exchange
 metadata:
-  name: pos.product
+  name: pos.products
 spec:
-  name: pos.product # name of the exchange
+  name: pos.products # name of the exchange
   vhost: "/" # default to '/' if not provided
   type: topic # default to 'direct' if not provided
   autoDelete: false
@@ -16,9 +16,9 @@ spec:
 apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
-  name: pos-product-catalog
+  name: pos.products.consumer
 spec:
-  name: pos-product-catalog # name of the queue
+  name: pos.products.consumer # name of the queue
   vhost: "/" # default to '/' if not provided
   type: quorum # without providing a queue type, rabbitmq creates a classic queue
   autoDelete: false
@@ -29,11 +29,11 @@ spec:
 apiVersion: rabbitmq.com/v1beta1
 kind: Binding
 metadata:
-  name: pos.product
+  name: pos.products
 spec:
   vhost: "/" # default to '/' if not provided
-  source: pos.product # an existing exchange
-  destination: pos-product-catalog # an existing queue or exchange
+  source: pos.products # an existing exchange
+  destination: pos.products.consumer # an existing queue or exchange
   destinationType: queue # can be 'queue' or 'exchange'
   routingKey: "#"
   rabbitmqClusterReference:
