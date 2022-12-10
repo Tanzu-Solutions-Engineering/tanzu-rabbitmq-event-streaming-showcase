@@ -48,6 +48,13 @@ start server --name=gf-server1 --initial-heap=500m --max-heap=500m  --locators="
 start server --name=gf-server2 --initial-heap=500m --max-heap=500m  --locators="127.0.0.1[10334],127.0.0.1[10434]"  --server-port=40402 --bind-address=127.0.0.1 --hostname-for-clients=127.0.0.1 --start-rest-api=true --http-service-bind-address=127.0.0.1 --http-service-port=9092  --J=-Dgemfire-for-redis-port=6372 --J=-Dgemfire-for-redis-enabled=true --include-system-classpath=true 
 ```
 
+# Cloud Publishers
+
+
+```shell
+k apply -f cloud/k8/apps/http-amqp-source/http-amqp-source.yml
+```
+
 # Starting Service API
 
 Start App

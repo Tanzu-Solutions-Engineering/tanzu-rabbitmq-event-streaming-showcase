@@ -21,6 +21,7 @@
         <module>applications/account-generator-streams-source</module>
         <module>applications/account-geode-rabbit-streams-sink</module>
         <module>applications/http-amqp-source</module>
+        <module>applications/mqtt-log-sink</module>
     </modules>
     <build>
         <pluginManagement>
