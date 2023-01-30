@@ -18,9 +18,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class MqttConfig
 {
-
-    @Value("${spring.application.name:mqtt-log-sink}")
-    private String clientId = "mqtt-log-sink";
+    @Value("${spring.application.name:http-mqtt-source}")
+    private String clientId = "http-mqtt-source";
 
     @Value("${mqtt.connectionUrl:tcp://localhost:1883}")
     private String connectionUrl = "tcp://localhost:1883";
@@ -31,8 +30,6 @@ public class MqttConfig
     @Value("${mqtt.userPassword:guest}")
     private String userPassword = "mqtt";
 
-    @Value("${mqtt.topic.filter:test}")
-    private String topicFilter;
 
     @Bean
     IMqttClient mqttClient() throws MqttException
@@ -46,12 +43,6 @@ public class MqttConfig
         options.setUserName(userName);
         options.setPassword(userPassword.toCharArray());
         mqttClient.connect(options);
-
-        IMqttMessageListener listener = (topic, mqttMessage) -> {
-            String body = new String(mqttMessage.getPayload(), StandardCharsets.US_ASCII);
-            log.info("TOPIC: {} BODY: {}",topic,body);
-        };
-        mqttClient.subscribe(topicFilter,listener);
 
         return mqttClient;
     }
