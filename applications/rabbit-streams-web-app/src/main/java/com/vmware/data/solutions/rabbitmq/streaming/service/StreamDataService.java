@@ -36,8 +36,9 @@ public class StreamDataService implements StreamService {
        try{ creator.create(); } catch(Exception e){}
 
 
-        return environment.consumerBuilder().stream(queueName)
-                .offset(OffsetSpecification.offset(0))
+        return environment.consumerBuilder()
+                .stream(queueName)
+                .offset(OffsetSpecification.first())
                 .messageHandler(new RepositoryMessageHandler(repository,toPdx,queueName))
                 .build();
     }
