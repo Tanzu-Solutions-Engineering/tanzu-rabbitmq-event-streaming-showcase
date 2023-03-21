@@ -24,6 +24,7 @@
         <module>applications/mqtt-log-sink</module>
         <module>applications/http-mqtt-source</module>
         <module>applications/rabbit-streams-web-app</module>
+        <module>applications/mqtt-jdbc</module>
     </modules>
     <build>
         <pluginManagement>

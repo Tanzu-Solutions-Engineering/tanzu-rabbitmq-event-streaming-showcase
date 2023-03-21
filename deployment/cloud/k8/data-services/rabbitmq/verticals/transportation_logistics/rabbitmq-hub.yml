@@ -1,0 +1,29 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq-hub
+  namespace: default
+spec:
+  replicas: 1
+  service:
+    type: LoadBalancer
+  image: rabbitmq:3.11-management
+  resources:
+    requests:
+      cpu: "1"
+      memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "1Gi"
+  imagePullSecrets:
+    - name: tanzu-rabbitmq-registry-creds
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_stream
+      - rabbitmq_stream_management
+      - rabbitmq_shovel
+      - rabbitmq_shovel_management
+      - rabbitmq_federation_management
+      - rabbitmq_mqtt
+      - rabbitmq_web_mqtt
+      - rabbitmq_web_stomp
