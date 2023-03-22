@@ -1,0 +1,66 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: hub-event-green-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: default
+spec:
+  name: event-green-queue # name of the queue
+  vhost: "/" # default to '/' if not provided
+  type: quorum # without providing a queue type, rabbitmq creates a classic queue
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-hub
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Queue
+metadata:
+  name: hub-event-orange-queue # name of this custom resource; does not have to the same as the actual queue name
+  namespace: default
+spec:
+  name: event-orange-queue # name of the queue
+  vhost: "/" # default to '/' if not provided
+  type: quorum # without providing a queue type, rabbitmq creates a classic queue
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-hub
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Exchange
+metadata:
+  name: hub-event-exchange
+  namespace: default
+spec:
+  name: event-exchange # name of the exchange
+  type: topic # default to 'direct' if not provided; can be set to 'direct', 'fanout', 'headers', and 'topic'
+  autoDelete: false
+  durable: true
+  rabbitmqClusterReference:
+    name: rabbitmq-hub
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: hub-event-green-binding
+  namespace: default
+spec:
+  source: event-exchange # an existing exchange
+  destination: event-green-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "green.#"
+  rabbitmqClusterReference:
+    name: rabbitmq-hub
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: hub-event-orange-binding
+  namespace: default
+spec:
+  source: event-exchange # an existing exchange
+  destination: event-orange-queue # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  routingKey: "orange.#"
+  rabbitmqClusterReference:
+    name: rabbitmq-hub
