@@ -90,7 +90,7 @@
         <dependency>
             <groupId>org.apache.geode</groupId>
             <artifactId>geode-core</artifactId>
-            <version>1.15.0</version>
+            <version>${geode.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
