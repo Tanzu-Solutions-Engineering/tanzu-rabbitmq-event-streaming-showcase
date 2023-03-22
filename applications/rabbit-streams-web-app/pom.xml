@@ -14,7 +14,7 @@
     <name>rabbit-streams-web-app</name>
     <description>rabbit-streams-web-app</description>
     <properties>
-		<geode.version>1.15.0</geode.version>
+		<geode.version>1.15.1</geode.version>
         <java.version>17</java.version>
         <spring-cloud.version>2021.0.2</spring-cloud.version>
     </properties>
