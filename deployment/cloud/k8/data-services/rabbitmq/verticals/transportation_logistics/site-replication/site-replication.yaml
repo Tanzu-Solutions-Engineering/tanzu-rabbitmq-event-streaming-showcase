@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: site1-to-hub-secret
+type: Opaque
+data:
+  srcUri: "amqp://" # encoded value shove source URI
+  destUri:  "amqp://user:pass@rabbitmq-hub:5672/" # encoded value for shovel destination URI; to learn about how to construct a valid uri, see: https://www.rabbitmq.com/uri-spec.html
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Shovel
+metadata:
+  name: site1-to-hub
+  namespace: default
+spec:
+  name: "site1-to-hub"
+  uriSecret:
+    # secret must be created in the same namespace as this Shovel object; in this case 'rabbitmq-system'
+    name: site1-to-hub-secret
+  srcQueue: "the-source-queue"
+  destQueue: "the-destination-queue"
+  rabbitmqClusterReference:
+    name: example-rabbit

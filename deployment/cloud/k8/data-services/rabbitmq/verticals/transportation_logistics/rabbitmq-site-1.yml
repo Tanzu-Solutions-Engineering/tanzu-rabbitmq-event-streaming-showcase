@@ -5,15 +5,30 @@ metadata:
   namespace: default
 spec:
   replicas: 1
+#  override:
+#    statefulSet:
+#      spec:
+#        template:
+#          spec:
+  override:
+    statefulSet:
+      spec:
+        template:
+          metadata:
+            annotations:
+              prometheus.io/path: /metrics
+              prometheus.io/port: "15692"
+              prometheus.io/scheme: http
+              prometheus.io/scrape: "true"
   service:
     type: LoadBalancer
   image: rabbitmq:3.11-management
   resources:
     requests:
-      cpu: "1"
+      cpu: "0.5"
       memory: "1Gi"
     limits:
-      cpu: "1"
+      cpu: "0.5"
       memory: "1Gi"
   imagePullSecrets:
     - name: tanzu-rabbitmq-registry-creds
@@ -25,3 +40,5 @@ spec:
       - rabbitmq_shovel_management
       - rabbitmq_federation_management
       - rabbitmq_mqtt
+      - rabbitmq_prometheus
+      - rabbitmq_peer_discovery_k8s
