@@ -106,3 +106,27 @@ k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_l
 ```shell
 k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site1-hub-replication.yaml
 ```
+
+
+From site 2
+
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site2-hub-replication-secret.yaml
+```
+
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site2-hub-replication.yaml
+```
+
+
+From site 3
+
+Create secret
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site3-hub-replication-secret.yaml
+```
+
+Create shovel
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site3-hub-replication.yaml
+```

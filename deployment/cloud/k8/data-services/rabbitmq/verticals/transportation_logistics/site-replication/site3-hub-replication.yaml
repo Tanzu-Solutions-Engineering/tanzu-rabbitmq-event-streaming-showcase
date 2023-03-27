@@ -1,0 +1,14 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Shovel
+metadata:
+  name: site3-to-hub
+  namespace: default
+spec:
+  name: "site3-to-hub"
+  uriSecret:
+    # secret must be created in the same namespace as this Shovel object; in this case 'rabbitmq-system'
+    name: site3-hub-secret
+  srcQueue: "event-orange-queue"
+  destExchange: "event-exchange"
+  rabbitmqClusterReference:
+    name: rabbitmq-site3
