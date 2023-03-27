@@ -91,3 +91,18 @@ kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transporta
 ```shell
 kubectl port-forward  service/rabbitmq-site3 9993:15672
 ```
+
+-------------
+
+# Shovels
+
+From site 1
+Secret 
+
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site-replication-secret.yaml
+```
+
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site-replication.yaml
+```
