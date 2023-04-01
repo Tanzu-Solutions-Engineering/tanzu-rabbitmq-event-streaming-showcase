@@ -144,11 +144,16 @@ k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_l
 
 ---------------------------------------------
 
-GemFire 
+GemFire
+
+- Install in hub, site2 and site3 
 
 
 ```shell
-k apply -f deployment/cloud/k8/data-services/gemfire/verticals/logistics/gemfire.yml
+kubectl apply -f deployment/cloud/k8/data-services/gemfire/verticals/logistics/gemfire.yml
+kubectl wait pod -l=app.kubernetes.io/component=gemfire-locator --for=condition=Ready --timeout=160s
+kubectl wait pod -l=app.kubernetes.io/component=gemfire-server --for=condition=Ready --timeout=160s
+
 ```
 
 
@@ -163,10 +168,18 @@ kubectl exec -it gemfire1-locator-0 -- gfsh -e "connect --locator=gemfire1-locat
 
 Exploring sink application
 
+
+Hub
+
 ```shell
-k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/geode-rabbitmq-sink.yaml
+k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/geode-hub-rabbitmq-sink.yaml
 ```
 
+Site 2
+
+```shell
+k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/geode-site2-rabbitmq-sink.yaml
+```
 
 ----------------
 
