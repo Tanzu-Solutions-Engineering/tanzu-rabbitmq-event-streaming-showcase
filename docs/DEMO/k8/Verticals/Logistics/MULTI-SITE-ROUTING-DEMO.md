@@ -130,3 +130,114 @@ Create shovel
 ```shell
 k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site3-hub-replication.yaml
 ```
+
+
+-----------------
+
+# Deploy app
+
+
+```shell
+k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/apps/site1/http-amqp-source
+```
+
+
+---------------------------------------------
+
+GemFire 
+
+
+```shell
+k apply -f deployment/cloud/k8/data-services/gemfire/verticals/logistics/gemfire.yml
+```
+
+
+
+Create Region "Event"
+
+Start Gfsh
+
+```shell
+kubectl exec -it gemfire1-locator-0 -- gfsh -e "connect --locator=gemfire1-locator-0.gemfire1-locator.default.svc.cluster.local[10334]" -e "create region --name=Event --type=PARTITION_REDUNDANT"
+```
+
+Exploring sink application
+
+```shell
+k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/geode-rabbitmq-sink.yaml
+```
+
+
+----------------
+
+# Testing
+
+Pulse
+
+```shell
+http://hub-gemfire-pulse:7070/pulse
+```
+
+```shell
+open http://site1-amqp-source
+```
+
+
+```json
+{
+  "id" : "001",
+  "chat": {
+    "userId" : "user1",
+    "messages" : [
+      {
+        "text": "Hello Team",
+        "title": "Orange GroupA",
+        "time": 12345677
+      } 
+    ]
+  }
+}
+```
+
+```shell
+curl -X 'POST' \
+  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=orange.GroupA' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S3|01",
+  "chat": {
+    "userId" : "user1",
+    "messages" : [
+      {
+        "text": "Hello Team",
+        "title": "Orange Goes to Site3",
+        "time": 12345677
+      } 
+    ]
+  }
+}'
+```
+
+Site 4
+```shell
+curl -X 'POST' \
+  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=green.GroupB' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S2|01",
+  "chat": {
+    "userId" : "user1",
+    "messages" : [
+      {
+        "text": "Hello Team",
+        "title": "Green Goes to Site2",
+        "time": 12345677
+      } 
+    ]
+  }
+}'
+```

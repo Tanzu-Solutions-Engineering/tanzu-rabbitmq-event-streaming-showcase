@@ -23,8 +23,8 @@ kubectl create secret docker-registry image-pull-secret --docker-server=registry
 kubectl create rolebinding psp-gemfire --namespace=gemfire-system --clusterrole=psp:vmware-system-privileged --serviceaccount=gemfire-system:default
 
 # Install the GemFire Operator
-helm install gemfire-crd  ~/dataServices/gemfire/gemfire-crd-2.0.0.tgz --namespace gemfire-system --set operatorReleaseName=gemfire-operator
-helm install gemfire-operator  ~/dataServices/gemfire/gemfire-operator-2.0.0.tgz --namespace gemfire-system
+helm install gemfire-crd  ~/dataServices/gemfire/gemfire-crd-2.2.0.tgz --namespace gemfire-system --set operatorReleaseName=gemfire-operator
+helm install gemfire-operator  ~/dataServices/gemfire/gemfire-operator-2.2.0.tgz --namespace gemfire-system
 
 sleep 5s
 kubectl wait pod -l=app.kubernetes.io/component=gemfire-controller-manager --for=condition=Ready --timeout=160s --namespace=gemfire-system
@@ -32,7 +32,7 @@ kubectl wait pod -l=app.kubernetes.io/component=gemfire-controller-manager --for
 
  k get pods --namespace gemfire-system
 
-kubectl apply -f deployments/cloud/k8/data-services/gemfire/gemfire.yml
+#kubectl apply -f deployments/cloud/k8/data-services/gemfire/gemfire.yml
 
 sleep 10s
 kubectl wait pod -l=app=gemfire1-server --for=condition=Ready --timeout=160s
