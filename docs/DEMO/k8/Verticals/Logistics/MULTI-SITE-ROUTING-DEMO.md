@@ -171,14 +171,29 @@ Exploring sink application
 
 Hub
 
+geode-hub-rabbitmq-sink
+
 ```shell
-k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/geode-hub-rabbitmq-sink.yaml
+k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/geode-hub-rabbitmq-sink.yaml
+```
+
+geode-hub-rabbitmq-source
+
+```shell
+k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sources/geode-hub-rabbitmq-source.yaml
 ```
 
 Site 2
 
 ```shell
-k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/geode-site2-rabbitmq-sink.yaml
+k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/geode-site2-rabbitmq-sink.yaml
+```
+
+
+Site 3
+
+```shell
+k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/geode-site3-rabbitmq-sink.yaml
 ```
 
 ----------------
@@ -198,19 +213,34 @@ open http://site1-amqp-source
 
 ```json
 {
-  "id" : "001",
+  "id" : "S1|S3|01",
   "chat": {
     "userId" : "user1",
-    "messages" : [
+    "message" : {
+      "text": "Hello Team",
+      "title": "Orange Goes to Site3",
+      "timestamp" :
       {
-        "text": "Hello Team",
-        "title": "Orange GroupA",
-        "time": 12345677
-      } 
-    ]
+        "date" :
+        {
+          "month" : 1,
+          "day" : 1,
+          "year" : 2013
+        },
+        "time" :
+        {
+          "hour24" : 13,
+          "minute" : 59,
+          "second" : 59
+        }
+      }
+    }
   }
 }
 ```
+
+
+
 
 ```shell
 curl -X 'POST' \
@@ -222,13 +252,93 @@ curl -X 'POST' \
   "id" : "S1|S3|01",
   "chat": {
     "userId" : "user1",
-    "messages" : [
-      {
+    "message" : {
         "text": "Hello Team",
         "title": "Orange Goes to Site3",
-        "time": 12345677
+        "timestamp" :
+        {
+            "date" :
+            {
+              "month" : 1,
+              "day" : 1,
+              "year" : 2013
+            },
+            "time" : 
+            {
+                "hour24" : 13,
+                "minute" : 59,
+                "second" : 59
+            }
+        } 
       } 
-    ]
+  }
+}'
+```
+
+```shell
+curl -X 'POST' \
+  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=orange.GroupA' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S3|U01",
+  "chat": {
+    "userId" : "user1",
+    "message" : {
+        "text": "Help please URGENT",
+        "title": "Orange Goes to Site3",
+        "eventTimeStamp" :
+        {
+            "eventDate" :
+            {
+              "month" : 1,
+              "day" : 1,
+              "year" : 2013
+            },
+            "eventTime" : 
+            {
+                "hour24" : 13,
+                "minute" : 59,
+                "second" : 59
+            }
+        } 
+      } 
+  }
+}'
+```
+
+
+
+```shell
+curl -X 'POST' \
+  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=orange.GroupA' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S3|U03",
+  "chat": {
+    "userId" : "user1",
+    "message" : {
+        "text": "URGENT during normal hours",
+        "title": "Orange Goes to Site3",
+        "eventTimeStamp" :
+        {
+            "eventDate" :
+            {
+              "month" : 1,
+              "day" : 1,
+              "year" : 2013
+            },
+            "eventTime" : 
+            {
+                "hour24" : 10,
+                "minute" : 59,
+                "second" : 59
+            }
+        } 
+      } 
   }
 }'
 ```
