@@ -52,7 +52,7 @@ start server --name=gf-server2 --initial-heap=500m --max-heap=500m  --locators="
 
 
 ```shell
-k apply -f cloud/k8/apps/http-amqp-source/http-amqp-source.yml
+k apply -f cloud/k8/apps/http-amqp-source/http-amqp-site1-source.yaml
 ```
 
 # Starting Service API

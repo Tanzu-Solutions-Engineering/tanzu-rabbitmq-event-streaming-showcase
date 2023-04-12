@@ -13,8 +13,6 @@ import java.nio.charset.StandardCharsets
 /**
  * @author Gregory Green
  */
-
-
 @RestController("event-streaming-showcase")
 class HttpPublisherController(
     private val rabbitTemplate: RabbitTemplate) {
@@ -25,8 +23,7 @@ class HttpPublisherController(
         rabbitTemplate.isChannelTransacted = true
     }
 
-
-    @PostMapping("amqp/{exchange}/{routingKey}")
+    @PostMapping("amqp/")
     @Transactional
     fun postMessage(
         @RequestHeader(defaultValue = "application/json") rabbitContentType : String,

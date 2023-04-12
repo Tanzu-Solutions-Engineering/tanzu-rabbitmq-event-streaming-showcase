@@ -244,7 +244,7 @@ open http://site1-amqp-source
 
 ```shell
 curl -X 'POST' \
-  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=orange.GroupA' \
+  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
   -H 'accept: */*' \
   -H 'rabbitContentType: application/json' \
   -H 'Content-Type: application/json' \
@@ -277,7 +277,41 @@ curl -X 'POST' \
 
 ```shell
 curl -X 'POST' \
-  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=orange.GroupA' \
+  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S3|U01",
+  "chat": {
+    "userId" : "user1",
+    "message" : {
+        "text": "Help please URGENT",
+        "title": "Orange Goes to Site3",
+        "eventTimeStamp" :
+        {
+            "eventDate" :
+            {
+              "month" : 1,
+              "day" : 1,
+              "year" : 2013
+            },
+            "eventTime" : 
+            {
+                "hour24" : 13,
+                "minute" : 59,
+                "second" : 59
+            }
+        } 
+      } 
+  }
+}'
+```
+
+
+```shell
+curl -X 'POST' \
+  'http://localhost:8080/amqp/?exchange=amq.topic&routingKey=orange.GroupA' \
   -H 'accept: */*' \
   -H 'rabbitContentType: application/json' \
   -H 'Content-Type: application/json' \

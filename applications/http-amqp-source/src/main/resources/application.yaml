@@ -1,0 +1,16 @@
+spring:
+  rabbitmq:
+    vhost: "/"
+  application:
+    name: http-amqp-source
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health
+  wavefront:
+    application:
+      name: http-amqp-source
+      service-name: http-amqp-source
+springdoc:
+  swagger-ui.path: /swagger-ui.html
