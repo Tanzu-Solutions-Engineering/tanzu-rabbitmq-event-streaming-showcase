@@ -66,17 +66,17 @@ spec:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 5 #wait seconds before performing the first probe
+            initialDelaySeconds: 60 #wait seconds before performing the first probe
             periodSeconds: 5 #pecifies that the kubelet should perform a liveness probe every 3 seconds
             timeoutSeconds: 10 # Number of seconds after which the probe times out.
-            failureThreshold: 5
+            failureThreshold: 60
           livenessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 5 #wait seconds before performing the first probe
+            initialDelaySeconds: 60 #wait seconds before performing the first probe
             periodSeconds: 5 #pecifies that the kubelet should perform a liveness probe every 3 seconds
             timeoutSeconds: 10 # Number of seconds after which the probe times out.
-            failureThreshold: 5
+            failureThreshold: 60
           image: springcloudstream/geode-source-rabbit:3.2.1
           name: geode-source-rabbit

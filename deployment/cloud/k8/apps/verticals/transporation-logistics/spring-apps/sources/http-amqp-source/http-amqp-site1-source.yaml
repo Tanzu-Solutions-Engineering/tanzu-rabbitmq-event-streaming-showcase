@@ -54,8 +54,8 @@ spec:
             failureThreshold: 60
           image: cloudnativedata/http-amqp-source:0.0.4-SNAPSHOT
           name: http-amqp-source
-          imagePullPolicy: Always
-#          imagePullPolicy: IfNotPresent
+#          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service

@@ -2,79 +2,85 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run:  geode-sink-rabbit
-  name:  geode-sink-rabbit
+    run:  gemfire-sink-app
+  name:  gemfire-sink-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name:  geode-sink-rabbit
+      name:  gemfire-sink-app
   template:
     metadata:
       labels:
-        name:  geode-sink-rabbit
+        name:  gemfire-sink-app
       annotations:
         sidecar.opentelemetry.io/inject: "true"
         instrumentation.opentelemetry.io/inject-java: "opentelemetry-operator-system/otelinst"
+
     spec:
       containers:
         - env:
             - name: server.port
               value: "8080"
-            - name: geode.consumer.json
-              value: "true"
-            - name: geode.pool.connect-type
-              value: locator
-            - name: geode.region.region-name
+            - name: regionName
               value: Event
             - name: spring.application.name
-              value: geode-sink-rabbit
+              value: gemfire-sink-app
             - name: spring.rabbitmq.host
-              value: rabbitmq-hub
+              value: rabbitmq-site3
             - name: spring.rabbitmq.stream.host
-              value: rabbitmq-hub
+              value: rabbitmq-site3
             - name: spring.rabbitmq.username
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-hub-user
+                  name: rabbitmq-site3-user
                   key: username
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
-                  name: rabbitmq-hub-user
+                  name: rabbitmq-site3-user
                   key: password
             - name: spring.data.gemfire.pool.locators
               valueFrom:
                 configMapKeyRef:
                   name: gemfire1-config
                   key: locators
-            - name: geode.pool.host-addresses
-              value: "gemfire1-locator:10334"
-            - name: geode.consumer.keyExpression
-              value: "payload.getField('id')"
-            - name: spring.cloud.stream.bindings.input.destination
+            - name: keyFieldExpression
+              value: "id"
+            - name: valuePdxClassName
+              value: "demo.logistics.domain.Event"
+            - name: spring.cloud.stream.bindings.gemFireSinkConsumer-in-0.destination
               value: event-exchange
-            - name: spring.cloud.stream.bindings.input.group
+            - name: spring.cloud.stream.bindings.gemFireSinkConsumer-in-0.group
               value: gemfire-event
             - name: spring.cloud.stream.rabbit.bindings.input.consumer.quorum.enabled
               value: "true"
             - name: spring.cloud.stream.rabbit.bindings.input.consumer.bindingRoutingKey
               value: "#"
+            - name: management.wavefront.api-token
+              valueFrom:
+                secretKeyRef:
+                  name: wavefront-secret
+                  key: management.wavefront.api-token
+            - name: management.wavefront.application.name
+              value: gemfire-sink-app
+            - name: management.wavefront.application.service-name
+              value: gemfire-sink-app
           readinessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 5 #wait seconds before performing the first probe
+            initialDelaySeconds: 60 #wait seconds before performing the first probe
             periodSeconds: 5 #pecifies that the kubelet should perform a liveness probe every 3 seconds
             timeoutSeconds: 10 # Number of seconds after which the probe times out.
-            failureThreshold: 5
+            failureThreshold: 60
           livenessProbe:
             httpGet:
               path: /actuator/health
               port: 8080
-            initialDelaySeconds: 5 #wait seconds before performing the first probe
+            initialDelaySeconds: 60 #wait seconds before performing the first probe
             periodSeconds: 5 #pecifies that the kubelet should perform a liveness probe every 3 seconds
             timeoutSeconds: 10 # Number of seconds after which the probe times out.
-            failureThreshold: 5
-          image: springcloudstream/geode-sink-rabbit:3.2.1
-          name: geode-sink-rabbit
+            failureThreshold: 60
+          image: cloudnativedata/gemfire-sink-app:0.0.2-SNAPSHOT
+          name: gemfire-sink-app

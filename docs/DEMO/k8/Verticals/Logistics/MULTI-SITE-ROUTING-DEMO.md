@@ -1,5 +1,10 @@
 
 
+```shell
+kubectl create secret generic wavefront-secret --type=string  --from-literal=management.wavefront.api-token=$DEMO_WAVEFRONT_TOKEN
+```
+
+
 ## Hub
 ```shell
 kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/rabbitmq-hub.yml
@@ -153,7 +158,6 @@ GemFire
 kubectl apply -f deployment/cloud/k8/data-services/gemfire/verticals/logistics/gemfire.yml
 kubectl wait pod -l=app.kubernetes.io/component=gemfire-locator --for=condition=Ready --timeout=160s
 kubectl wait pod -l=app.kubernetes.io/component=gemfire-server --for=condition=Ready --timeout=160s
-
 ```
 
 
@@ -174,7 +178,7 @@ Hub
 geode-hub-rabbitmq-sink
 
 ```shell
-k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/geode-hub-rabbitmq-sink.yaml
+k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/gemfire-hub-rabbitmq-sink.yaml
 ```
 
 geode-hub-rabbitmq-source
@@ -186,14 +190,14 @@ k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-app
 Site 2
 
 ```shell
-k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/geode-site2-rabbitmq-sink.yaml
+k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/gemfire-site2-rabbitmq-sink.yaml
 ```
 
 
 Site 3
 
 ```shell
-k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/geode-site3-rabbitmq-sink.yaml
+k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/gemfire-site3-rabbitmq-sink.yaml
 ```
 
 ----------------
@@ -346,7 +350,7 @@ curl -X 'POST' \
 
 ```shell
 curl -X 'POST' \
-  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=orange.GroupA' \
+  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
   -H 'accept: */*' \
   -H 'rabbitContentType: application/json' \
   -H 'Content-Type: application/json' \
@@ -380,7 +384,7 @@ curl -X 'POST' \
 Site 4
 ```shell
 curl -X 'POST' \
-  'http://site1-amqp-source/amqp/{exchange}/{routingKey}?exchange=event-exchange&routingKey=green.GroupB' \
+  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=green.GroupB' \
   -H 'accept: */*' \
   -H 'rabbitContentType: application/json' \
   -H 'Content-Type: application/json' \
@@ -390,7 +394,7 @@ curl -X 'POST' \
     "userId" : "user1",
     "messages" : [
       {
-        "text": "Hello Team",
+        "text": "Hello Team Green",
         "title": "Green Goes to Site2",
         "time": 12345677
       } 
