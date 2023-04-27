@@ -49,6 +49,8 @@ spec:
               value: "id"
             - name: valuePdxClassName
               value: "demo.logistics.domain.Event"
+            - name: cluster
+              value: site3
             - name: spring.cloud.stream.bindings.gemFireSinkConsumer-in-0.destination
               value: event-exchange
             - name: spring.cloud.stream.bindings.gemFireSinkConsumer-in-0.group

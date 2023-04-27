@@ -48,6 +48,8 @@ spec:
 #                  key: locators
             - name: keyFieldExpression
               value: "id"
+            - name: cluster
+              value: hub
             - name: valuePdxClassName
               value: "demo.logistics.domain.Event"
             - name: spring.cloud.stream.bindings.gemFireSinkConsumer-in-0.destination

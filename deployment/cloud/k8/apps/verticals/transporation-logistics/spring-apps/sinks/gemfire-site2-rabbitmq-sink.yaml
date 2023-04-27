@@ -27,6 +27,8 @@ spec:
               value: gemfire-sink-app
             - name: spring.rabbitmq.host
               value: rabbitmq-site2
+            - name: cluster
+              value: site2
             - name: spring.rabbitmq.stream.host
               value: rabbitmq-site2
             - name: spring.rabbitmq.username

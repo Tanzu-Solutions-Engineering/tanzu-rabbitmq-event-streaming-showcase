@@ -24,6 +24,8 @@ spec:
               value: rabbitmq-site1
             - name: server.port
               value: "8080"
+            - name: cluster
+              value: site1
             - name: spring_rabbitmq_username
               valueFrom:
                 secretKeyRef:

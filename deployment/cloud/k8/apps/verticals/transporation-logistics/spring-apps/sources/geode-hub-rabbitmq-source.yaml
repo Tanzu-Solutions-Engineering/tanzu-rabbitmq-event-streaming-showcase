@@ -54,6 +54,8 @@ spec:
                 configMapKeyRef:
                   name: gemfire1-config
                   key: locators
+            - name: cluster
+              value: hub
             - name: spring.cloud.stream.bindings.output.destination
               value: event-urgent-exchange
             - name: spring.cloud.stream.bindings.output.group
