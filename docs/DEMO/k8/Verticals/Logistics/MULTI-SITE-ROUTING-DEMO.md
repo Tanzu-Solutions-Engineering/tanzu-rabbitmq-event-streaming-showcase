@@ -1,4 +1,5 @@
 
+export DEMO_WAVEFRONT_TOKEN=fbc2c8c4-a871-44ee-a825-5dad6834535d
 
 ```shell
 kubectl create secret generic wavefront-secret --type=string  --from-literal=management.wavefront.api-token=$DEMO_WAVEFRONT_TOKEN

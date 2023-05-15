@@ -63,6 +63,8 @@ spec:
                 secretKeyRef:
                   name: wavefront-secret
                   key: management.wavefront.api-token
+            - name: management.wavefront.uri
+              value: proxy://wavefront-proxy.observability-system.svc.cluster.local:2878
             - name: management.wavefront.application.name
               value: gemfire-sink-app
             - name: management.wavefront.application.service-name
