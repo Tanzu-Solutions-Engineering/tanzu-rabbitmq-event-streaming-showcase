@@ -63,7 +63,7 @@ spec:
             periodSeconds: 5 #pecifies that the kubelet should perform a liveness probe every 3 seconds
             timeoutSeconds: 10 # Number of seconds after which the probe times out.
             failureThreshold: 60
-          image: cloudnativedata/http-amqp-source:0.0.4-SNAPSHOT
+          image: cloudnativedata/http-amqp-source:0.0.6-SNAPSHOT
           name: http-amqp-source
 #          imagePullPolicy: Always
           imagePullPolicy: IfNotPresent

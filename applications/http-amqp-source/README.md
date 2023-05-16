@@ -1,7 +1,7 @@
 
 
 ```shell
-java -jar applications/http-amqp-source/target/http-amqp-source-0.0.4-SNAPSHOT.jar
+java -jar applications/http-amqp-source/target/http-amqp-source-0.0.6-SNAPSHOT.jar
 ```
 
 ## Docker building image
@@ -13,7 +13,7 @@ mvn spring-boot:build-image
 ```
 
 ```shell
-docker tag http-amqp-source:0.0.4-SNAPSHOT cloudnativedata/http-amqp-source:0.0.4-SNAPSHOT
-docker push cloudnativedata/http-amqp-source:0.0.4-SNAPSHOT
+docker tag http-amqp-source:0.0.6-SNAPSHOT cloudnativedata/http-amqp-source:0.0.6-SNAPSHOT
+docker push cloudnativedata/http-amqp-source:0.0.6-SNAPSHOT
 ```
 

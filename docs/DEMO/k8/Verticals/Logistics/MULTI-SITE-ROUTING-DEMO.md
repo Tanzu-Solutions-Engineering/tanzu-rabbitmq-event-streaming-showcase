@@ -215,6 +215,14 @@ http://hub-gemfire-pulse:7070/pulse
 open http://site1-amqp-source
 ```
 
+```shell
+open http://hub-rabbit:15672
+```
+
+
+exchange=event-exchange
+routingKey=orange.GroupA
+
 
 ```json
 {
@@ -403,3 +411,43 @@ curl -X 'POST' \
   }
 }'
 ```
+
+
+###
+
+
+rabbitmq-upgrade drain
+
+rabbitmq-upgrade revive
+
+
+--------------------
+
+#### 
+
+# Observability Links
+
+
+RabbitMQ
+- https://demo.wavefront.com/u/tCvW4RTnLD?t=demo
+
+Spring
+- https://demo.wavefront.com/dashboards/Spring-Boot-gnehal#_v01(g:(d:7200,ls:!t,s:1684157342))
+- 
+
+GemFire
+- https://demo.wavefront.com/u/7hbfgWn1CP?t=demo
+
+
+Logs
+
+- https://demo.wavefront.com/logs#_v01(g:(d:300,ls:!f,s:1684260625),logs:(t:!((n:cluster,o:%7C=,v:rmq-site-1-cluster))))
+- 
+
+## -----------------------
+
+# Clean up 
+
+remove --region=/Event --key="S1|S3|U01"
+remove --region=/Event --key="S1|S2|01"
+remove --region=/Event --key="S1|S3|01"
