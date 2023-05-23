@@ -212,7 +212,7 @@ http://hub-gemfire-pulse:7070/pulse
 ```
 
 ```shell
-open http://site1-amqp-source
+open http://34.136.22.58
 ```
 
 ```shell
@@ -253,11 +253,33 @@ routingKey=orange.GroupA
 ```
 
 
+Site 2
+```shell
+curl -X 'POST' \
+  'http://34.136.22.58/amqp/?exchange=event-exchange&routingKey=green.GroupB' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S2|01",
+  "chat": {
+    "userId" : "user1",
+    "messages" : [
+      {
+        "text": "Hello Team Green",
+        "title": "Green Goes to Site2",
+        "time": 12345677
+      } 
+    ]
+  }
+}'
+```
 
+Site 3
 
 ```shell
 curl -X 'POST' \
-  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
+  'http://34.136.22.58/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
   -H 'accept: */*' \
   -H 'rabbitContentType: application/json' \
   -H 'Content-Type: application/json' \
@@ -288,9 +310,97 @@ curl -X 'POST' \
 }'
 ```
 
+
+
+
+
+URGENT 
+
 ```shell
 curl -X 'POST' \
-  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
+  'http://34.136.22.58/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
+  -H 'accept: */*' \
+  -H 'rabbitContentType: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id" : "S1|S3|U03",
+  "chat": {
+    "userId" : "user1",
+    "message" : {
+        "text": "URGENT after normal hours",
+        "title": "Orange Goes to Site3",
+        "eventTimeStamp" :
+        {
+            "eventDate" :
+            {
+              "month" : 1,
+              "day" : 1,
+              "year" : 2013
+            },
+            "eventTime" : 
+            {
+                "hour24" : 13,
+                "minute" : 59,
+                "second" : 59
+            }
+        } 
+      } 
+  }
+}'
+```
+
+###
+
+
+rabbitmq-upgrade drain
+
+rabbitmq-upgrade revive
+
+
+--------------------
+
+#### 
+
+# Observability Links
+
+
+RabbitMQ
+- https://demo.wavefront.com/u/tCvW4RTnLD?t=demo
+
+Spring
+- https://demo.wavefront.com/dashboards/Spring-Boot-gnehal#_v01(g:(d:7200,ls:!t,s:1684157342))
+- 
+
+GemFire
+- https://demo.wavefront.com/u/7hbfgWn1CP?t=demo
+
+
+Logs
+
+- https://demo.wavefront.com/logs#_v01(g:(d:172800,ls:!f,s:1684336050),logs:(e:!((o:%7C=,v:error)),t:!((n:cluster,o:%7C=,v:rmq-site-1-cluster),(n:pod_name,o:%7C=,v:'http-amqp-source*'))))
+
+
+Tracing
+
+- https://demo.wavefront.com/tracing/search?traceID=fe1e4674-c93a-fab0-3b93-78a7c52916a6#_v01(fs:!n,g:(c:(d:7200,s:1684339171,w:'2h'),d:7200,s:1684339171,w:'2h'),tf:!((filterType:Operation,id:0,value:!(!(defaultApplication.,'*')))))
+- 
+
+-----------------------
+
+# Clean up 
+
+remove --region=/Event --key="S1|S3|U01"
+remove --region=/Event --key="S1|S2|01"
+remove --region=/Event --key="S1|S3|01"
+remove --region=/Event --key="S1|S3|U03"
+
+
+---------------------------
+
+
+```shell
+curl -X 'POST' \
+  'http://35.192.37.46/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
   -H 'accept: */*' \
   -H 'rabbitContentType: application/json' \
   -H 'Content-Type: application/json' \
@@ -354,100 +464,3 @@ curl -X 'POST' \
   }
 }'
 ```
-
-
-
-```shell
-curl -X 'POST' \
-  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=orange.GroupA' \
-  -H 'accept: */*' \
-  -H 'rabbitContentType: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "id" : "S1|S3|U03",
-  "chat": {
-    "userId" : "user1",
-    "message" : {
-        "text": "URGENT during normal hours",
-        "title": "Orange Goes to Site3",
-        "eventTimeStamp" :
-        {
-            "eventDate" :
-            {
-              "month" : 1,
-              "day" : 1,
-              "year" : 2013
-            },
-            "eventTime" : 
-            {
-                "hour24" : 10,
-                "minute" : 59,
-                "second" : 59
-            }
-        } 
-      } 
-  }
-}'
-```
-
-Site 4
-```shell
-curl -X 'POST' \
-  'http://site1-amqp-source/amqp/?exchange=event-exchange&routingKey=green.GroupB' \
-  -H 'accept: */*' \
-  -H 'rabbitContentType: application/json' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "id" : "S1|S2|01",
-  "chat": {
-    "userId" : "user1",
-    "messages" : [
-      {
-        "text": "Hello Team Green",
-        "title": "Green Goes to Site2",
-        "time": 12345677
-      } 
-    ]
-  }
-}'
-```
-
-
-###
-
-
-rabbitmq-upgrade drain
-
-rabbitmq-upgrade revive
-
-
---------------------
-
-#### 
-
-# Observability Links
-
-
-RabbitMQ
-- https://demo.wavefront.com/u/tCvW4RTnLD?t=demo
-
-Spring
-- https://demo.wavefront.com/dashboards/Spring-Boot-gnehal#_v01(g:(d:7200,ls:!t,s:1684157342))
-- 
-
-GemFire
-- https://demo.wavefront.com/u/7hbfgWn1CP?t=demo
-
-
-Logs
-
-- https://demo.wavefront.com/logs#_v01(g:(d:300,ls:!f,s:1684260625),logs:(t:!((n:cluster,o:%7C=,v:rmq-site-1-cluster))))
-- 
-
-## -----------------------
-
-# Clean up 
-
-remove --region=/Event --key="S1|S3|U01"
-remove --region=/Event --key="S1|S2|01"
-remove --region=/Event --key="S1|S3|01"
