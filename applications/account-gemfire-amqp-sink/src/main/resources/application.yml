@@ -2,14 +2,14 @@ server:
   port: 8081
 spring:
   application:
-    name: account-geode-sink
+    name: account-gemfire-amqp-sink
   cloud:
     function.definition: accountConsumer
     stream:
       bindings:
         accountConsumer-in-0:
           destination: event-streaming-showcase
-          group: stream-account-geode-sink
+          group: stream-account-gemfire-sink
           consumer:
             concurrency: 1
       rabbit:
