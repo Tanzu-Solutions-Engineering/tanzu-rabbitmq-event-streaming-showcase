@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.0-M2</version>
+        <version>3.1.2</version>
         <relativePath/>
     </parent>
     <groupId>com.vmware</groupId>
@@ -14,9 +14,9 @@
     <name>account-jdbc-amqp-sink</name>
     <description>account-jdbc-amqp-sink</description>
     <properties>
-        <java.version>11</java.version>
-        <kotlin.version>1.5.21</kotlin.version>
-        <spring-cloud.version>2021.0.0-M1</spring-cloud.version>
+        <java.version>17</java.version>
+        <kotlin.version>1.8.22</kotlin.version>
+        <spring-cloud.version>2022.0.4</spring-cloud.version>
     </properties>
     <dependencies>
         <dependency>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>stream-client</artifactId>
-            <version>0.5.0</version>
+            <version>0.12.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.amqp</groupId>
@@ -47,11 +47,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.analytics</groupId>
-            <artifactId>spring-analytics</artifactId>
-            <version>2.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.amqp</groupId>
@@ -149,24 +144,4 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
 </project>

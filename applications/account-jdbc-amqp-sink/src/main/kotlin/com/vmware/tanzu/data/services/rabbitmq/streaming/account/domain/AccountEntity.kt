@@ -1,6 +1,7 @@
 package com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain
 
-import javax.persistence.*
+import jakarta.persistence.*
+
 
 @Entity
 @Table(name = "evt_accounts")
