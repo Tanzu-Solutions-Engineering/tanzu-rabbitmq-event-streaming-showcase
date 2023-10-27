@@ -4,6 +4,12 @@ This application provides a REST API to load RabbitMQ stream/super streams messa
 into GemFire.
 
 
+Select stream data
+
+```shell
+query --query="select body from /transaction"
+```
+
 ## Docker building image
 
 ```shell

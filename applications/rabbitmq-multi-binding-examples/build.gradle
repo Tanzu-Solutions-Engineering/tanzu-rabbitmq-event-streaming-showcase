@@ -1,0 +1,48 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.4.6'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '1.8'
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('springCloudVersion', "2020.0.5")
+	// https://github.com/spring-projects/spring-integration/issues/3601
+	// https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit/commit/2a36c36b7d86ef14780f5954fc560e4af5599c95
+	// https://github.com/spring-cloud/spring-cloud-stream-binder-rabbit/issues/328
+	set('springIntegrationVersion', "5.5.2")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+	implementation 'org.springframework.amqp:spring-amqp:2.3.10'
+	implementation 'org.springframework.amqp:spring-rabbit:2.3.10'
+
+	implementation 'org.springframework.cloud:spring-cloud-starter-stream-rabbit'
+	implementation 'io.pivotal.cfenv:java-cfenv-boot:2.4.2'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		mavenBom "org.springframework.integration:spring-integration-bom:${springIntegrationVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

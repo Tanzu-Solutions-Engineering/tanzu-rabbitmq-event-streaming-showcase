@@ -1,0 +1,11 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: "rabbit-streams-web-app"
+  data:
+    gemfire:
+      pool:
+        default:
+          locators: "localhost[10334]"

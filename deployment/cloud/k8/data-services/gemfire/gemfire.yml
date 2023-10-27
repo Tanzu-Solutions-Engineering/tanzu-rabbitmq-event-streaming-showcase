@@ -4,6 +4,8 @@ metadata:
   name: gemfire1
   namespace: default
 spec:
+  ingress:
+    gatewayName: gf-gateway
   image: registry.tanzu.vmware.com/pivotal-gemfire/vmware-gemfire:9.15.4
   security:
     tls: {}

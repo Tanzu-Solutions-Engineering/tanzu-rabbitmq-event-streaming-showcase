@@ -79,25 +79,6 @@ $kubectl apply -f clusterrole.yml -n $namespace --request-timeout=$requesttimeou
 echo "CREATING the CLUSTER rmq ROLE BINDING if does not exist..."
 $kubectl create clusterrolebinding rmq --clusterrole tanzu-rabbitmq-crd-install --serviceaccount $namespace:$serviceaccount --request-timeout=$requesttimeout --dry-run=client -o yaml | $kubectl apply -f-
 
-if command -v shasum &> /dev/null
-then
-     if command -v wget &> /dev/null
-     then
-          echo "INSTALLING CARVEL USING wget"
-          wget -O- https://carvel.dev/install.sh | bash
-     elif command -v curl &> /dev/null
-     then
-          echo "INSTALLING CARVEL USING curl"
-          curl -L https://carvel.dev/install.sh | bash
-     else
-          echo "Error: neither wget nor curl detected"
-          exit 1
-     fi
-else
-     echo "WARNING: shasum IS MISSING !"
-     chmod +x install_carvel.sh
-     ./install_carvel.sh
-fi
 
 echo "INSTALLING KAPP-CONTROLLER"
 $kubectl apply -f https://github.com/vmware-tanzu/carvel-kapp-controller/releases/latest/download/release.yml --request-timeout=$requesttimeout
@@ -125,38 +106,10 @@ export RMQ_rabbitmq__version="$tanzurmqversion"
 export RMQ_rabbitmq__serviceaccount="$serviceaccount"
 ytt -f packageInstall.yml --data-values-env RMQ | kapp deploy --debug -a tanzu-rabbitmq  -y -n $namespace -f-
 
-echo "INSTALLING HELM..."
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod +x get_helm.sh
-./get_helm.sh
-
-# TODO: fix Observability for Openshift
-if [ ! -d "cluster-operator" ]
-then
-     if [[ $openshift -eq 1 ]]
-     then
-          echo "OPENSHIFT DETECTED, PLEASE INSTALL OBSERVABILITY TOOLS MANUALLY..."
-     else
-          echo "INSTALLING PROMETHEUS OPERATOR FROM $prometheusrepourl"
-          git clone $prometheusrepourl
-          cd cluster-operator/observability/
-          git checkout $prometheusoperatorversion
-          chmod +x quickstart.sh
-          ./quickstart.sh
-          cd ../../
-     fi
-else
-     echo "Directory cluster-operator exists, skipping..."
-fi
 
 kubectl apply -f /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/deployment/cloud/k8/data-services/rabbitmq/secret/secrets.yml
 #kubectl create secret docker-registry tanzu-rabbitmq-registry-creds --docker-username=$HARBOR_USER --docker-password=$HARBOR_PASSWORD
 
-
-echo "INSTALLING CLUSTERS MONITOR..."
-$kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-servicemonitor.yml
-echo "INSTALLING OPERATORS MONITOR..."
-$kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-cluster-operator-podmonitor.yml
 $kubectl apply -f /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/deployment/cloud/k8/data-services/rabbitmq/secret/secrets.yml
 
 $kubectl get pods -n rabbitmq-system

@@ -11,7 +11,8 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
 
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.0/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
+
 kubectl get pods --namespace cert-manager
 
 kubectl create namespace gemfire-system
@@ -36,3 +37,18 @@ kubectl get pods --namespace gemfire-system
 
 sleep 10s
 #kubectl wait pod -l=app=gemfire1-server --for=condition=Ready --timeout=160s
+
+
+kubectl apply -f https://projectcontour.io/quickstart/contour-gateway-provisioner.yaml
+
+kubectl --namespace projectcontour get deployments
+
+kubectl apply -f deployment/cloud/k8/data-services/gemfire/gf-gateway.yml
+
+kubectl apply -f deployment/cloud/k8/data-services/gemfire/gf-load-balancer.yml
+
+kubectl get services -n kube-system
+
+k apply -f deployment/cloud/k8/data-services/gemfire/gf-load-balance-config-map.yml
+
+kubectl delete pods -l k8s-app=kube-dns --namespace kube-system

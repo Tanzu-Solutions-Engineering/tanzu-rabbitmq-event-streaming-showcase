@@ -27,6 +27,16 @@
             <version>${springDataForGemFire.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>gemfire-core</artifactId>
+            <version>10.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vmware</groupId>
+            <artifactId>stream-account-domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit-stream</artifactId>
         </dependency>
@@ -41,11 +51,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.analytics</groupId>
-            <artifactId>spring-analytics</artifactId>
-            <version>2.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.amqp</groupId>
@@ -92,16 +97,8 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.vmware</groupId>
-            <artifactId>stream-account-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.vmware.gemfire</groupId>
-            <artifactId>geode-core</artifactId>
-            <version>9.15.3</version>
-        </dependency>
+
+
     </dependencies>
     <dependencyManagement>
         <dependencies>
