@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  account-gemfire-amqp-sink
+  name:  account-gemfire-amqp-sink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  account-gemfire-amqp-sink
+  template:
+    metadata:
+      labels:
+        name:  account-gemfire-amqp-sink
+    spec:
+      containers:
+        - env:
+            - name: spring.application.name
+              value: account-gemfire-amqp-sink
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+            - name: spring.data.gemfire.pool.locators
+              valueFrom:
+                configMapKeyRef:
+                  name: gemfire1-config
+                  key: locators
+          image: cloudnativedata/account-gemfire-amqp-sink:0.0.1-SNAPSHOT
+          name: account-gemfire-amqp-sink
+          imagePullPolicy: Always
+#          imagePullPolicy: IfNotPresent

@@ -4,21 +4,25 @@ metadata:
   name: rabbitmq
 spec:
   replicas: 3
-  image: pivotalrabbitmq/rabbitmq-stream
+  service:
+    type: LoadBalancer
+  image: rabbitmq:3.12.9-management
+# image: rabbitmq:3.13.1-management
   resources:
     requests:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: 300m
+      memory: 500Mi
     limits:
-      cpu: 1000m
-      memory: 2Gi
+      cpu: 300m
+      memory: 500Mi
   persistence:
-    storage: 3Gi
+    storage: 1Gi
   rabbitmq:
     additionalPlugins:
       - rabbitmq_mqtt
       - rabbitmq_shovel
       - rabbitmq_stream
       - rabbitmq_management
+      - rabbitmq_stream
       - rabbitmq_stream_management
       - rabbitmq_stream_prometheus

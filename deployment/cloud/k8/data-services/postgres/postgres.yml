@@ -1,0 +1,18 @@
+apiVersion: sql.tanzu.vmware.com/v1
+kind: Postgres
+metadata:
+  name: postgres-db
+spec:
+  resources:
+    data:
+      limits:
+        cpu: 1200m
+        memory: 1000Mi
+      requests:
+        cpu: 1200m
+        memory: 1000Mi
+  storageClassName: tanzu-data-services
+  storageSize: 3G
+#  serviceType: LoadBalancer
+  highAvailability:
+    enabled: true

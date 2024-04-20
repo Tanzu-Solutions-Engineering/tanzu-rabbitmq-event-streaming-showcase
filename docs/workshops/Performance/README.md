@@ -127,9 +127,8 @@ rabbitmqctl -n rabbit enable_feature_flag stream_queue
 Download performance test tool
 
 ```shell
-cd /applications/performance/lib
-wget https://github.com/rabbitmq/rabbitmq-java-tools-binaries-dev/releases/download/v-stream-perf-test-latest/stream-perf-test-latest.jar
-cd ../../..
+wget https://github.com/rabbitmq/rabbitmq-java-tools-binaries-dev/releases/download/v-stream-perf-test-latest/stream-perf-test-latest.jar  --directory-prefix=/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/performance/lib
+
 ```
 
 ## Run Perf Test as fast a possible
@@ -144,5 +143,5 @@ Default
 
 ```shell
 cd /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar applications/performance/lib/stream-perf-test-0.5.0.jar
+java -jar applications/performance/lib/stream-perf-test-latest.jar
 ```
