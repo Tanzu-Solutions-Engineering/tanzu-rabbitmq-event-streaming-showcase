@@ -164,3 +164,11 @@ Example (use beyond user/password)
 ```shell
 open http://127.0.0.1:15672/
 ```
+
+
+Clean up
+
+
+```shell
+kubectl delete -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
+```
