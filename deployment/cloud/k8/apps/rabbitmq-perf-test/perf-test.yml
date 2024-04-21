@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: perf-test
+    run:  perf-test
+  name:  perf-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  perf-test
+  template:
+    metadata:
+      labels:
+        name:  perf-test
+    spec:
+      containers:
+        - env:
+            - name: CONFIRM
+              value: "1"
+            - name : RATE
+              value: "20"
+            - name: VARIABLE_RATE
+              value: "100:60,1000:10,500:15"
+            - name: QUEUE
+              value: "perf-test"
+            - name: QUORUM_QUEUE
+              value: "true"
+            - name: URI
+              value: "amqp://app:changeme@rabbitmq/app"
+          image: pivotalrabbitmq/perf-test:latest
+          name: perf-test

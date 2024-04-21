@@ -1,15 +1,8 @@
 apiVersion: rabbitmq.com/v1beta1
 kind: Vhost
 metadata:
-  name: test-vhost
+  name: rabbit-app-vhost
 spec:
-  name: test-vhost # vhost name
+  name: app # vhost name
   rabbitmqClusterReference:
     name: rabbitmq  # rabbitmqCluster must exist in the same namespace as this resource
-# status:
-#   conditions:
-#   - lastTransitionTime: ""
-#     status: "True" # true, false, or unknown
-#     type: Ready
-#     Reason: "SuccessfulCreateOrUpdate" # status false result in reason FailedCreateOrUpdate
-#     Message: "" # set when status is false

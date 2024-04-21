@@ -4,11 +4,11 @@
 apiVersion: rabbitmq.com/v1beta1
 kind: Queue
 metadata:
-  name: rabbit-app-quorum
+  name: rabbit-app-stream
 spec:
-  name: app-quorum # name of the queue
+  name: app-stream # name of the queue
   vhost: "app" # default to '/' if not provided
-  type: quorum # without providing a queue type, rabbitmq creates a classic queue
+  type: stream # without providing a queue type, rabbitmq creates a classic queue
   autoDelete: false
   durable: true # setting 'durable' to false means this queue won't survive a server restart
   rabbitmqClusterReference:

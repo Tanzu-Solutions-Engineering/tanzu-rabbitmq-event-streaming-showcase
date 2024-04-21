@@ -1,14 +1,17 @@
-Prerequisite
+# Cluster RabbitMQ
 
-Docker & Minikube
+This lab demonstrates ways to set up a RabbitMQ cluster
 
-[kubectl(https://kubernetes.io/docs/tasks/tools/)
+**Prerequisite**
+
+- Docker & Minikube
+- [kubectl(https://kubernetes.io/docs/tasks/tools/)
 
 ```json
 docker network create tanzu
 ```
 
-Create Cluster
+# 1 - Create Cluster using Docker
 
 ```shell
 cd deployment/local/docker/clustering
@@ -34,14 +37,14 @@ Try logging into management console
 
 
 
-# Perf Testing
+## Perf Testing
 
 ```shell
 docker run -it -p 8080:8080 --hostname rabbitmqperftest --name rabbitmqperftest  --network tanzu --rm pivotalrabbitmq/perf-test:latest com.rabbitmq.perf.PerfTest -x 1  -y 1 -u "queue_test" -a --id "perftest" --uris amqp://user:bitnami@clustering-queue-ram1-1,amqp://user:bitnami@clustering-stats-1,amqp://user:bitnami@clustering-queue-disc1-1 --use-millis --variable-size 2000:30  --rate 100 --quorum-queue --queue app.quorum.queue -c 500 --metrics-prometheus
 ```
 
 
-HA Testing
+## HA Testing
 
 ```shell
 docker stop clustering-queue-ram1-1
@@ -84,7 +87,7 @@ docker start clustering-stats-1
 ```
 
 
-# Cleanup
+## Cleanup
 
 ```shell
 cd deployment/local/docker/clustering
@@ -92,7 +95,7 @@ docker-compose down
 ```
 
 
-# Kubernetes Cluster
+# 2-  Kubernetes Cluster
 
 Start Minikube
 
@@ -168,7 +171,8 @@ open http://127.0.0.1:15672/
 
 Clean up
 
-
 ```shell
 kubectl delete -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
 ```
+
+

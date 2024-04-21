@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  stream-account-geode-sink-stream
+  name:  stream-account-geode-sink-stream
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  stream-account-geode-sink-stream
+  template:
+    metadata:
+      labels:
+        name:  stream-account-geode-sink-stream
+    spec:
+      containers:
+        - env:
+            - name: spring.profiles.active
+              value: stream
+            - name: spring.application.name
+              value: account-geode-sink-stream
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.stream.host
+              value: rabbitmq
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+            - name: spring.data.gemfire.pool.locators
+              valueFrom:
+                configMapKeyRef:
+                  name: gemfire1-config
+                  key: locators
+          image: cloudnativedata/stream-account-geode-sink:0.0.1-SNAPSHOT
+          name: stream-account-geode-sink-stream

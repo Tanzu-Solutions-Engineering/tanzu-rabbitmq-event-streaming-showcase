@@ -11,4 +11,4 @@ spec:
   autoDelete: false
   durable: true
   rabbitmqClusterReference:
-    name: test
+    name: rabbitmq

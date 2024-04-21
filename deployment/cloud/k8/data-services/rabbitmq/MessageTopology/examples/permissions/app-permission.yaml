@@ -1,0 +1,13 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: Permission
+metadata:
+  name: app-permission
+spec:
+  vhost: "app" # name of a vhost
+  user: "app" # name of a RabbitMQ user
+  permissions:
+    write: ".*"
+    configure: ".*"
+    read: ".*"
+  rabbitmqClusterReference:
+    name: rabbitmq  # rabbitmqCluster must exist in the same namespace as this resource

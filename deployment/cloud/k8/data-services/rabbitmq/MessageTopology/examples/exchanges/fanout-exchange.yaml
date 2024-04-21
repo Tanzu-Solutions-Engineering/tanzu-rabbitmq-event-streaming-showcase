@@ -5,17 +5,58 @@ kind: Exchange
 metadata:
   name: fanout
 spec:
-  name: fanout-exchange # name of the exchange
-  vhost: "/test-vhost" # default to '/' if not provided
+  name: app-fanout-exchange # name of the exchange
+  vhost: "app" # default to '/' if not provided
   type: fanout # default to 'direct' if not provided
   autoDelete: false
   durable: true
   rabbitmqClusterReference:
-    name: test # rabbitmqCluster must exist in the same namespace as this resource
-# status:
-#   conditions:
-#   - lastTransitionTime: ""
-#     status: "True" # true, false, or unknown
-#     type: Ready
-#     Reason: "SuccessfulCreateOrUpdate" # status false result in reason FailedCreateOrUpdate
-#     Message: "" # set when status is false
+    name: rabbitmq # rabbitmqCluster must exist in the same namespace as this resource
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: app-fanout-exchange-binding
+spec:
+  vhost: "app"
+  source: app-fanout-exchange # an existing exchange
+  destination: app-stream # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: rabbitmq
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: app-fanout-exchange-binding-stream
+spec:
+  vhost: "app"
+  source: app-fanout-exchange # an existing exchange
+  destination: app-stream # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: rabbitmq
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: app-fanout-exchange-binding-quorum
+spec:
+  vhost: "app"
+  source: app-fanout-exchange # an existing exchange
+  destination: app-quorum # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: rabbitmq
+---
+apiVersion: rabbitmq.com/v1beta1
+kind: Binding
+metadata:
+  name: app-fanout-exchange-binding-lazy-queue-example
+spec:
+  vhost: "app"
+  source: app-fanout-exchange # an existing exchange
+  destination: app-lazy-queue-example # an existing queue
+  destinationType: queue # can be 'queue' or 'exchange'
+  rabbitmqClusterReference:
+    name: rabbitmq

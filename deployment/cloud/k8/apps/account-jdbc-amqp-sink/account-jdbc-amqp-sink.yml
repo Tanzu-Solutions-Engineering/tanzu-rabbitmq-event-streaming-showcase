@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  account-jdbc-amqp-sink
+  name:  account-jdbc-amqp-sink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  account-jdbc-amqp-sink
+  template:
+    metadata:
+      labels:
+        name:  account-jdbc-amqp-sink
+    spec:
+      containers:
+        - env:
+            - name: spring.application.name
+              value: account-jdbc-amqp-sink
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.stream.host
+              value: rabbitmq
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+            - name: spring.datasource.url
+              value: jdbc:postgresql://postgres-db:5432/postgres-db
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-db-db-secret
+                  key: username
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-db-db-secret
+                  key: password
+          image: cloudnativedata/account-jdbc-amqp-sink:0.0.1-SNAPSHOT
+          name: account-jdbc-amqp-sink
+          imagePullPolicy: Always
+#          imagePullPolicy: IfNotPresent
