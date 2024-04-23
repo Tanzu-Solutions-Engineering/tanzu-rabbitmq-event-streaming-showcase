@@ -10,7 +10,7 @@ Create the docker network
 docker network create tanzu
 ```
 
-# 1 - Install RabbitMQ Broker
+# LAB 01 - Install RabbitMQ Broker
 
 - Run RabbitMQ
 ```shell

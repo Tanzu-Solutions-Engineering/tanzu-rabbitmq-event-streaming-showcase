@@ -1,4 +1,4 @@
-# Cluster RabbitMQ
+# LAB 02 - Cluster RabbitMQ
 
 This lab demonstrates ways to set up a RabbitMQ cluster
 
