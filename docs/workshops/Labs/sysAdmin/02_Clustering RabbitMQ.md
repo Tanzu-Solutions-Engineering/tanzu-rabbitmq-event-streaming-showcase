@@ -7,25 +7,27 @@ This lab demonstrates ways to set up a RabbitMQ cluster
 - Docker & Minikube
 - [kubectl(https://kubernetes.io/docs/tasks/tools/)
 
-```json
+Create docker network if needed
+
+```shell
 docker network create tanzu
 ```
 
 # 1 - Create Cluster using Docker
 
+- Create cluster using docker compose
 ```shell
 cd deployment/local/docker/clustering
 docker-compose up -d 
 ```
 
 - Open Management Console with user/bitnami
-
 ```shell
 open http://localhost:15672
 ```
 
 
-## Configure User
+## Configure User using management console (Optional)
 
 Explore created users
 
@@ -36,29 +38,33 @@ Explore created users
 Try logging into management console
 
 
+# 2 - Perf Testing
 
-## Perf Testing
-
+- Run Performance test application
 ```shell
 docker run -it -p 8080:8080 --hostname rabbitmqperftest --name rabbitmqperftest  --network tanzu --rm pivotalrabbitmq/perf-test:latest com.rabbitmq.perf.PerfTest -x 1  -y 1 -u "queue_test" -a --id "perftest" --uris amqp://user:bitnami@clustering-queue-ram1-1,amqp://user:bitnami@clustering-stats-1,amqp://user:bitnami@clustering-queue-disc1-1 --use-millis --variable-size 2000:30  --rate 100 --quorum-queue --queue app.quorum.queue -c 500 --metrics-prometheus
 ```
 
 
-## HA Testing
+# 3 - HA Testing
 
+- Stop a RabbitMQ node
 ```shell
 docker stop clustering-queue-ram1-1
 ```
 
+Testing 
 - Review RabbitMQ Console
 - Review Perf Test Logs
-- Restart node
+
+
+Restart node
 
 ```shell
 docker start clustering-queue-ram1-1
 ```
 
-Stop Node
+Stop another RabbitMQ Node
 
 ```shell
 docker stop clustering-queue-disc1-1
@@ -66,7 +72,8 @@ docker stop clustering-queue-disc1-1
 
 - Review RabbitMQ Console
 - Review Perf Test Logs
-- Restart node
+
+Restart node
 
 ```shell
 docker start clustering-queue-disc1-1
@@ -79,15 +86,16 @@ docker stop clustering-stats-1
 ```
 
 - Review Perf Test Logs
-- Restart node
 
+
+Restart node
 
 ```shell
 docker start clustering-stats-1
 ```
 
 
-## Cleanup
+# 4 - Cleanup Docker Cluster
 
 ```shell
 cd deployment/local/docker/clustering
@@ -95,7 +103,7 @@ docker-compose down
 ```
 
 
-# 2-  Kubernetes Cluster
+# 5 -  Kubernetes Cluster
 
 Start Minikube
 
@@ -128,13 +136,13 @@ Start Minikube Tunnel
 minikube tunnel
 ```
 
-Create Cluster
+Create RabbitMQ Cluster
 
 ```shell
 kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
 ```
 
-Get Status
+Get POD Statuses
 
 ```shell
 kubectl get pods
@@ -146,7 +154,7 @@ After POD running -> get services
 kubectl get services
 ```
 
-Get Default User/Password
+Get Default RabbitMQ User/Password
 
 ```shell
 kubectl get secret rabbitmq-default-user -o jsonpath="{.data.username}"
@@ -159,17 +167,18 @@ echo "USER:" $ruser
 echo "PASWORD:" $rpwd
 ```
 
+Access Management Console 
 
-Access DashLoad
-
-Example (use beyond user/password)
+Example (use above user/password)
 
 ```shell
 open http://127.0.0.1:15672/
 ```
 
 
-Clean up
+# 6 - Clean up cluster
+
+Delete the cluster
 
 ```shell
 kubectl delete -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
