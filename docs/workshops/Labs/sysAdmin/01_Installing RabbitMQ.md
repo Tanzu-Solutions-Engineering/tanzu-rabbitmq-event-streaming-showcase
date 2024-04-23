@@ -1,4 +1,4 @@
-# Installing RabbitMQ
+# LAB 01 - Installing RabbitMQ
 
 This lab provides details to install RabbitMQ using docker.
 
@@ -10,7 +10,7 @@ Create the docker network
 docker network create tanzu
 ```
 
-# LAB 01 - Install RabbitMQ Broker
+#  Install RabbitMQ Broker
 
 - Run RabbitMQ
 ```shell
