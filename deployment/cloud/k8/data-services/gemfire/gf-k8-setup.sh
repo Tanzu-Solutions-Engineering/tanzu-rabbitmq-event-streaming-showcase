@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -x #echo on
+set echo off
+#set -x #echo on
 
 # Set GemFire Pre-Requisite
 
@@ -11,7 +12,7 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
 
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
+ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
 
 kubectl get pods --namespace cert-manager
 
@@ -24,19 +25,16 @@ kubectl create secret docker-registry image-pull-secret --docker-server=registry
 kubectl create rolebinding psp-gemfire --namespace=gemfire-system --clusterrole=psp:vmware-system-privileged --serviceaccount=gemfire-system:default
 
 # Install the GemFire Operator
-helm install gemfire-crd  ~/dataServices/gemfire/gemfire-crd-2.2.0.tgz --namespace gemfire-system --set operatorReleaseName=gemfire-operator
-helm install gemfire-operator  ~/dataServices/gemfire/gemfire-operator-2.2.0.tgz --namespace gemfire-system
+
+helm install gemfire-crd oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-crd --version 2.3.0 --namespace gemfire-system --set operatorReleaseName=gemfire-operator --plain-http
+helm install gemfire-operator oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-operator --version 2.3.0 --namespace gemfire-system --plain-http
+
 
 sleep 5s
 kubectl wait pod -l=app.kubernetes.io/component=gemfire-controller-manager --for=condition=Ready --timeout=160s --namespace=gemfire-system
 
 
 kubectl get pods --namespace gemfire-system
-
-#kubectl apply -f deployments/cloud/k8/data-services/gemfire/gemfire.yml
-
-sleep 10s
-#kubectl wait pod -l=app=gemfire1-server --for=condition=Ready --timeout=160s
 
 
 kubectl apply -f https://projectcontour.io/quickstart/contour-gateway-provisioner.yaml

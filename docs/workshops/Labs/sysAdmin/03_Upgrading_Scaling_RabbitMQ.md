@@ -59,7 +59,7 @@ Wait for broker to start
 kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --timeout=160s
 ```
 
-Access DashLoad (use above user/password)
+Access Dasboard (use above user/password)
 
 ```shell
 open http://127.0.0.1:15672/

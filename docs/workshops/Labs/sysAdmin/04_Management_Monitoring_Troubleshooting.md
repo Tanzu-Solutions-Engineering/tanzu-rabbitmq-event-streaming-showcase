@@ -132,3 +132,13 @@ Restart problem node
 ```shell
 kubectl delete pod rabbitmq-server-2
 ```
+
+
+# Clean up
+
+```shell
+kubectl delete deployment perf-test
+```
+```shell
+kubectl delete RabbitMQCluster rabbitmq
+```
