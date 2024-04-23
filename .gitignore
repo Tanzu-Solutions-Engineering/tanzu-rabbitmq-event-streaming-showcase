@@ -48,6 +48,7 @@ x64/
 x86/
 build/
 bld/
+obj/
 **/[Bb]in/**
 [Oo]bj/
 msbuild.log
