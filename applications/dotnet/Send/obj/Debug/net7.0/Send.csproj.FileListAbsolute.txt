@@ -1,0 +1,17 @@
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/bin/Debug/net7.0/Send
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/bin/Debug/net7.0/Send.deps.json
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/bin/Debug/net7.0/Send.runtimeconfig.json
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/bin/Debug/net7.0/Send.dll
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/bin/Debug/net7.0/Send.pdb
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/bin/Debug/net7.0/RabbitMQ.Client.dll
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.csproj.AssemblyReference.cache
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.GeneratedMSBuildEditorConfig.editorconfig
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.AssemblyInfoInputs.cache
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.AssemblyInfo.cs
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.csproj.CoreCompileInputs.cache
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.csproj.CopyComplete
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.dll
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/refint/Send.dll
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.pdb
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/Send.genruntimeconfig.cache
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/obj/Debug/net7.0/ref/Send.dll
