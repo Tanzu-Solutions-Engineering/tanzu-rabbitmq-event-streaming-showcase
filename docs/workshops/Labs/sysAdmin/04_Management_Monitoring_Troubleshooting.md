@@ -1,10 +1,15 @@
-# Lab 4: Management, Monitoring & Troubleshooting
+# Lab 04: Management, Monitoring & Troubleshooting
 
 
 **Prerequisite**
 - Docker & Minikube
 - [kubectl(https://kubernetes.io/docs/tasks/tools/)
 
+Start Minikube (if not started)
+
+```shell
+minikube start  --memory='5g' --cpus='4'
+```
 
 # 1 - Install Message Topology Operator
 
@@ -26,6 +31,7 @@ Then, to install the Operator, run the following command:
 kubectl apply -f https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml
 ```
 
+Wait for operator
 ```shell
 kubectl wait pod -l=app.kubernetes.io/name=messaging-topology-operator --for=condition=Ready --timeout=160s -n rabbitmq-system
 ```
@@ -114,7 +120,7 @@ kubectl delete pod rabbitmq-server-0 rabbitmq-server-1 --force=true
 # 3 - Debugging Network Partitions
 
 
-Change Nodes
+Check RabbitMQ cluster status
 
 Example 
 ```shell
@@ -127,14 +133,14 @@ Example output
 Node rabbit@rabbitmq-server-0.rabbitmq-nodes.default cannot communicate with rabbit@rabbitmq-server-2.rabbitmq-nodes.default
 ```
 
-Restart problem node
+Restart problem broker node
 
 ```shell
 kubectl delete pod rabbitmq-server-2
 ```
 
 
-# Clean up
+# 3 - Clean up
 
 ```shell
 kubectl delete deployment perf-test

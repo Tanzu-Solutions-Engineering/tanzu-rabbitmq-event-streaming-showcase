@@ -1,10 +1,17 @@
-# Lab 4: Management, Monitoring & Troubleshooting
+# Lab 05: Rabbit with Tanzu
 
+
+# ROUGH DRAFT WIP
 
 **Prerequisite**
 - Docker & Minikube
 - [kubectl(https://kubernetes.io/docs/tasks/tools/)
 
+Start Minikube (if not started)
+
+```shell
+minikube start  --memory='5g' --cpus='4'
+```
 
 ## Hub
 
