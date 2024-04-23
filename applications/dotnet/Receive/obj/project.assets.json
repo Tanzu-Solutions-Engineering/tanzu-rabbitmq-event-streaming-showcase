@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net7.0": {
+      "Imani.Solutions.Core/0.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/Imani.Solutions.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Imani.Solutions.Core.dll": {}
+        }
+      },
       "RabbitMQ.Client/6.8.1": {
         "type": "package",
         "dependencies": {
@@ -47,6 +56,21 @@
     }
   },
   "libraries": {
+    "Imani.Solutions.Core/0.1.0": {
+      "sha512": "93Blr1bU41nJa3+XptZ2xqfzMd+4qPdXqihJaE8sw/KntYsYAjjXP0dR1/bf0Vr9XQ9/IoXoIi18LXoWsCnngg==",
+      "type": "package",
+      "path": "imani.solutions.core/0.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll",
+        "content/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll",
+        "content/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll",
+        "imani.solutions.core.0.1.0.nupkg.sha512",
+        "imani.solutions.core.nuspec",
+        "lib/netcoreapp3.1/Imani.Solutions.Core.dll"
+      ]
+    },
     "RabbitMQ.Client/6.8.1": {
       "sha512": "jNsmGgmCNw2S/NzskeN2ijtGywtH4Sk/G6jWUTD5sY9SrC27Xz6BsLIiB8hdsfjeyWCa4j4GvCIGkpE8wrjU1Q==",
       "type": "package",
@@ -119,6 +143,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "Imani.Solutions.Core >= 0.1.0",
       "RabbitMQ.Client >= 6.8.1"
     ]
   },
@@ -159,6 +184,10 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
+          "Imani.Solutions.Core": {
+            "target": "Package",
+            "version": "[0.1.0, )"
+          },
           "RabbitMQ.Client": {
             "target": "Package",
             "version": "[6.8.1, )"

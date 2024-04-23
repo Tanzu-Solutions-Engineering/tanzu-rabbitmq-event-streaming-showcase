@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "sY7Zqa9TYAMnXEt02vh/OvHTyUQtm76pnMXIpzseWOm/D9NabIl3hlSQDL2mL7qMr37bAWKn/wRTROJx2ra67g==",
+  "dgSpecHash": "z2TdupoGwbqTJ0hFp6FSZxmyOgas2IfvyreO8d6+Sm4IC9Ps8mzDsHSpVaOEoBMNjw99unFfyU181XWnWyDfSA==",
   "success": true,
   "projectFilePath": "/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Send/Send.csproj",
   "expectedPackageFiles": [
+    "/Users/gregoryg/.nuget/packages/imani.solutions.core/0.1.0/imani.solutions.core.0.1.0.nupkg.sha512",
     "/Users/gregoryg/.nuget/packages/rabbitmq.client/6.8.1/rabbitmq.client.6.8.1.nupkg.sha512",
     "/Users/gregoryg/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
     "/Users/gregoryg/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512"

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
+    <PackageReference Include="Imani.Solutions.Core" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

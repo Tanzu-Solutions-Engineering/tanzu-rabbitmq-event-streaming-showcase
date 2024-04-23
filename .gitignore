@@ -1,6 +1,7 @@
 nohup.out
 target/
 build/
+**/bin/**
 pom.xml.tag
 *.gfs.csv
 pom.xml.releaseBackup
@@ -22,6 +23,39 @@ junit-tools-generatedsrc/
 .DS_Store
 .idea/
 *.iml
+
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+**/[Bb]in/**
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015
+.vs/
 
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)

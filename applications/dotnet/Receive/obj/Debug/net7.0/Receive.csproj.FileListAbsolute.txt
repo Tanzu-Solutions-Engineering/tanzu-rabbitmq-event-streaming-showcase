@@ -15,3 +15,4 @@
 /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Receive/obj/Debug/net7.0/Receive.pdb
 /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Receive/obj/Debug/net7.0/Receive.genruntimeconfig.cache
 /Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Receive/obj/Debug/net7.0/ref/Receive.dll
+/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/dotnet/Receive/bin/Debug/net7.0/Imani.Solutions.Core.dll
