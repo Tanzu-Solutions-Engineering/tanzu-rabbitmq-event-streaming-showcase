@@ -14,18 +14,18 @@ import java.util.Properties;
 @EnableJpaRepositories
 public class JpaConfig {
 
-    @Bean
-    LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        var properties  = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto","create");
-        properties.setProperty("hibernate.show_sql","true");
-
-        var em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
-        em.setPackagesToScan(AccountEntity.class.getPackageName());
-        var vendorAdapter  = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(properties);
-        return em;
-    }
+//    @Bean
+//    LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+//        var properties  = new Properties();
+//        properties.setProperty("hibernate.hbm2ddl.auto","create");
+//        properties.setProperty("hibernate.show_sql","true");
+//
+//        var em = new LocalContainerEntityManagerFactoryBean();
+//        em.setDataSource(dataSource);
+//        em.setPackagesToScan(AccountEntity.class.getPackageName());
+//        var vendorAdapter  = new HibernateJpaVendorAdapter();
+//        em.setJpaVendorAdapter(vendorAdapter);
+//        em.setJpaProperties(properties);
+//        return em;
+//    }
 }

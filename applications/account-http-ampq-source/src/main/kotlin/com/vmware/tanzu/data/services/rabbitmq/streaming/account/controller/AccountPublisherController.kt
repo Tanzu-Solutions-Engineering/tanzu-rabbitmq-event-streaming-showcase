@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController("event-streaming-showcase")
 class AccountPublisherController(
     private val rabbitTemplate: RabbitTemplate,
-    @Value("\${spring.cloud.stream.bindings.supplier-out-0.destination:banking-account}")
+    @Value("\${spring.cloud.stream.bindings.input.destination:banking-account}")
     private var exchangeId: String = "banking-account") {
 
     init {

@@ -53,12 +53,12 @@ public class RabbitConfig {
     @Bean
     ListenerContainerCustomizer<MessageListenerContainer> customizer() {
         return (cont, dest, group) -> {
-            StreamListenerContainer container = (StreamListenerContainer) cont;
-            container.setConsumerCustomizer((name, builder) -> {
-                builder.subscriptionListener(context -> {
-                    log.info("Replaying from the first record in the stream");
-                    context.offsetSpecification(OffsetSpecification.first());
-                });
+            if(cont instanceof StreamListenerContainer container)
+                container.setConsumerCustomizer((name, builder) -> {
+                    builder.subscriptionListener(context -> {
+                        log.info("Replaying from the first record in the stream");
+                        context.offsetSpecification(OffsetSpecification.first());
+                    });
             });
         };
     }
