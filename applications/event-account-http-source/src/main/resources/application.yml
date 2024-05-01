@@ -1,0 +1,10 @@
+server:
+  port: 8095
+spring:
+  application:
+    name: event-account-http-source
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: "showcase.event.streaming.accounts"
