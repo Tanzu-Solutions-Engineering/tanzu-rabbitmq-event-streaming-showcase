@@ -4,13 +4,13 @@
  *  * SPDX-License-Identifier: GPL-3.0
  *
  */
-package showcase.event.stream.rabbitmq.accoun.sink.functions;
+package showcase.event.stream.rabbitmq.account.functions;
 
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import showcase.event.stream.rabbitmq.accoun.sink.repostories.AccountRepository;
+import showcase.event.stream.rabbitmq.account.repostories.AccountRepository;
 
 import java.util.function.Consumer;
 

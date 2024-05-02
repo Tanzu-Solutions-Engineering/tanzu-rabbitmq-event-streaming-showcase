@@ -66,7 +66,7 @@ Review  Management Console
 Stop Publisher and Consumer
 
 ---------------------------
-# 2 - Stream Offsets
+# 2 - Stream Offsets .NET AMQP Client
 
 
 ## Start Consumer
@@ -92,51 +92,12 @@ Send another message
 dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.stream --message="NEXT MESSAGE"
 ```
 
-## Start Publisher
 
-Publish
-
-```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.1 --message="Testing app.receive.1"
-```
-Hit Enter
-
-```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.2 --message="Testing app.receive.2"
-```
-Hit Enter
+Stop Customer and Publisher
 
 
-Stop Publisher and Consumers
-
----------------------------
-# 2 - Topic Exchange Routing
+docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1
 
 
 
-## Start Consumer
-```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=rahway --exchange="amq.topic" --routingKey="city.Rahway.*" --queue=app.receive.rahway
-```
-Start Another Consumer
-```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=ny --exchange="amq.topic" --routingKey="city.NY.#" --queue=app.receive.ny
-```
-
-
-## Start Publisher
-
-Publish
-
-```shell
- dotnet run  --project  applications/dotnet/Send/  --exchange="amq.topic" --routingKey=city.NY.uptown.store --message="Testing NY City"
-```
-
-Hit Enter
-
-
-```shell
- dotnet run  --project  applications/dotnet/Send/  --exchange="amq.topic" --routingKey=city.Rahway.office --message="Testing Rahway"
-```
-
-Hit Enter
+ 

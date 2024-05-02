@@ -1,4 +1,11 @@
 
+Run application
+
+```shell
+java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar
+```
+
+open http://localhost:8095
 
 ## Docker building image
 

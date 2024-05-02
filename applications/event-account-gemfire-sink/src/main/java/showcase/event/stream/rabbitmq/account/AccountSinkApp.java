@@ -4,7 +4,7 @@
  *  * SPDX-License-Identifier: GPL-3.0
  *
  */
-package showcase.event.stream.rabbitmq.accoun.sink;
+package showcase.event.stream.rabbitmq.account;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;

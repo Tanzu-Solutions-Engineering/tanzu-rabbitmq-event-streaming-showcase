@@ -4,7 +4,7 @@
  *  * SPDX-License-Identifier: GPL-3.0
  *
  */
-package showcase.event.stream.rabbitmq.accoun.sink.repostories;
+package showcase.event.stream.rabbitmq.account.repostories;
 
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
 import org.springframework.data.repository.CrudRepository;

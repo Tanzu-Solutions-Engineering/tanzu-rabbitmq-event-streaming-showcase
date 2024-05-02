@@ -5,7 +5,7 @@
  *
  */
 
-package showcase.event.stream.rabbitmq.accoun.sink;
+package showcase.event.stream.rabbitmq.log.sink;
 
 import com.rabbitmq.stream.OffsetSpecification;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.rabbit.stream.listener.StreamListenerContainer;
+
+import java.util.function.Consumer;
 
 @Configuration
 @Slf4j
@@ -49,8 +51,16 @@ public class RabbitConfig {
     }
 
     @Bean
+    Consumer<byte[]> logConsumer()
+    {
+        return bytes ->{
+          log.info("CONSUMED: {} ",new String(bytes));
+        };
+    }
+
+    @Bean
     ListenerContainerCustomizer<MessageListenerContainer> customizer() {
-        log.info("Offset: {}",offset);
+        log.info("applicationName: {}, Offset: {}",applicationName,offset);
         return (cont, dest, group) -> {
             if (cont instanceof StreamListenerContainer container) {
                 container.setConsumerCustomizer((name, builder) -> {
@@ -58,6 +68,7 @@ public class RabbitConfig {
                     {
                         case "last" -> {
                             builder.name(applicationName);
+                            builder.singleActiveConsumer();
                             builder.offset(OffsetSpecification.last());}
 
                         case "next" -> builder.offset(OffsetSpecification.next());

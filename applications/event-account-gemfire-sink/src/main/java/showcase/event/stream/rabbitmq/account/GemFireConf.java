@@ -4,7 +4,7 @@
  *  * SPDX-License-Identifier: GPL-3.0
  *
  */
-package showcase.event.stream.rabbitmq.accoun.sink;
+package showcase.event.stream.rabbitmq.account;
 
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
 import org.apache.geode.cache.DataPolicy;

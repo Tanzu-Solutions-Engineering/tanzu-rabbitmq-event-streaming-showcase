@@ -1,4 +1,4 @@
-package showcase.event.stream.rabbitmq.accoun.sink.functions;
+package showcase.event.stream.rabbitmq.account;
 
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
 import nyla.solutions.core.patterns.creational.generator.JavaBeanGeneratorCreator;
@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import showcase.event.stream.rabbitmq.accoun.sink.repostories.AccountRepository;
+import showcase.event.stream.rabbitmq.account.functions.AccountConsumer;
+import showcase.event.stream.rabbitmq.account.repostories.AccountRepository;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
