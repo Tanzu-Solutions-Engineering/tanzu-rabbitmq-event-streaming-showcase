@@ -1,0 +1,14 @@
+
+
+## Docker building image
+
+```shell
+mvn install
+cd applications/event-account-http-source
+mvn spring-boot:build-image
+```
+
+```shell
+docker tag event-account-http-source:0.0.1-SNAPSHOT cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
+docker push cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
+```

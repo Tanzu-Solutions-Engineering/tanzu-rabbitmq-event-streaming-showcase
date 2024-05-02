@@ -50,22 +50,23 @@ public class RabbitConfig {
 
     @Bean
     ListenerContainerCustomizer<MessageListenerContainer> customizer() {
+        log.info("Offset: {}",offset);
         return (cont, dest, group) -> {
             if (cont instanceof StreamListenerContainer container) {
                 container.setConsumerCustomizer((name, builder) -> {
+                    switch (offset)
+                    {
+                        case "last" -> {
+                            builder.name(applicationName);
+                            builder.offset(OffsetSpecification.last());}
 
+                        case "next" -> builder.offset(OffsetSpecification.next());
+                    }
                     builder.subscriptionListener(context -> {
-                        log.info("Offset: {}",offset);
-
                         switch (offset) {
                             case "first" -> {
                                 log.info("Replaying from the first record in the stream");
                                 context.offsetSpecification(OffsetSpecification.first());
-                            }
-                            case "next" -> context.offsetSpecification(OffsetSpecification.last());
-                            default -> {
-                                builder.name(applicationName);
-                                context.offsetSpecification(OffsetSpecification.last());
                             }
                         }
                     });
