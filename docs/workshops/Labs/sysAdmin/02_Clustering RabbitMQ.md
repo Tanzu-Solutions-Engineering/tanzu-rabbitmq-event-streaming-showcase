@@ -142,7 +142,7 @@ Create RabbitMQ Cluster
 kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
 ```
 
-Get POD Statuses
+Get POD Statuse
 
 ```shell
 kubectl get pods
