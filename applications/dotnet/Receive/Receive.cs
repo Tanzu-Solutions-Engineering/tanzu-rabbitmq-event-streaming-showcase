@@ -14,6 +14,7 @@ var routingKeyValue = config.GetProperty("routingKey","");
 uint prefetchSize  = Convert.ToUInt32(config.GetPropertyInteger("prefetchSize",0));
 ushort prefetchCount  = Convert.ToUInt16(config.GetPropertyInteger("prefetchCount",1));
 bool autoAckFlag = config.GetPropertyBoolean("autoAck",true);
+var streamOffset = config.GetProperty("streamOffset","");
 
 //Make connection
 
@@ -54,9 +55,12 @@ consumer.Received += (model, ea) =>
         channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
 
 };
-channel.BasicConsume(queue: queueName,
+channel.BasicConsume(
+                    queue: queueName,
                      autoAck: autoAckFlag,
-                     consumer: consumer);
+                     consumer: consumer,
+                     arguments:  new Dictionary<string, object>()
+                        {{ "x-stream-offset", streamOffset}});
 
 
 
