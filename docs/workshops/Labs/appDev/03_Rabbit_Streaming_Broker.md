@@ -166,7 +166,4 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 ```
 
 
-```shell
-docker run --name event-log-sink  --network tanzu --rm  cloudnativedata/event-log-sink:0.0.1-SNAPSHOT --spring.rabbitmq.host=rabbitmq01 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami  --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last  --spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer=true
-```
 

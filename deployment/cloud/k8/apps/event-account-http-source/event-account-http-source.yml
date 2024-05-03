@@ -2,23 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/name: account-http-ampq-source
-    run:  account-http-ampq-source
-  name:  account-http-ampq-source
+    app.kubernetes.io/name: event-account-http-source
+    run:  event-account-http-source
+  name:  event-account-http-source
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name:  account-http-ampq-source
+      name:  event-account-http-source
   template:
     metadata:
       labels:
-        name:  account-http-ampq-source
+        name:  event-account-http-source
     spec:
       containers:
         - env:
-            - name: spring.profiles.active
-              value: stream
             - name: spring.rabbitmq.host
               value: rabbitmq
             - name: server.port
@@ -28,21 +26,23 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: username
+            - name: spring.cloud.stream.bindings.output.destination
+              value: "showcase.event.streaming.accounts"
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
-          image: cloudnativedata/account-http-ampq-source:0.0.1-SNAPSHOT
-          name: account-http-ampq-source
+          image: cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
+          name: event-account-http-source
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: account-http-ampq-source
+  name: event-account-http-source
 spec:
   selector:
-    name: account-http-ampq-source
+    name: event-account-http-source
   ports:
     - protocol: TCP
       port: 80

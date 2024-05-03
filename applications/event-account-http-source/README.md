@@ -12,7 +12,10 @@ open http://localhost:8095
 ```shell
 mvn install
 cd applications/event-account-http-source
-mvn spring-boot:build-image
+mvn package
+
+docker build  --platform linux/amd64,linux/arm64 -t event-account-http-source:0.0.1-SNAPSHOT .
+
 ```
 
 ```shell
