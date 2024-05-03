@@ -128,16 +128,16 @@ minikube start  --memory='5g' --cpus='4'
 # 1 - Create RabbitMQ Broker
 
 
-Install RabbitMQ Cluster Operator
-
-```shell
-kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
-```
-
 View PODS in rabbitmq-system
 
 ```shell
 kubectl get pods -n rabbitmq-system
+```
+
+Install RabbitMQ Cluster Operator (if pods not running)
+
+```shell
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
 ```
 
 
@@ -162,7 +162,7 @@ kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --time
 Start Event Log
 
 ```shell
-
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink.yml
 ```
 
 
