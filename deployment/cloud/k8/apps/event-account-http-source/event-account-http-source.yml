@@ -19,6 +19,8 @@ spec:
         - env:
             - name: spring.rabbitmq.host
               value: rabbitmq
+            - name: spring.rabbitmq.stream.host
+              value: rabbitmq
             - name: server.port
               value: "8080"
             - name: spring_rabbitmq_username

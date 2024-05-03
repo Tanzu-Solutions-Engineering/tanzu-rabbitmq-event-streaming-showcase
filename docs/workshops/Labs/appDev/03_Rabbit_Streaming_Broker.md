@@ -166,4 +166,8 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 ```
 
 
+```shell
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source.yml
+```
+
 
