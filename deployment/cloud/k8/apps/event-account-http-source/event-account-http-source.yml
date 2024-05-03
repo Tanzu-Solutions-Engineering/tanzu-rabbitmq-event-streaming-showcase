@@ -37,6 +37,8 @@ spec:
                   key: password
           image: cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
           name: event-account-http-source
+          imagePullPolicy: Always
+#          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service
