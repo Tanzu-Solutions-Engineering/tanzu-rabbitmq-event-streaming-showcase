@@ -11,11 +11,24 @@ Create the docker network (if not existing)
 docker network create tanzu
 ```
 
-- Run RabbviitMQ (if not running)
+- Run RabbitMQ (if not running)
 
 ```shell
-docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
+docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS='-rabbitmq_stream advertised_host localhost' -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
 ```
+
+- View Logs (wait for message: started TCP listener on [::]:5672)
+
+```shell
+docker logs rabbitmq01
+```
+
+- Enable Streams
+
+```shell
+docker run -it --rm --network tanzu bitnami/rabbitmq:3.13.1 rabbitmq-plugins  -n rabbit@rabbitmq01   enable rabbitmq_stream rabbitmq_stream_management 
+```
+
 - Open Management Console with credentials *user/bitnami*
 ```shell
 open http://localhost:15672
@@ -96,8 +109,64 @@ dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.stream
 Stop Customer and Publisher
 
 
-docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1
+Stop RabbitMQ
+
+```shell
+docker rm -f rabbitmq01
+```
+
+---------------------------
+# 3 - Spring Stream Single Active Consumer
 
 
+Start Minikube (if not started)
 
- 
+```shell
+minikube start  --memory='5g' --cpus='4'
+```
+
+# 1 - Create RabbitMQ Broker
+
+
+Install RabbitMQ Cluster Operator
+
+```shell
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+```
+
+View PODS in rabbitmq-system
+
+```shell
+kubectl get pods -n rabbitmq-system
+```
+
+
+Start Minikube Tunnel
+
+```shell
+minikube tunnel
+```
+
+Create 1 Node RabbitMQ 
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+```
+
+Wait for server to start
+
+```shell
+kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --timeout=160s
+```
+
+Start Event Log
+
+```shell
+
+```
+
+
+```shell
+docker run --name event-log-sink  --network tanzu --rm  cloudnativedata/event-log-sink:0.0.1-SNAPSHOT --spring.rabbitmq.host=rabbitmq01 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami  --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last  --spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer=true
+```
+

@@ -40,6 +40,9 @@ public class RabbitConfig {
     @Value("${rabbitmq.streaming.offset:last}")
     private String offset;
 
+    @Value("${rabbitmq.streaming.singleActiveConsumer:true}")
+    private boolean singleActiveConsumer;
+
     @Bean
     ConnectionNameStrategy connectionNameStrategy() {
         return (connectionFactory) -> applicationName;
@@ -60,7 +63,7 @@ public class RabbitConfig {
 
     @Bean
     ListenerContainerCustomizer<MessageListenerContainer> customizer() {
-        log.info("applicationName: {}, Offset: {}",applicationName,offset);
+        log.info("applicationName: {}, Offset: {}, singleActiveConsumer: {}",applicationName,offset,singleActiveConsumer);
         return (cont, dest, group) -> {
             if (cont instanceof StreamListenerContainer container) {
                 container.setConsumerCustomizer((name, builder) -> {
@@ -68,7 +71,9 @@ public class RabbitConfig {
                     {
                         case "last" -> {
                             builder.name(applicationName);
-                            builder.singleActiveConsumer();
+                            if(singleActiveConsumer)
+                                builder.singleActiveConsumer();
+
                             builder.offset(OffsetSpecification.last());}
 
                         case "next" -> builder.offset(OffsetSpecification.next());

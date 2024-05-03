@@ -139,7 +139,7 @@ minikube tunnel
 Create RabbitMQ Cluster
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
 ```
 
 Get POD Statuses

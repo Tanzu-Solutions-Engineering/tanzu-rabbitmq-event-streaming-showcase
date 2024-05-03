@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  event-log-sink
+  name:  event-log-sink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  event-log-sink
+  template:
+    metadata:
+      labels:
+        name:  event-log-sink
+    spec:
+      containers:
+        - env:
+            - name: spring.application.name
+              value: event-log-sink
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.stream.host
+              value: rabbitmq
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+            - name: spring.cloud.stream.bindings.input.destination
+              value: "showcase.event.streaming.accounts"
+            - name: spring.cloud.stream.rabbit.bindings.input.consumer.containerType
+              value: "stream"
+            - name: spring.cloud.stream.bindings.input.group
+              value: showcase.event.streaming.accounts
+            - name: spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly
+              value: "true"
+            - name: rabbitmq.streaming.offset
+              value: "last"
+            - name: spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer
+              value: "true"
+          image: cloudnativedata/event-log-sink:0.0.1-SNAPSHOT
+          name: event-log-sink
+#          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
