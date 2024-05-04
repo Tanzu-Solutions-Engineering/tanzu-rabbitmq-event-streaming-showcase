@@ -1,8 +1,14 @@
 
-Run application
+Run application with Stream
 
 ```shell
-java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar
+java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream   --spring.cloud.stream.bindings.output.destination=event.stream
+```
+
+Run application with Super Stream
+
+```shell
+java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar --spring.profiles.active=superStream   --spring.cloud.stream.bindings.output.destination=event.super.stream
 ```
 
 open http://localhost:8095

@@ -5,7 +5,7 @@ metadata:
     run:  event-log-sink
   name:  event-log-sink
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       name:  event-log-sink

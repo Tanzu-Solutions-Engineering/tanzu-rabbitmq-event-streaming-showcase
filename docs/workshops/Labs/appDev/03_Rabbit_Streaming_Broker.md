@@ -116,7 +116,7 @@ docker rm -f rabbitmq01
 ```
 
 ---------------------------
-# 3 - Spring Stream Single Active Consumer
+# 3 - Spring Stream Single Active Consumer (Kubernetes)
 
 
 Start Minikube (if not started)
@@ -170,4 +170,71 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source.yml
 ```
 
+Open Sources
+Submit account
+```shell
+open http://localhost:8080/swagger-ui/index.html
+```
 
+Kist 
+```shell
+kubectl get pods
+```
+
+Example output
+
+```
+NAME                                         READY   STATUS    RESTARTS   AGE
+event-account-http-source-694b87f746-5x9sb   1/1     Running   0          18m
+event-log-sink-cd7fbc47b-djt2v               1/1     Running   0          2m53s
+event-log-sink-cd7fbc47b-qls7g               1/1     Running   0          127m
+rabbitmq-server-0                            1/1     Running   0          130m
+
+```
+
+Review Logs for each
+
+Example pod 1
+```shell
+kubectl logs -f event-log-sink-cd7fbc47b-djt2v
+```
+
+Example pod 2 (run in new terminal)
+```shell
+kubectl logs -f event-log-sink-cd7fbc47b-qls7g
+```
+
+Note only application get the logs events
+
+
+Delete the active consumer
+
+Example
+```shell
+kubectl delete pod event-log-sink-cd7fbc47b-qls7g
+```
+
+
+
+
+Open Sources  Submit account 
+```shell
+open http://localhost:8080/swagger-ui/index.html
+```
+
+Note the previous consumer will become the active consumer
+
+---------------------------
+# 4 - Cleanup
+
+Delete Apps
+```shell
+kubectl delete -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink.yml
+kubectl delete -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source.yml
+```
+
+Delete RabbitMQ
+
+```shell
+kubectl delete -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+```

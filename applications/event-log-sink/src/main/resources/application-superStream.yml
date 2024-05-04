@@ -1,0 +1,4 @@
+spring.cloud.stream.rabbit.bindings.input:
+  consumer:
+    declareExchange: false
+    bindQueue: false

@@ -1,9 +1,14 @@
 #  event-log-sink
 
-Example command to run the consumer
+Example command to run the consumer last
 
 ```shell
-java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last 
+java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=event.stream --spring.profiles.active=stream --rabbitmq.streaming.offset=last 
+```
+
+Replay stream
+```shell
+java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=event.stream --spring.profiles.active=stream --rabbitmq.streaming.offset=first 
 ```
 
 
