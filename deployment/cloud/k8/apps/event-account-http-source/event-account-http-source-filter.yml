@@ -34,11 +34,11 @@ spec:
                   name: rabbitmq-default-user
                   key: password
             - name: spring.cloud.stream.bindings.output.destination
-              value: "showcase.event.super.streaming.accounts"
+              value: "showcase.event.filter.streaming.accounts"
             - name: rabbitmq.streaming.partitions
               value: "2"
             - name: spring.profiles.active
-              value: "superStream"
+              value: "stream"
           image: cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
           name: event-account-http-source-filter
           imagePullPolicy: Always

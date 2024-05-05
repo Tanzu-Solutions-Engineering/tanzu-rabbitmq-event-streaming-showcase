@@ -224,6 +224,8 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 ```
 
 
+Create Consumer NJ
+
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink-filter-NJ.yml
 ```
@@ -235,11 +237,19 @@ Create Source
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source-filter.yml
 ```
 
+Testings
 
+```shell
+kubectl logs deployment/event-log-sink-nj -f
+```
+
+
+Adding Acc
 
 ```shell
 open http://localhost:8090/
 ```
+
 
 
 ---------------------------
