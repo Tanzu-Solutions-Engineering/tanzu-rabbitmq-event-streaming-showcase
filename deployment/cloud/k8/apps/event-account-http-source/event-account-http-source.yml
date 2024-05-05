@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/name: event-account-http-source
-    run:  event-account-http-source
-  name:  event-account-http-source
+    app.kubernetes.io/name: event-account-http-source-filter
+    run:  event-account-http-source-filter
+  name:  event-account-http-source-filter
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name:  event-account-http-source
+      name:  event-account-http-source-filter
   template:
     metadata:
       labels:
-        name:  event-account-http-source
+        name:  event-account-http-source-filter
     spec:
       containers:
         - env:
@@ -40,19 +40,19 @@ spec:
             - name: spring.profiles.active
               value: "superStream"
           image: cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
-          name: event-account-http-source
+          name: event-account-http-source-filter
           imagePullPolicy: Always
 #          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: event-account-http-source
+  name: event-account-http-source-filter
 spec:
   selector:
-    name: event-account-http-source
+    name: event-account-http-source-filter
   ports:
     - protocol: TCP
-      port: 8080
+      port: 8090
       targetPort: 8080
   type: LoadBalancer
