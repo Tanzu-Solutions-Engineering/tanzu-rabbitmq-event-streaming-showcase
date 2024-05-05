@@ -32,16 +32,14 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
+            - name: spring.profiles.active
+              value: "superStream"
             - name: spring.cloud.stream.bindings.input.destination
-              value: "showcase.event.streaming.accounts"
-            - name: spring.cloud.stream.rabbit.bindings.input.consumer.containerType
-              value: "stream"
-            - name: spring.cloud.stream.bindings.input.group
-              value: showcase.event.streaming.accounts
-            - name: spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly
-              value: "true"
+              value: "showcase.event.super.streaming.accounts"
             - name: rabbitmq.streaming.offset
               value: "last"
+            - name: rabbitmq.streaming.partitions
+              value: "2"
             - name: spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer
               value: "true"
           image: cloudnativedata/event-log-sink:0.0.1-SNAPSHOT

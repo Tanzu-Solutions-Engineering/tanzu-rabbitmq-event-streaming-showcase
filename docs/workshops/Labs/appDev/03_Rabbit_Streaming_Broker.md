@@ -23,12 +23,6 @@ docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALL
 docker logs rabbitmq01
 ```
 
-- Enable Streams
-
-```shell
-docker run -it --rm --network tanzu bitnami/rabbitmq:3.13.1 rabbitmq-plugins  -n rabbit@rabbitmq01   enable rabbitmq_stream rabbitmq_stream_management 
-```
-
 - Open Management Console with credentials *user/bitnami*
 ```shell
 open http://localhost:15672
@@ -50,7 +44,7 @@ Publish
  dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.stream --message="Testing app.receive STREAMING DATA 1"
 ```
 
-- Hit Enter/Return
+- Hit Enter/Return to stop Publisher
 
 Send another message
 
@@ -63,11 +57,6 @@ Send another message
 ```shell
 open http://localhost:15672
 ```
-
-- Click Overview
-- Click Connections
-- Click Queues and Streams
-
 
 Review  Management Console
 
@@ -116,7 +105,7 @@ docker rm -f rabbitmq01
 ```
 
 ---------------------------
-# 3 - Spring Stream Single Active Consumer (Kubernetes)
+# 3 - Spring Filter Single Active Consumer (Kubernetes)
 
 
 Start Minikube (if not started)
@@ -124,9 +113,6 @@ Start Minikube (if not started)
 ```shell
 minikube start  --memory='5g' --cpus='4'
 ```
-
-# 1 - Create RabbitMQ Broker
-
 
 View PODS in rabbitmq-system
 
@@ -176,7 +162,6 @@ Submit account
 open http://localhost:8080/swagger-ui/index.html
 ```
 
-Kist 
 ```shell
 kubectl get pods
 ```
@@ -204,17 +189,7 @@ Example pod 2 (run in new terminal)
 kubectl logs -f event-log-sink-cd7fbc47b-qls7g
 ```
 
-Note only application get the logs events
-
-
-Delete the active consumer
-
-Example
-```shell
-kubectl delete pod event-log-sink-cd7fbc47b-qls7g
-```
-
-
+Note message are routed by account id application get the logs events
 
 
 Open Sources  Submit account 

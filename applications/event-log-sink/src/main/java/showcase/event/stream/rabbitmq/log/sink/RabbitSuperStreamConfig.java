@@ -11,7 +11,6 @@ import com.rabbitmq.stream.Consumer;
 import com.rabbitmq.stream.Environment;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,11 +28,8 @@ public class RabbitSuperStreamConfig {
     private String offset;
 
 
-    @Value("${spring.cloud.stream.bindings.input.group:event-log-sink}")
+    @Value("${spring.cloud.stream.bindings.input.destination:event-log-sink}")
     private String superStreamName;
-
-    @Value("${spring.cloud.stream.bindings.input.destination:input}")
-    private String destination;
 
     @Value("${rabbitmq.streaming.partitions:2}")
     private int partitions;
@@ -41,7 +37,9 @@ public class RabbitSuperStreamConfig {
     @Value("${rabbitmq.streaming.concurrency:1}")
     private int concurrency;
 
-    @ConditionalOnProperty(name = "spring.cloud.stream.rabbit.bindings.output.consumer.queueNameGroupOnly", havingValue = "true")
+    @Value("${spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer:false}")
+    private boolean singleActiveConsumer;
+
     @Bean
     SuperStream superStream(Environment environment) {
 
@@ -55,58 +53,21 @@ public class RabbitSuperStreamConfig {
         return new SuperStream(superStreamName, partitions);
     }
 
-    @ConditionalOnProperty(name = "spring.cloud.stream.rabbit.bindings.output.consumer.queueNameGroupOnly", havingValue = "false")
-    @Bean
-    SuperStream stream(Environment environment) {
-
-        var stream  = destination+"."+ superStreamName;
-        log.info("Creating stream: {}",stream);
-        environment.streamCreator().name(superStreamName)
-                .superStream()
-                .partitions(partitions).
-                creator()
-                .create();
-
-        return new SuperStream(superStreamName, partitions);
-    }
-
     @Bean
     Consumer consumer(Environment environment,
                       java.util.function.Consumer<byte[]> consumerFunction){
-        return environment.consumerBuilder()
-                .superStream(superStreamName)
-                .messageHandler((context, message) -> {
+        var builder = environment.consumerBuilder()
+                .superStream(superStreamName);
+
+        if(singleActiveConsumer){
+            builder = builder.name(applicationName).singleActiveConsumer();
+        }
+
+
+        return builder.messageHandler((context, message) -> {
                     consumerFunction.accept(message.getBodyAsBinary());
                 })
                 .build();
     }
-
-
-//    @Bean
-//    ListenerContainerCustomizer<MessageListenerContainer> customizer() {
-//        log.info("applicationName: {}, Offset: {}",applicationName,offset);
-//        return (cont, dest, group) -> {
-//            if (cont instanceof StreamListenerContainer container) {
-//                container.setConsumerCustomizer((name, builder) -> {
-//                    switch (offset)
-//                    {
-//                        case "last" -> {
-//                            builder.name(applicationName);
-//                            builder.offset(OffsetSpecification.last());}
-//
-//                        case "next" -> builder.offset(OffsetSpecification.next());
-//                    }
-//                    builder.subscriptionListener(context -> {
-//                        switch (offset) {
-//                            case "first" -> {
-//                                log.info("Replaying from the first record in the stream");
-//                                context.offsetSpecification(OffsetSpecification.first());
-//                            }
-//                        }
-//                    });
-//                });
-//            }
-//        };
-//    }
 
 }

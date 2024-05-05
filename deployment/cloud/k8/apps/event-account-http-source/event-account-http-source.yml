@@ -28,13 +28,17 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: username
-            - name: spring.cloud.stream.bindings.output.destination
-              value: "showcase.event.streaming.accounts"
             - name: spring.rabbitmq.password
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
+            - name: spring.cloud.stream.bindings.output.destination
+              value: "showcase.event.super.streaming.accounts"
+            - name: rabbitmq.streaming.partitions
+              value: "2"
+            - name: spring.profiles.active
+              value: "superStream"
           image: cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
           name: event-account-http-source
           imagePullPolicy: Always

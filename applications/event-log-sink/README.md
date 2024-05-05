@@ -24,7 +24,7 @@ java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar -
 Singe Active Consumer
 
 ```shell
-java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last  --spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer=true
+java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=showcase.event.super.streaming.accounts --spring.profiles.active=superStream --rabbitmq.streaming.offset=last --rabbitmq.streaming.partitions=2  --spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer=true
 
 ```
 
@@ -57,7 +57,4 @@ docker tag event-log-sink:0.0.1-SNAPSHOT cloudnativedata/event-log-sink:0.0.1-SN
 docker push cloudnativedata/event-log-sink:0.0.1-SNAPSHOT
 ```
 
-
-```shell
-docker run --name event-log-sink  --network tanzu --rm  cloudnativedata/event-log-sink:0.0.1-SNAPSHOT --spring.rabbitmq.host=rabbitmq01 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami  --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last  --spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer=true
-```
+docker run cloudnativedata/event-log-sink:0.0.1-SNAPSHOT

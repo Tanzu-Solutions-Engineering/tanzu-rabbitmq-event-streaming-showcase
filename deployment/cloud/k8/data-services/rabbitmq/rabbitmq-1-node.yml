@@ -6,7 +6,7 @@ spec:
   replicas: 1
   service:
     type: LoadBalancer
-  image: rabbitmq:3.12.9-management
+  image: rabbitmq:3.13-management
   resources:
     requests:
       cpu: 1000m

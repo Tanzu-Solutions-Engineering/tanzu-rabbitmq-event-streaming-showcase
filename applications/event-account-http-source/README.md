@@ -8,7 +8,7 @@ java -jar applications/event-account-http-source/target/event-account-http-sourc
 Run application with Super Stream
 
 ```shell
-java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar --spring.profiles.active=superStream   --spring.cloud.stream.bindings.output.destination=event.super.stream
+java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar --spring.profiles.active=superStream   --spring.cloud.stream.bindings.output.destination=showcase.event.super.streaming.accounts
 ```
 
 Run application with Stream with filter
