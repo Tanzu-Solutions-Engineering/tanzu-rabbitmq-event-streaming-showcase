@@ -55,13 +55,16 @@ public class RabbitStreamConfig {
     private String[] filterValues;
 
     @Bean
-    Queue streamGroupOnly() {
+    Queue stream(Environment environment) {
         log.info("Creating stream: {}",streamName);
+
+        environment.streamCreator().name(streamName)
+                .create();
+
         return QueueBuilder.durable(streamName)
                 .stream()
                 .build();
     }
-
 
     @Bean
     Consumer consumer(Environment environment,

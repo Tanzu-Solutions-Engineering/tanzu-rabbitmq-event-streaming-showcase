@@ -217,6 +217,11 @@ kubectl exec  rabbitmq-server-0 -- rabbitmqctl enable_feature_flag stream_filter
 ```
 
 
+```shell
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink-filter-NY.yml
+```
+
+
 
 ---------------------------
 # 5 - Cleanup
