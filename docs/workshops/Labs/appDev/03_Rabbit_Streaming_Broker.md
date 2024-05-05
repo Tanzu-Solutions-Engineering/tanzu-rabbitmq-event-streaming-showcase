@@ -217,10 +217,29 @@ kubectl exec  rabbitmq-server-0 -- rabbitmqctl enable_feature_flag stream_filter
 ```
 
 
+Create Consumer NY 
+
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink-filter-NY.yml
 ```
 
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink-filter-NJ.yml
+```
+
+
+Create Source
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source-filter.yml
+```
+
+
+
+```shell
+open http://localhost:8090/
+```
 
 
 ---------------------------

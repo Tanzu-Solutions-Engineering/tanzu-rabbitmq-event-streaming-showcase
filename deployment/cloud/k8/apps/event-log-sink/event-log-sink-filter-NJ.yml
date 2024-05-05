@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run:  event-log-sink-nj
+  name:  event-log-sink-nj
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  event-log-sink-nj
+  template:
+    metadata:
+      labels:
+        name:  event-log-sink-nj
+    spec:
+      containers:
+        - env:
+            - name: spring.application.name
+              value: event-log-sink-nj
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.stream.host
+              value: rabbitmq
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+            - name: spring.profiles.active
+              value: "stream"
+            - name: spring.cloud.stream.bindings.input.destination
+              value: "showcase.event.filter.streaming.accounts"
+            - name: rabbitmq.streaming.offset
+              value: "last"
+            - name: rabbitmq.streaming.filter.values
+              value: "NJ"
+          image: cloudnativedata/event-log-sink:0.0.1-SNAPSHOT
+          name: event-log-sink-nj
+          imagePullPolicy: Always
+#          imagePullPolicy: IfNotPresent
