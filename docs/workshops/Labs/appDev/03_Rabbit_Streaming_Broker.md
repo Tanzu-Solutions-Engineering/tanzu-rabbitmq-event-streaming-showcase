@@ -199,8 +199,27 @@ open http://localhost:8080/swagger-ui/index.html
 
 Note the previous consumer will become the active consumer
 
+
+Delete Apps
+```shell
+kubectl delete -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink.yml
+kubectl delete -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source.yml
+```
+
+
 ---------------------------
-# 4 - Cleanup
+# 4 - RabbitMQ Stream Filter
+
+enable filtering
+
+```shell
+kubectl exec  rabbitmq-server-0 -- rabbitmqctl enable_feature_flag stream_filtering
+```
+
+
+
+---------------------------
+# 5 - Cleanup
 
 Delete Apps
 ```shell
