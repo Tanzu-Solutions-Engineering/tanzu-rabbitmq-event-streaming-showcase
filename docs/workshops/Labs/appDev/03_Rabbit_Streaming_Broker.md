@@ -239,17 +239,64 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 
 Testings
 
+
+View NJ filter accounts
+
 ```shell
 kubectl logs deployment/event-log-sink-nj -f
 ```
 
+View NY filter accounts (new terminal)
 
-Adding Acc
+```shell
+kubectl logs deployment/event-log-sink-ny -f
+```
+
+
+Adding 
 
 ```shell
 open http://localhost:8090/
 ```
 
+Test NY
+```json
+{
+  "id": "string",
+  "name": "string",
+  "accountType": "string",
+  "status": "string",
+  "notes": "string",
+  "location": {
+    "id": "string",
+    "address": "string",
+    "cityTown": "string",
+    "stateProvince": "NY",
+    "zipPostalCode": "string",
+    "countryCode": "string"
+  }
+}
+```
+
+Test NJ
+
+```json
+{
+  "id": "string",
+  "name": "string",
+  "accountType": "string",
+  "status": "string",
+  "notes": "string",
+  "location": {
+    "id": "string",
+    "address": "string",
+    "cityTown": "string",
+    "stateProvince": "NJ",
+    "zipPostalCode": "string",
+    "countryCode": "string"
+  }
+}
+```
 
 
 ---------------------------
