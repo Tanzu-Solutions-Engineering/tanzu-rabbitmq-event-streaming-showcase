@@ -39,6 +39,8 @@ spec:
               value: "2"
             - name: spring.profiles.active
               value: "stream"
+            - name: rabbitmq.streaming.use.filter
+              value: "true"
           image: cloudnativedata/event-account-http-source:0.0.1-SNAPSHOT
           name: event-account-http-source-filter
           imagePullPolicy: Always
