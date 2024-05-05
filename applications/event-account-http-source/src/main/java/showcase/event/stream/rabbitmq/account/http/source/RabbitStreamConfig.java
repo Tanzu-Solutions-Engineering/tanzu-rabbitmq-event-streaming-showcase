@@ -1,6 +1,7 @@
 package showcase.event.stream.rabbitmq.account.http.source;
 
 import com.rabbitmq.stream.Environment;
+import com.rabbitmq.stream.Producer;
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.conversion.Converter;
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.rabbit.stream.producer.RabbitStreamTemplate;
 
+import static java.lang.String.valueOf;
+
 @Configuration
 @Slf4j
 @Profile("stream")
@@ -23,6 +26,8 @@ public class RabbitStreamConfig {
     @Value("${spring.cloud.stream.bindings.output.destination}")
     private String streamName;
 
+    @Value("${rabbitmq.streaming.use.filter:false}")
+    private boolean isUseFilter;
 
     @Bean
     Queue stream(Environment environment) {
@@ -35,26 +40,35 @@ public class RabbitStreamConfig {
                 .build();
     }
 
-//    @Bean
-//    Publisher<Account> publisher(RabbitStreamTemplate template)
-//    {
-//        return account -> template.convertAndSend(account);
-//    }
+    @Bean
+    Producer producer(Environment environment)
+    {
+        log.info("stream: {}, isUseFilter: {}",streamName,isUseFilter);
+        var builder = environment.producerBuilder()
+                .stream(streamName);
+
+        if(isUseFilter){
+               builder = builder.filterValue(msg ->
+                    valueOf(msg.getApplicationProperties().get(FILTER_PROP_NM)));
+        }
+
+        return builder.build();
+    }
 
     @Bean
-    Publisher<Account> publisher(RabbitStreamTemplate template, Converter<Account,byte[]> converter)
+    Publisher<Account> publisher(Producer producer, Converter<Account,byte[]> converter)
     {
         return account ->{
 
             var state = account.getLocation() != null ? account.getLocation().getStateProvince() : "";
 
-            template.send(template.messageBuilder()
+            producer.send(producer.messageBuilder()
                     .addData(converter.convert(account))
                     .properties().messageId(account.getId())
                     .messageBuilder()
                     .applicationProperties().entry(FILTER_PROP_NM,state)
                     .messageBuilder()
-                    .build());
+                    .build(), confirmationStatus ->{});
         };
     }
 

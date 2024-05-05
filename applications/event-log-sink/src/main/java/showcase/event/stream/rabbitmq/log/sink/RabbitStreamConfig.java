@@ -20,10 +20,14 @@ import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
 
+import static java.lang.String.valueOf;
+
 @Configuration
 @Slf4j
 @Profile("stream")
 public class RabbitStreamConfig {
+
+    private static final String FILTER_PROP_NM = "stateProvince";
 
     @Value("${spring.application.name}")
     private String applicationName;
@@ -73,7 +77,7 @@ public class RabbitStreamConfig {
                 builder = builder.filter().values(filterValues)
                         .postFilter(msg ->
                                 Arrays.asList(filterValues)
-                                        .contains(msg.getProperties().getMessageId()))
+                                        .contains(valueOf(msg.getApplicationProperties().get(FILTER_PROP_NM))))
                         .builder();
 
         var rabbitOffset = offset(environment);
@@ -86,7 +90,7 @@ public class RabbitStreamConfig {
             builder = builder.name(applicationName);
         else if(OffsetSpecification.first().equals(rabbitOffset))
         {
-            //Replay all messages
+            log.info("Replay all messages");
             builder.subscriptionListener(
                     subscriptionContext -> subscriptionContext
                             .offsetSpecification(OffsetSpecification.first()));

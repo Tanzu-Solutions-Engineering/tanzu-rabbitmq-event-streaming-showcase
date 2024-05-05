@@ -11,6 +11,12 @@ Run application with Super Stream
 java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar --spring.profiles.active=superStream   --spring.cloud.stream.bindings.output.destination=event.super.stream
 ```
 
+Run application with Stream with filter
+
+```shell
+java -jar applications/event-account-http-source/target/event-account-http-source-0.0.1-SNAPSHOT.jar --spring.profiles.active=stream --rabbitmq.streaming.use.filter=true   --spring.cloud.stream.bindings.output.destination=event.stream
+```
+
 open http://localhost:8095
 
 ## Docker building image

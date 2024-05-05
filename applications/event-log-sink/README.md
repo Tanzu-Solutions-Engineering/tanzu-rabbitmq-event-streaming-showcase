@@ -11,6 +11,15 @@ Replay stream
 java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=event.stream --spring.profiles.active=stream --rabbitmq.streaming.offset=first 
 ```
 
+```shell
+rabbitmqctl -n rabbit enable_feature_flag stream_filtering
+```
+
+Filtering
+```shell
+java -jar applications/event-log-sink/target/event-log-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=event.stream --spring.profiles.active=stream --rabbitmq.streaming.offset=last --rabbitmq.streaming.filter.values="NY"
+```
+
 
 Singe Active Consumer
 
