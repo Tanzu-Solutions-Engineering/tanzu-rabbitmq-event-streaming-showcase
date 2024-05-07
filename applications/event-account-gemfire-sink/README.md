@@ -23,6 +23,10 @@ start server
 start server --name=server1 --locators=localhost[10334] --server-port=1880 --J=-Dgemfire.prometheus.metrics.emission=Default --J=-Dgemfire.prometheus.metrics.port=7778 --J=-Dgemfire.prometheus.metrics.host=localhost --J=-Dgemfire.prometheus.metrics.interval=15s --bind-address=127.0.0.1 
 ```
 
+Create Region
+```shell
+create region --name=/Account --type=PARTITION
+```
 
 ---
 
@@ -33,16 +37,18 @@ Review stream offsets
 rabbitmq-streams -n rabbit stream_status showcase.event.streaming.accounts --tracking
 ```
 
-## Docker building image
+# Docker building image
 
 ```shell
 mvn install
 cd applications/event-account-gemfire-sink
-mvn spring-boot:build-image
+mvn package
+
+docker build  --platform linux/amd64,linux/arm64 -t event-account-gemfire-sink:0.0.1-SNAPSHOT .
+
 ```
 
 ```shell
-docker tag event-account-gemfire-sink:0.0.1-SNAPSHOT cloudnativedata/event-account-gemfire-sink:0.0.1-SNAPSHOT
-docker push cloudnativedata/event-account-gemfire-sink:0.0.1-SNAPSHOT
+docker tag event-account-gemfire-sink:0.0.2-SNAPSHOT cloudnativedata/event-account-gemfire-sink:0.0.2-SNAPSHOT
+docker push cloudnativedata/event-account-gemfire-sink:0.0.2-SNAPSHOT
 ```
-
