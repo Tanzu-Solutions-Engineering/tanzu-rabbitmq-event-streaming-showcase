@@ -16,6 +16,11 @@ helm repo update
 
 kubectl get pods --namespace cert-manager
 
+# wait for CRD manager
+sleep 5
+kubectl wait pod -l=app.kubernetes.io/component=webhook --for=condition=Ready --timeout=160s --namespace=cert-manager
+
+
 kubectl create namespace gemfire-system
 
 
@@ -26,11 +31,11 @@ kubectl create rolebinding psp-gemfire --namespace=gemfire-system --clusterrole=
 
 # Install the GemFire Operator
 
-helm install gemfire-crd oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-crd --version 2.3.0 --namespace gemfire-system --set operatorReleaseName=gemfire-operator --plain-http
-helm install gemfire-operator oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-operator --version 2.3.0 --namespace gemfire-system --plain-http
+helm install gemfire-crd oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-crd --version 2.2.0 --namespace gemfire-system --set operatorReleaseName=gemfire-operator --plain-http
+helm install gemfire-operator oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-operator --version 2.2.0 --namespace gemfire-system --plain-http
 
 
-sleep 5s
+sleep 5
 kubectl wait pod -l=app.kubernetes.io/component=gemfire-controller-manager --for=condition=Ready --timeout=160s --namespace=gemfire-system
 
 
@@ -47,6 +52,6 @@ kubectl apply -f deployment/cloud/k8/data-services/gemfire/gf-load-balancer.yml
 
 kubectl get services -n kube-system
 
-k apply -f deployment/cloud/k8/data-services/gemfire/gf-load-balance-config-map.yml
+kubectl apply -f deployment/cloud/k8/data-services/gemfire/gf-load-balance-config-map.yml
 
-kubectl delete pods -l k8s-app=kube-dns --namespace kube-system
+#kubectl delete pods -l k8s-app=kube-dns --namespace kube-system

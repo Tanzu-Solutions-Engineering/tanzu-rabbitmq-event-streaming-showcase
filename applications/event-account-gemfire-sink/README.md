@@ -3,7 +3,7 @@
 Example command to run the consumer
 
 ```shell
-java -jar applications/event-account-gemfire-sink/target/event-account-gemfire-sink-0.0.1-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last 
+java -jar applications/event-account-gemfire-sink/target/event-account-gemfire-sink-0.0.2-SNAPSHOT.jar --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.containerType=stream --spring.cloud.stream.bindings.input.group=showcase.event.streaming.accounts --spring.cloud.stream.rabbit.bindings.input.consumer.queueNameGroupOnly=true --rabbitmq.streaming.offset=last 
 ```
 
 ## Start Gemfire
@@ -44,7 +44,7 @@ mvn install
 cd applications/event-account-gemfire-sink
 mvn package
 
-docker build  --platform linux/amd64,linux/arm64 -t event-account-gemfire-sink:0.0.1-SNAPSHOT .
+docker build  --platform linux/amd64,linux/arm64 -t event-account-gemfire-sink:0.0.2-SNAPSHOT .
 
 ```
 

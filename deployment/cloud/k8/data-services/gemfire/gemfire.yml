@@ -6,7 +6,7 @@ metadata:
 spec:
   ingress:
     gatewayName: gf-gateway
-  image: registry.tanzu.vmware.com/pivotal-gemfire/vmware-gemfire:9.15.4
+  image: registry.pivotal.io/pivotal-gemfire/vmware-gemfire:10.1.1
   security:
     tls: {}
   metrics:
@@ -16,11 +16,15 @@ spec:
     resources:
       requests:
         memory: 1Gi
+    persistentVolumeClaim:
+      deleteOnShutdown: true
   servers:
     replicas: 1
     resources:
       requests:
         memory: 1Gi
+    persistentVolumeClaim:
+      deleteOnShutdown: true
 ---
 apiVersion: v1
 kind: Service
