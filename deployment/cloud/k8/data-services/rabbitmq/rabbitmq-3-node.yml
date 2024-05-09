@@ -11,12 +11,12 @@ spec:
   resources:
     requests:
       cpu: 300m
-      memory: 500Mi
+      memory: 800Mi
     limits:
       cpu: 300m
-      memory: 500Mi
+      memory: 800Mi
   persistence:
-    storage: 1Gi
+    storage: 2Gi
   rabbitmq:
     additionalPlugins:
       - rabbitmq_mqtt

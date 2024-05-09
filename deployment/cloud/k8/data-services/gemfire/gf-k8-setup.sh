@@ -31,8 +31,8 @@ kubectl create rolebinding psp-gemfire --namespace=gemfire-system --clusterrole=
 
 # Install the GemFire Operator
 
-helm install gemfire-crd oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-crd --version 2.2.0 --namespace gemfire-system --set operatorReleaseName=gemfire-operator --plain-http
-helm install gemfire-operator oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-operator --version 2.2.0 --namespace gemfire-system --plain-http
+helm install gemfire-crd oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-crd --version 2.3.0 --namespace gemfire-system --set operatorReleaseName=gemfire-operator --plain-http
+helm install gemfire-operator oci://registry.tanzu.vmware.com/tanzu-gemfire-for-kubernetes/gemfire-operator --version 2.3.0 --namespace gemfire-system --plain-http
 
 
 sleep 5

@@ -8,6 +8,7 @@
 package showcase.event.stream.rabbitmq.account.http.source;
 
 import com.rabbitmq.stream.Environment;
+import com.rabbitmq.stream.Producer;
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
 import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.patterns.conversion.Converter;
@@ -37,7 +38,6 @@ public class RabbitSuperStreamConfig {
     private int partitions;
 
 
-    @Bean
     SuperStream superStream(Environment environment) {
 
         log.info("Creating super stream: {}", superStreamName);
@@ -51,27 +51,27 @@ public class RabbitSuperStreamConfig {
     }
 
     @Bean
-    Publisher<Account> publisher(RabbitStreamTemplate template, Converter<Account,byte[]> converter)
+    Publisher<Account> publisher(Environment environment, Producer producer, Converter<Account,byte[]> converter)
     {
-        return account ->{
+        superStream(environment);
 
-            template.send(template.messageBuilder()
-                  .addData(converter.convert(account))
-                  .properties().messageId(account.getId())
-                  .messageBuilder()
-                  .build());
+        return account ->{
+            producer.send(producer.messageBuilder().properties()
+                            .messageId(account.getId())
+                            .messageBuilder().addData
+                                    (converter.convert(account)).build(),
+                            confirmationStatus -> {});
         };
     }
 
     @Bean
-    RabbitStreamTemplate rabbitStreamTemplate(Environment environment) {
-
-        var template = new RabbitStreamTemplate(environment,superStreamName);
-
-        template.setSuperStreamRouting(message -> {
-            return valueOf(message.getProperties().getMessageId());
-        });
-
-        return template;
+    Producer producer(Environment environment)
+    {
+        return environment.producerBuilder()
+                .superStream(superStreamName)
+                .routing(msg -> valueOf(msg.getProperties().getMessageId()))
+                .key()
+                .producerBuilder()
+                .build();
     }
 }

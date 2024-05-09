@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
-		<springBootForGemFire.version>1.0.0</springBootForGemFire.version>
+		<springBootForGemFire.version>1.0.1</springBootForGemFire.version>
 		<vmwareGemFire.version>10.0.0</vmwareGemFire.version>
 		<testcontainers.version>1.19.3</testcontainers.version>
 	</properties>
@@ -39,21 +39,29 @@
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit-stream</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.vmware.gemfire</groupId>
-			<artifactId>spring-boot-3.0-gemfire-10.0</artifactId>
-			<version>${springBootForGemFire.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.vmware.gemfire</groupId>-->
+<!--			<artifactId>spring-boot-3.1-gemfire-10.0</artifactId>-->
+<!--			<version>${springBootForGemFire.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>com.vmware.gemfire</groupId>
 			<artifactId>gemfire-cq</artifactId>
 			<version>${vmwareGemFire.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.vmware.gemfire</groupId>
+			<artifactId>gemfire-core</artifactId>
+			<version>${vmwareGemFire.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -87,6 +95,10 @@
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
 			<artifactId>spring-rabbit-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 	</dependencies>
 

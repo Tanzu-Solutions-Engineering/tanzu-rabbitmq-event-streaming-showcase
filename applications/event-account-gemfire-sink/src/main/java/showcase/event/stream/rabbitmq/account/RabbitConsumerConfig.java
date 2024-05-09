@@ -8,8 +8,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionNameStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.MessageConverter;
 
 import java.io.IOException;
 

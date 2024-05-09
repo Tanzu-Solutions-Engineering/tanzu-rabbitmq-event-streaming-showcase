@@ -6,7 +6,7 @@ metadata:
 spec:
   ingress:
     gatewayName: gf-gateway
-  image: registry.pivotal.io/pivotal-gemfire/vmware-gemfire:10.1.1
+  image: gemfire/gemfire:10.1
   security:
     tls: {}
   metrics:

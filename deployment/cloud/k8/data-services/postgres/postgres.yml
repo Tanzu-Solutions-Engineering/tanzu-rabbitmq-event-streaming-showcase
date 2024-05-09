@@ -11,8 +11,8 @@ spec:
       requests:
         cpu: 1200m
         memory: 1000Mi
-  storageClassName: tanzu-data-services
+#  storageClassName: tanzu-data-services
   storageSize: 3G
-#  serviceType: LoadBalancer
+  serviceType: LoadBalancer
   highAvailability:
     enabled: true
