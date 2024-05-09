@@ -43,7 +43,6 @@ public class RabbitSuperStreamConfig {
     @Value("${spring.cloud.stream.rabbit.bindings.input.consumer.singleActiveConsumer:false}")
     private boolean singleActiveConsumer;
 
-//    @Bean
     SuperStream superStream(Environment environment) {
 
         log.info("Creating super stream: {}", superStreamName);

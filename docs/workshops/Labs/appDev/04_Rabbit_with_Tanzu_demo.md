@@ -27,6 +27,13 @@ kubectl apply -f deployment/cloud/k8/data-services/gemfire/gemfire.yml
 kubectl  exec -it gemfire1-locator-0 -- gfsh -e "connect --locator=gemfire1-locator-0.gemfire1-locator.default.svc.cluster.local[10334]" -e "create region --name=Account --type=PARTITION"
 ```
 
+Deploy Gideon Console
+
+```shell
+kubectl apply -f deployment/cloud/k8/data-services/gemfire/gideonConsole/gemfire-management-console.yml
+```
+
+
 
 Install Postgres Operator
 
@@ -101,6 +108,12 @@ deployer.account-global-service.kubernetes.secretKeyRefs=[{envVarName: 'POSTGRES
 deployer.account-global-service.kubernetes.environmentVariables=spring.profiles.active=redis,spring.data.redis.cluster.nodes=gemfire-server-0:6379,rabbitmq.streaming.replay=true,spring.application.name=bank-account-gemfire-sink,spring.cloud.stream.rabbit.bindings.input.consumer.container-type=stream,spring.cloud.stream.binder.connection-name-prefix=bank-account-gemfire-sink,spring.rabbitmq.stream.host=rabbitmq,spring.data.gemfire.pool.default.locators=gemfire-locator-0.gemfire-locator.accounting.svc.cluster.local[10334]
 ```
 
+# - Deploy GemFire console
+
+
+```shell
+gemfireconsole=gemfire-management-console
+```
 
 
 # Cleanup

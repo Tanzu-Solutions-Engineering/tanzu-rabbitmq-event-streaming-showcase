@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.rabbit.stream.config.SuperStream;
-import org.springframework.rabbit.stream.producer.RabbitStreamTemplate;
 
 import static java.lang.String.valueOf;
 
@@ -37,6 +36,8 @@ public class RabbitSuperStreamConfig {
     @Value("${rabbitmq.streaming.partitions:2}")
     private int partitions;
 
+    private static final String routingKeyName = "id";
+
 
     SuperStream superStream(Environment environment) {
 
@@ -51,26 +52,36 @@ public class RabbitSuperStreamConfig {
     }
 
     @Bean
-    Publisher<Account> publisher(Environment environment, Producer producer, Converter<Account,byte[]> converter)
-    {
-        superStream(environment);
-
-        return account ->{
-            producer.send(producer.messageBuilder().properties()
-                            .messageId(account.getId())
-                            .messageBuilder().addData
-                                    (converter.convert(account)).build(),
-                            confirmationStatus -> {});
+    Publisher<Account> publisher(Environment environment, Producer producer, Converter<Account, byte[]> converter) {
+        return account -> {
+            try {
+                producer.send(producer.messageBuilder().applicationProperties()
+                                .entry(routingKeyName, account.getId())
+                                .messageBuilder().addData
+                                        (converter.convert(account)).build(),
+                        confirmationStatus -> {
+                            if (confirmationStatus.isConfirmed())
+                                log.info("SENT: {}", account);
+                            else
+                                log.error("NOT! SENT: {}", account);
+                        });
+            } catch (Exception e) {
+                log.error("ERROR: {}", e);
+            }
         };
     }
 
     @Bean
-    Producer producer(Environment environment)
-    {
+    Producer producer(Environment environment) {
+        superStream(environment);
+
         return environment.producerBuilder()
                 .superStream(superStreamName)
-                .routing(msg -> valueOf(msg.getProperties().getMessageId()))
-                .key()
+                .routing(msg -> {
+                    var id = valueOf(msg.getApplicationProperties().get(routingKeyName));
+                    log.info("routing id: {}",id);
+                    return id;
+                })
                 .producerBuilder()
                 .build();
     }
