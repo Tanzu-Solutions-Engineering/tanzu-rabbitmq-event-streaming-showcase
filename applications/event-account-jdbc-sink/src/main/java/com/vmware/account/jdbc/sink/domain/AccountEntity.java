@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "evt_accounts")
+@Table(name = "evt_accounts",schema="evt_showcase")
 @Data
 @NoArgsConstructor
 public class AccountEntity {

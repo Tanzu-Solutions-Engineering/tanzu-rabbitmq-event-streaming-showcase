@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "evt_locations")
+@Table(name = "evt_locations",schema="evt_showcase")
 @Data
 @NoArgsConstructor
 public class LocationEntity {

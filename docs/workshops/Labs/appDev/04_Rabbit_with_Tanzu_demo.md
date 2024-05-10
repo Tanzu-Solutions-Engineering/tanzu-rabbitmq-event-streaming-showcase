@@ -74,7 +74,6 @@ Create Applications -> Add Applications
 
 
 ```properties
-app.gemfire-management-console=docker:gemfire/gemfire-management-console:1.2
 sink.gemfire-sink-rabbit=docker:gemfire/gemfire-sink-rabbit:1.0.1
 source.gemfire-source-rabbit=docker:gemfire/gemfire-source-rabbit:1.0.1
 sink.event-account-gemfire-sink=docker:cloudnativedata/event-account-gemfire-sink:0.0.2-SNAPSHOT
@@ -102,23 +101,92 @@ deployer.event-account-http-source.kubernetes.imagePullPolicy=Always
 
 ```
 
+Destroy 
+
+--------------------------------------
+
+Register JDBC sql console
 
 ```shell
-deployer.account-global-service.kubernetes.secretKeyRefs=[{envVarName: 'POSTGRES_DB', secretName: 'postgres-db-app-user-db-secret', dataKey: 'database'}]
-deployer.account-global-service.kubernetes.environmentVariables=spring.profiles.active=redis,spring.data.redis.cluster.nodes=gemfire-server-0:6379,rabbitmq.streaming.replay=true,spring.application.name=bank-account-gemfire-sink,spring.cloud.stream.rabbit.bindings.input.consumer.container-type=stream,spring.cloud.stream.binder.connection-name-prefix=bank-account-gemfire-sink,spring.rabbitmq.stream.host=rabbitmq,spring.data.gemfire.pool.default.locators=gemfire-locator-0.gemfire-locator.accounting.svc.cluster.local[10334]
-```
+app.jdbc-sql-console-app=docker:cloudnativedata/jdbc-sql-console-app:0.0.2-SNAPSHOT
+sink.event-account-jdbc-sink=docker:cloudnativedata/event-account-jdbc-sink:0.0.1-SNAPSHOT
 
-# - Deploy GemFire console
+```
 
 
 ```shell
-gemfireconsole=gemfire-management-console
+sql-console=jdbc-sql-console-app
 ```
 
 
+```properties
+deployer.jdbc-sql-console-app.kubernetes.secretKeyRefs=[{envVarName: 'spring.datasource.username', secretName: 'postgres-db-app-user-db-secret', dataKey: 'username'},{envVarName: 'spring.datasource.password', secretName: 'postgres-db-app-user-db-secret', dataKey: 'password'}]
+deployer.jdbc-sql-console-app.kubernetes.environmentVariables=spring.datasource.url=jdbc:postgresql://postgres-db:5432/postgres-db,server.port=8080
+deployer.jdbc-sql-console-app.kubernetes.createLoadBalancer=true
+deployer.jdbc-sql-console-app.kubernetes.imagePullPolicy=Always
+```
+
+Complex Streams
+
+```shell
+http-gf=event-account-http-source | event-account-gemfire-sink
+http-log=:http-gf.event-account-http-source > event-log-sink
+http-jdbc=:http-gf.event-account-http-source > event-account-jdbc-sink
+sql-console=jdbc-sql-console-app
+```
+
+http-gf
+
+```properties
+deployer.event-account-gemfire-sink.kubernetes.configMapKeyRefs=[{envVarName: 'spring.data.gemfire.pool.locators', configMapName: 'gemfire1-config', dataKey: 'locators'}]
+deployer.event-account-gemfire-sink.bootVersion=3
+deployer.event-account-http-source.bootVersion=3
+deployer.event-account-gemfire-sink.kubernetes.environmentVariables=spring.profiles.active=superStream,spring.rabbitmq.stream.host=rabbitmq,server.port=8080
+deployer.event-account-gemfire-sink.kubernetes.imagePullPolicy=Always
+deployer.event-account-http-source.kubernetes.environmentVariables=spring.profiles.active=superStream,spring.rabbitmq.stream.host=rabbitmq,server.port=8080
+deployer.event-account-http-source.kubernetes.createLoadBalancer=true
+deployer.event-account-http-source.kubernetes.imagePullPolicy=Always
+````
+
+http-jdbc
+
+```properties
+deployer.event-account-jdbc-sink.kubernetes.imagePullPolicy=Always
+deployer.event-account-jdbc-sink.kubernetes.environmentVariables=spring.datasource.url=jdbc:postgresql://postgres-db:5432/postgres-db,spring.profiles.active=superStream,spring.rabbitmq.stream.host=rabbitmq,server.port=8080
+deployer.event-account-jdbc-sink.kubernetes.secretKeyRefs=[{envVarName: 'spring.datasource.username', secretName: 'postgres-db-app-user-db-secret', dataKey: 'username'},{envVarName: 'spring.datasource.password', secretName: 'postgres-db-app-user-db-secret', dataKey: 'password'}]
+deployer.event-account-jdbc-sink.bootVersion=3
+```
+
+http-log
+
+```properties
+deployer.event-log-sink.kubernetes.environmentVariables=spring.profiles.active=superStream,spring.rabbitmq.stream.host=rabbitmq,server.port=8080
+deployer.event-log-sink.kubernetes.imagePullPolicy=Always
+deployer.event-log-sink.bootVersion=3
+```
+
+sql-console
+
+```properties
+deployer.jdbc-sql-console-app.bootVersion=3
+deployer.jdbc-sql-console-app.kubernetes.secretKeyRefs=[{envVarName: 'spring.datasource.username', secretName: 'postgres-db-app-user-db-secret', dataKey: 'username'},{envVarName: 'spring.datasource.password', secretName: 'postgres-db-app-user-db-secret', dataKey: 'password'}]
+deployer.jdbc-sql-console-app.kubernetes.environmentVariables=spring.datasource.url=jdbc:postgresql://postgres-db:5432/postgres-db,server.port=8080
+deployer.jdbc-sql-console-app.kubernetes.createLoadBalancer=true
+deployer.jdbc-sql-console-app.kubernetes.imagePullPolicy=Always
+```
+
+
+--------------------------------------
 # Cleanup
 
 ```shell
 helm uninstall gemfire-operator --namespace gemfire-system
 helm uninstall gemfire-crd --namespace gemfire-system
+```
+
+--------------
+
+```shell
+deployer.account-global-service.kubernetes.secretKeyRefs=[{envVarName: 'POSTGRES_DB', secretName: 'postgres-db-app-user-db-secret', dataKey: 'database'}]
+deployer.account-global-service.kubernetes.environmentVariables=spring.profiles.active=redis,spring.data.redis.cluster.nodes=gemfire-server-0:6379,rabbitmq.streaming.replay=true,spring.application.name=bank-account-gemfire-sink,spring.cloud.stream.rabbit.bindings.input.consumer.container-type=stream,spring.cloud.stream.binder.connection-name-prefix=bank-account-gemfire-sink,spring.rabbitmq.stream.host=rabbitmq,spring.data.gemfire.pool.default.locators=gemfire-locator-0.gemfire-locator.accounting.svc.cluster.local[10334]
 ```
