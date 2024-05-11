@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.AccessControl;
+using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Imani.Solutions.Core.API.Util;
@@ -15,6 +16,13 @@ uint prefetchSize  = Convert.ToUInt32(config.GetPropertyInteger("prefetchSize",0
 ushort prefetchCount  = Convert.ToUInt16(config.GetPropertyInteger("prefetchCount",1));
 bool autoAckFlag = config.GetPropertyBoolean("autoAck",true);
 var streamOffset = config.GetProperty("streamOffset","last");
+var consumerArguments =  new Dictionary<string, object>();
+
+if("stream".Equals(queueType))
+{
+    consumerArguments.Add("x-stream-offset", streamOffset);
+
+}
 
 //Make connection
 
@@ -61,8 +69,7 @@ channel.BasicConsume(
                     queue: queueName,
                      autoAck: autoAckFlag,
                      consumer: consumer,
-                     arguments:  new Dictionary<string, object>()
-                        {{ "x-stream-offset", streamOffset}});
+                     arguments:  consumerArguments);
 
 
 Console.WriteLine(" Press [enter] to exit.");

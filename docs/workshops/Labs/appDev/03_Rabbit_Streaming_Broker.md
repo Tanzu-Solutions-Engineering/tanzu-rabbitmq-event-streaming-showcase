@@ -78,6 +78,8 @@ Replay all messages
 dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --streamOffset=first --autoAck=false 
 ```
 
+Hit Enter
+
 Reading last chunk
 ```shell
 dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --streamOffset=last --autoAck=false
@@ -114,11 +116,6 @@ Start Minikube (if not started)
 minikube start  --memory='5g' --cpus='4'
 ```
 
-View PODS in rabbitmq-system
-
-```shell
-kubectl get pods -n rabbitmq-system
-```
 
 Install RabbitMQ Cluster Operator (if pods not running)
 
@@ -126,12 +123,21 @@ Install RabbitMQ Cluster Operator (if pods not running)
 kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
 ```
 
+View PODS in rabbitmq-system
+
+```shell
+kubectl get pods -n rabbitmq-system
+```
+
+View for PODS to be in Running status
 
 Start Minikube Tunnel
 
 ```shell
 minikube tunnel
 ```
+
+Keep Tunnel running
 
 Create 1 Node RabbitMQ 
 
@@ -145,22 +151,19 @@ Wait for server to start
 kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --timeout=160s
 ```
 
-Start Event Log
+Deploy Event Log Application
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-log-sink/event-log-sink.yml
 ```
 
+Deploy Http Source App
 
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/event-account-http-source/event-account-http-source.yml
 ```
 
-Open Sources
-Submit account
-```shell
-open http://localhost:8080/swagger-ui/index.html
-```
+Check if all pods in running state
 
 ```shell
 kubectl get pods
@@ -174,30 +177,72 @@ event-account-http-source-694b87f746-5x9sb   1/1     Running   0          18m
 event-log-sink-cd7fbc47b-djt2v               1/1     Running   0          2m53s
 event-log-sink-cd7fbc47b-qls7g               1/1     Running   0          127m
 rabbitmq-server-0                            1/1     Running   0          130m
+```
 
+Open Sources
+Submit account
+```shell
+open http://localhost:8080/swagger-ui/index.html
+```
+
+```json
+{
+  "id": "001",
+  "name": "Event Demo 1",
+  "accountType": "test",
+  "status": "IN-PROGRESS",
+  "notes": "Testing 123",
+  "location": {
+    "id": "001.001",
+    "address": "1 Straight Stree",
+    "cityTown": "Wayne",
+    "stateProvince": "NJ",
+    "zipPostalCode": "55555",
+    "countryCode": "US"
+  }
+}
 ```
 
 Review Logs for each
 
-Example pod 1
+Example pod 1 -  REPLACE event-log-sink-cd7fbc47b-djt2v ACTUAL POD NAME
 ```shell
 kubectl logs -f event-log-sink-cd7fbc47b-djt2v
 ```
 
-Example pod 2 (run in new terminal)
+Example pod 2 (run in new terminal) - REPLACE event-log-sink-cd7fbc47b-qls7g ACTUAL POD NAME
 ```shell
 kubectl logs -f event-log-sink-cd7fbc47b-qls7g
 ```
 
 Note message are routed by account id application get the logs events
 
+Change Id to test routing
 
-Open Sources  Submit account 
+Example Json
+
+Open Sources  Submit account
 ```shell
 open http://localhost:8080/swagger-ui/index.html
 ```
 
-Note the previous consumer will become the active consumer
+```json
+{
+  "id": "002",
+  "name": "Event Demo 2",
+  "accountType": "test",
+  "status": "IN-PROGRESS",
+  "notes": "Testing 222",
+  "location": {
+    "id": "002.002",
+    "address": "2 Straight Stree",
+    "cityTown": "JamesTown",
+    "stateProvince": "NY",
+    "zipPostalCode": "45555",
+    "countryCode": "US"
+  }
+}
+```
 
 
 Delete Apps
@@ -246,6 +291,8 @@ View NJ filter accounts
 kubectl logs deployment/event-log-sink-nj -f
 ```
 
+Watch for "Started" message
+
 View NY filter accounts (new terminal)
 
 ```shell
@@ -253,8 +300,9 @@ kubectl logs deployment/event-log-sink-ny -f
 ```
 
 
-Adding 
+Open Source App
 
+Example
 ```shell
 open http://localhost:8090/
 ```
@@ -262,18 +310,18 @@ open http://localhost:8090/
 Test NY
 ```json
 {
-  "id": "string",
-  "name": "string",
-  "accountType": "string",
-  "status": "string",
-  "notes": "string",
+  "id": "NY1",
+  "name": "Event NY Filtering",
+  "accountType": "test",
+  "status": "IN-PROGRESS",
+  "notes": "Testing 222",
   "location": {
-    "id": "string",
-    "address": "string",
-    "cityTown": "string",
+    "id": "002.002",
+    "address": "2 Straight Street",
+    "cityTown": "JamesTown",
     "stateProvince": "NY",
-    "zipPostalCode": "string",
-    "countryCode": "string"
+    "zipPostalCode": "45555",
+    "countryCode": "US"
   }
 }
 ```
@@ -282,18 +330,18 @@ Test NJ
 
 ```json
 {
-  "id": "string",
-  "name": "string",
-  "accountType": "string",
-  "status": "string",
-  "notes": "string",
+  "id": "001",
+  "name": "Event Demo 1",
+  "accountType": "test",
+  "status": "IN-PROGRESS",
+  "notes": "Testing 123",
   "location": {
-    "id": "string",
-    "address": "string",
-    "cityTown": "string",
+    "id": "001.001",
+    "address": "1 Straight Stree",
+    "cityTown": "Wayne",
     "stateProvince": "NJ",
-    "zipPostalCode": "string",
-    "countryCode": "string"
+    "zipPostalCode": "55555",
+    "countryCode": "US"
   }
 }
 ```

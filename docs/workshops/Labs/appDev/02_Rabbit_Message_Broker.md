@@ -10,11 +10,20 @@ Create the docker network (if not existing)
 docker network create tanzu
 ```
 
-- Run RabbitMQ (if note running)
+- Run RabbitMQ (if not running)
 
 ```shell
 docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
 ```
+
+
+- View Logs (wait for message: started TCP listener on [::]:5672)
+
+```shell
+docker logs rabbitmq01
+```
+
+
 - Open Management Console with credentials *user/bitnami*
 ```shell
 open http://localhost:15672
@@ -129,3 +138,5 @@ Hit Enter
 ```
 
 Hit Enter
+
+Stop Publisher and Consumers

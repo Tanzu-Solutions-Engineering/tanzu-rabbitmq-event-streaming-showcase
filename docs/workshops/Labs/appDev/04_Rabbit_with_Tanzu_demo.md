@@ -5,11 +5,7 @@
 
 - Kubernetes cluster
 - RabbitMQ Operator
-- brew install qemu
 
-```shell
-minikube start  --memory='5g' --cpus='4'  --driver=qemu
-```
 
 Setup GemFire Operator
 
@@ -65,10 +61,10 @@ Install SCDF
 ./deployment/cloud/k8/data-services/scdf/install_scdf.sh
 ```
 ------------------------------------------
+# 1 - Stream Data From HTTP into GemFire
 
 
-# 1 - Stream Data into GemFire
-
+Open SCDF
 
 Create Applications -> Add Applications
 
@@ -82,12 +78,13 @@ source.event-account-http-source=docker:cloudnativedata/event-account-http-sourc
 
 ```
 
-Stream
+Create Stream
 
 ```shell
 http-gemfire=event-account-http-source | event-account-gemfire-sink
 ```
 
+Set Deploy properties
 
 ```properties
 deployer.event-account-gemfire-sink.kubernetes.configMapKeyRefs=[{envVarName: 'spring.data.gemfire.pool.locators', configMapName: 'gemfire1-config', dataKey: 'locators'}]
@@ -101,9 +98,11 @@ deployer.event-account-http-source.kubernetes.imagePullPolicy=Always
 
 ```
 
-Destroy 
+Destroy Stream after testing
 
 --------------------------------------
+
+# 2 - Orchestrate multiple streams with Postgres, GemFire and more
 
 Register JDBC sql console
 
@@ -113,20 +112,7 @@ sink.event-account-jdbc-sink=docker:cloudnativedata/event-account-jdbc-sink:0.0.
 
 ```
 
-
-```shell
-sql-console=jdbc-sql-console-app
-```
-
-
-```properties
-deployer.jdbc-sql-console-app.kubernetes.secretKeyRefs=[{envVarName: 'spring.datasource.username', secretName: 'postgres-db-app-user-db-secret', dataKey: 'username'},{envVarName: 'spring.datasource.password', secretName: 'postgres-db-app-user-db-secret', dataKey: 'password'}]
-deployer.jdbc-sql-console-app.kubernetes.environmentVariables=spring.datasource.url=jdbc:postgresql://postgres-db:5432/postgres-db,server.port=8080
-deployer.jdbc-sql-console-app.kubernetes.createLoadBalancer=true
-deployer.jdbc-sql-console-app.kubernetes.imagePullPolicy=Always
-```
-
-Complex Streams
+Created Multiple Streams/Apps
 
 ```shell
 http-gf=event-account-http-source | event-account-gemfire-sink
@@ -134,6 +120,8 @@ http-log=:http-gf.event-account-http-source > event-log-sink
 http-jdbc=:http-gf.event-account-http-source > event-account-jdbc-sink
 sql-console=jdbc-sql-console-app
 ```
+
+Deploy streams
 
 http-gf
 
