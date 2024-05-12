@@ -44,7 +44,7 @@ Waited for PODS to be in Running status
 Create Rabbit Broker
 
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-1-node-3.12.13.yml
 ```
 
 View PODs
@@ -93,7 +93,7 @@ Review version
 
 Upgrade version
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-1-node-3.12.13.yml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-1-node-3.13.yml
 ```
 
 Wait for broker to start
