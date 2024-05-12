@@ -116,6 +116,11 @@ Start Minikube (if not started)
 minikube start  --memory='5g' --cpus='4'
 ```
 
+or 
+```shell
+minikube start  --memory='3g' --cpus='2'
+```
+
 
 Install RabbitMQ Cluster Operator (if pods not running)
 
@@ -129,12 +134,12 @@ View PODS in rabbitmq-system
 kubectl get pods -n rabbitmq-system
 ```
 
-View for PODS to be in Running status
+Waited for PODS to be in Running status
 
 Start Minikube Tunnel
 
 ```shell
-minikube tunnel
+minikube tunnel --bind-address=0.0.0.0
 ```
 
 Keep Tunnel running
@@ -145,7 +150,13 @@ Create 1 Node RabbitMQ
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
 ```
 
-Wait for server to start
+View PODs
+
+```shell
+kubectl get pods
+```
+
+Wait for server to be in running state
 
 ```shell
 kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --timeout=160s
@@ -179,7 +190,8 @@ event-log-sink-cd7fbc47b-qls7g               1/1     Running   0          127m
 rabbitmq-server-0                            1/1     Running   0          130m
 ```
 
-Open Sources
+Open Sources in brows
+
 Submit account
 ```shell
 open http://localhost:8080/swagger-ui/index.html
@@ -201,6 +213,31 @@ open http://localhost:8080/swagger-ui/index.html
     "countryCode": "US"
   }
 }
+```
+
+
+Example CLI
+
+```shell
+curl -X 'POST' \
+  'http://localhost:8080/accounts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "name": "Event Demo 1",
+  "accountType": "test",
+  "status": "IN-PROGRESS",
+  "notes": "Testing 123",
+  "location": {
+    "id": "001.001",
+    "address": "1 Straight Stree",
+    "cityTown": "Wayne",
+    "stateProvince": "NJ",
+    "zipPostalCode": "55555",
+    "countryCode": "US"
+  }
+}'
 ```
 
 Review Logs for each
@@ -243,7 +280,29 @@ open http://localhost:8080/swagger-ui/index.html
   }
 }
 ```
+Example CLI
 
+```shell
+curl -X 'POST' \
+  'http://localhost:8080/accounts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "002",
+  "name": "Event Demo 2",
+  "accountType": "test",
+  "status": "IN-PROGRESS",
+  "notes": "Testing 222",
+  "location": {
+    "id": "002.002",
+    "address": "2 Straight Stree",
+    "cityTown": "JamesTown",
+    "stateProvince": "NY",
+    "zipPostalCode": "45555",
+    "countryCode": "US"
+  }
+}'
+```
 
 Delete Apps
 ```shell

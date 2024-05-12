@@ -7,27 +7,66 @@
 
 Start Minikube (if not started)
 
+Start Minikube
+
 ```shell
 minikube start  --memory='5g' --cpus='4'
 ```
-
-# 1 - Create RabbitMQ Broker
+or
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+minikube start  --memory='3g' --cpus='2'
+```
+Start Minikube Tunnel
+
+```shell
+minikube tunnel --bind-address=0.0.0.0
 ```
 
-Wait for broker to start
+-----------------------------------------
+# 1 - Create RabbitMQ Broker
+
+
+Install RabbitMQ Operator
+
+```shell
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+```
+
+View PODS in rabbitmq-system
+
+```shell
+kubectl get pods -n rabbitmq-system
+```
+
+Waited for PODS to be in Running status
+
+Create Rabbit Broker
+
+```shell
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+```
+
+View PODs
+
+```shell
+kubectl get pods
+```
+
+Wait for server to be in running state
+
 ```shell
 kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --timeout=160s
 ```
 
+View k8 Services
 ```shell
 kubectl get services
 ```
 
 Get Default User/Password
 
+Example UNIX
 ```shell
 kubectl get secret rabbitmq-default-user -o jsonpath="{.data.username}"
 
@@ -36,7 +75,7 @@ export rpwd=`kubectl get secret rabbitmq-default-user -o jsonpath="{.data.passwo
 
 echo ""
 echo "USER:" $ruser
-echo "PASWORD:" $rpwd
+echo "PASSWORD:" $rpwd
 ```
 
 
