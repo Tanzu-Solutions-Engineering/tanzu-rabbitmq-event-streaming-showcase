@@ -171,3 +171,6 @@ Access Management console (use above user/password)
 ```shell
 open http://127.0.0.1:15672/
 ```
+
+
+# Cleanup Update

@@ -11,6 +11,17 @@ Start Minikube (if not started)
 minikube start  --memory='5g' --cpus='4'
 ```
 
+or 
+
+```shell
+minikube start  --memory='3g' --cpus='2'
+```
+Start Minikube Tunnel (if not running)
+
+```shell
+minikube tunnel --bind-address=0.0.0.0
+```
+
 # 1 - Install Message Topology Operator
 
 First, install cert-manager version 1.2.0+ on your cluster. For example, for version 1.3.1, run:
@@ -25,13 +36,18 @@ kubectl wait pod -l=app.kubernetes.io/instance=cert-manager --for=condition=Read
 ```
 
 
-Then, to install the Operator, run the following command:
+Then, to install the Message Topology Operator, run the following command:
 
 ```shell
 kubectl apply -f https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml
 ```
 
-Wait for operator
+View messaging-topology-operator pod
+```shell
+kubectl get pods -n rabbitmq-system
+```
+
+Wait for operator to run
 ```shell
 kubectl wait pod -l=app.kubernetes.io/name=messaging-topology-operator --for=condition=Ready --timeout=160s -n rabbitmq-system
 ```
@@ -40,49 +56,63 @@ kubectl wait pod -l=app.kubernetes.io/name=messaging-topology-operator --for=con
 
 Create User
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/users/app-user.yaml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/users/app-user.yaml
 ```
 
 Create Vhost
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/vhosts/vhost.yaml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/vhosts/vhost.yaml
 ```
 
-Adder Permission
+Add user Permission
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/permissions/app-permission.yaml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/permissions/app-permission.yaml
 ```
 
 Create Quorum Queue
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/queues/quorum-queue.yaml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/queues/quorum-queue.yaml
 ```
 
 Create Stream
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/queues/stream-queue.yaml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/queues/stream-queue.yaml
 ```
 
 Create Lazy Queue
 
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/queues/lazy-queue.yaml
+kubectl apply -f https://github.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/blob/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/queues/lazy-queue.yaml
 ```
 
 Create Exchange - Fanout
 
 ```shell
-kubectl apply -f  deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/exchanges/fanout-exchange.yaml
+kubectl apply -f  https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/MessageTopology/examples/exchanges/fanout-exchange.yaml
 ```
 
 # 2 - Perf Test Monitoring & Troubleshooting 
 
+Start Perf Test
+
 ```shell
-kubectl apply -f deployment/cloud/k8/apps/rabbitmq-perf-test/perf-test.yml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/apps/rabbitmq-perf-test/perf-test.yml
+```
+
+View PODs
+```shell
+kubectl get pods
+```
+
+Wait for perf-test to be in running start
+
+```shell
+kubectl wait pod -l=name=perf-test --for=condition=Ready --timeout=160s
+
 ```
 
 Tail logs

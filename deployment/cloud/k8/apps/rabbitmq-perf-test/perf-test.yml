@@ -29,5 +29,5 @@ spec:
               value: "true"
             - name: URI
               value: "amqp://app:changeme@rabbitmq/app"
-          image: pivotalrabbitmq/perf-test:latest
+          image: pivotalrabbitmq/perf-test:2.21.0
           name: perf-test
