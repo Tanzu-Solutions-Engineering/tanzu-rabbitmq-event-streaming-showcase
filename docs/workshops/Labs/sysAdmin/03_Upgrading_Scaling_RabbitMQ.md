@@ -148,6 +148,8 @@ Access Management console (use above user/password)
 open http://127.0.0.1:15672/
 ```
 
+*Note the RabbitMQ operator may restart additional nodes as needed when scaling from 1 to 3 nodes*
+
 # 4 - Upgrade 3 Node Cluster
 
 Upgrade RabbitMQ cluster
@@ -156,6 +158,13 @@ Upgrade RabbitMQ cluster
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-3-node-3.13.yml
 ```
 
+View PODs
+
+```shell
+kubectl get pods
+```
+
+Wait for all nodes to restart
 
 Access Management console (use above user/password)
 
