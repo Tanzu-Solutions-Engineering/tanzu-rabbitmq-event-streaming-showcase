@@ -89,11 +89,20 @@ Review version
 
 ![rabbitmq_version.png](img/rabbitmq_version.png)]
 
+![img.png](img/img.png)
+
+
 # 2 - Upgrade RabbitMQ Broker
 
 Upgrade version
 ```shell
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-1-node-3.13.yml
+```
+
+View PODs
+
+```shell
+kubectl get pods
 ```
 
 Wait for broker to start
@@ -113,7 +122,14 @@ Note: RabbitMQ Version
 
 Scale to 3 nodes
 ```shell
-kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-3-node-3.12.13.yml
+kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-3-node-3.13.yml
+```
+
+
+View PODs
+
+```shell
+kubectl get pods
 ```
 
 Wait for broker to start

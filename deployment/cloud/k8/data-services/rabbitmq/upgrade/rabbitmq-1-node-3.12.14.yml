@@ -3,10 +3,10 @@ kind: RabbitmqCluster
 metadata:
   name: rabbitmq
 spec:
-  replicas: 3
+  replicas: 1
   service:
     type: LoadBalancer
-  image: rabbitmq:3.12.13-management
+  image: 3.12.14-management
   resources:
     requests:
       cpu: 1000m
