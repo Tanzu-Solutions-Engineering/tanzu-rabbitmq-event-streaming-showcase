@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    run:  gemfire-sink-app
-  name:  gemfire-sink-app
+    run:  gemfire-source-rabbit
+  name:  gemfire-source-rabbit
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name:  gemfire-sink-app
+      name:  gemfire-source-rabbit
   template:
     metadata:
       labels:
-        name:  gemfire-sink-app
+        name:  gemfire-source-rabbit
       annotations:
         sidecar.opentelemetry.io/inject: "true"
         instrumentation.opentelemetry.io/inject-java: "opentelemetry-operator-system/otelinst"
@@ -21,8 +21,20 @@ spec:
         - env:
             - name: server.port
               value: "8080"
+            - name: gemfire.client.pdx-read-serialized
+              value: "true"
+            - name: gemfire.pool.connect-type
+              value: locator
+            - name: gemfire.pool.host-addresses
+              value: "gemfire1-locator:10334"
+            - name: gemfire.pool.subscription-enabled
+              value: "true"
+            - name: gemfire.region.region-name
+              value: Event
+            - name: gemfire.supplier.query
+              value: "select * from /Event where chat.message.text.matches('.*URGENT.*') and chat.message.eventTimeStamp.eventTime.hour24 > 12"
             - name: spring.application.name
-              value: gemfire-sink-app
+              value: gemfire-source-rabbit
             - name: spring.rabbitmq.host
               value: rabbitmq-hub
             - name: spring.rabbitmq.stream.host
@@ -37,41 +49,21 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-hub-user
                   key: password
-            - name: gemfire.pool.host-addresses
-              value: gemfire1-locator-0:10334
-#            - name: spring.data.gemfire.pool.locators
-#              valueFrom:
-#                configMapKeyRef:
-#                  name: gemfire1-config
-#                  key: locators
-#            - name: cluster
-#              value: hub
-            - name: gemfire.consumer.json
-              value: "true"
-            - name: gemfire.region.region-name
-              value: "Event"
-            - name: gemfire.consumer.key-expression
-              value: "payload.getField('id')"
-            - name: spring.cloud.stream.bindings.input.destination
-              value: event-exchange
-            - name: spring.cloud.stream.bindings.input.group
+            - name: spring.data.gemfire.pool.locators
+              valueFrom:
+                configMapKeyRef:
+                  name: gemfire1-config
+                  key: locators
+            - name: cluster
+              value: hub
+            - name: spring.cloud.stream.bindings.output.destination
+              value: event-urgent-exchange
+            - name: spring.cloud.stream.bindings.output.group
               value: gemfire-event
-            - name: spring.cloud.stream.rabbit.bindings.input.consumer.quorum.enabled
+            - name: spring.cloud.stream.rabbit.bindings.output.consumer.quorum.enabled
               value: "true"
-            - name: spring.cloud.stream.rabbit.bindings.input.consumer.bindingRoutingKey
+            - name: spring.cloud.stream.rabbit.bindings.output.consumer.bindingRoutingKey
               value: "#"
-              # management.wavefront.api-token
-#            - name: management.wavefront.api-token
-#              valueFrom:
-#                secretKeyRef:
-#                  name: wavefront-secret
-#                  key: management.wavefront.api-token
-#            - name: management.wavefront.uri
-#              value: proxy://wavefront-proxy.observability-system.svc.cluster.local:2878
-            - name: management.wavefront.application.name
-              value: gemfire-sink-app
-            - name: management.wavefront.application.service-name
-              value: gemfire-sink-app
           readinessProbe:
             httpGet:
               path: /actuator/health
@@ -88,7 +80,5 @@ spec:
             periodSeconds: 5 #pecifies that the kubelet should perform a liveness probe every 3 seconds
             timeoutSeconds: 10 # Number of seconds after which the probe times out.
             failureThreshold: 60
-          image: gemfire/gemfire-sink-rabbit:1.0.1
-          name: gemfire-sink-app
-#          imagePullPolicy: Always
-          imagePullPolicy: IfNotPresent
+          image: gemfire/gemfire-source-rabbit:1.0.1
+          name: gemfire-source-rabbit

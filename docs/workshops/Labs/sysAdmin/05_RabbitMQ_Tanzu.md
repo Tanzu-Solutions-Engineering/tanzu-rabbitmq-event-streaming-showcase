@@ -1,4 +1,4 @@
-# Lab 05: Rabbit with Tanzu
+# Lab 05: Rabbit with Tanzu - DEMO ONLY
 
 
 # ROUGH DRAFT WIP
@@ -11,6 +11,17 @@ Start Minikube (if not started)
 
 ```shell
 minikube start  --memory='5g' --cpus='4'
+```
+
+or
+
+```shell
+minikube start  --memory='3g' --cpus='2'
+```
+Start Minikube Tunnel (if not running)
+
+```shell
+minikube tunnel --bind-address=0.0.0.0
 ```
 
 ## Hub
@@ -89,16 +100,16 @@ Exploring sink application
 
 Hub
 
-geode-hub-rabbitmq-sink
+gemfire-hub-rabbitmq-sink
 
 ```shell
-k  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/gemfire-hub-rabbitmq-sink.yaml
+kubectl  apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/gemfire-hub-rabbitmq-sink.yaml
 ```
 
-geode-hub-rabbitmq-source
+gemfire-hub-rabbitmq-source
 
 ```shell
-k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sources/geode-hub-rabbitmq-source.yaml
+kubectl apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sources/gemfire-hub-rabbitmq-source.yaml
 ```
 
 Site 2
@@ -114,15 +125,18 @@ Site 3
 k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-apps/sinks/gemfire-site3-rabbitmq-sink.yaml
 ```
 
+
+Shovel
+
+```shell
+kubectl delete -f deployment/cloud/k8/data-services/rabbitmq/multi-site/hub-to-site2-replication.yml
+```
+
 ----------------
 
 # Testing
 
-Pulse
-
-```shell
-http://hub-gemfire-pulse:7070/pulse
-```
+Gideon Console
 
 ```shell
 open http://34.136.22.58

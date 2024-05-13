@@ -10,16 +10,16 @@ spec:
 #      spec:
 #        template:
 #          spec:
-  override:
-    statefulSet:
-      spec:
-        template:
-          metadata:
-            annotations:
-              prometheus.io/path: /metrics
-              prometheus.io/port: "15692"
-              prometheus.io/scheme: http
-              prometheus.io/scrape: "true"
+#  override:
+#    statefulSet:
+#      spec:
+#        template:
+#          metadata:
+#            annotations:
+#              prometheus.io/path: /metrics
+#              prometheus.io/port: "15692"
+#              prometheus.io/scheme: http
+#              prometheus.io/scrape: "true"
   service:
     type: LoadBalancer
   image: rabbitmq:3.11-management

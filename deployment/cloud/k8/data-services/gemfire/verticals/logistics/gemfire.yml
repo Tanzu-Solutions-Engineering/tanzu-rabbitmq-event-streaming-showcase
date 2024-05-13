@@ -21,20 +21,20 @@
         requests:
           memory: 1Gi
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: gemfire-locator
-spec:
-  selector:
-    gemfire.vmware.com/app: gemfire1-locator
-  ports:
-    - name: management
-      port: 7070
-      targetPort: 7070
-  sessionAffinity: ClientIP
-  sessionAffinityConfig:
-    clientIP:
-      timeoutSeconds: 10800
-  type: LoadBalancer
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: gemfire-locator
+#spec:
+#  selector:
+#    gemfire.vmware.com/app: gemfire1-locator
+#  ports:
+#    - name: management
+#      port: 7070
+#      targetPort: 7070
+#  sessionAffinity: ClientIP
+#  sessionAffinityConfig:
+#    clientIP:
+#      timeoutSeconds: 10800
+#  type: LoadBalancer
