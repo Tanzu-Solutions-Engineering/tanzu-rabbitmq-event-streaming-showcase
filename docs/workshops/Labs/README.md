@@ -27,10 +27,11 @@ Please use the following links to install the following for the workshop
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 - [.NET 7.0](https://dotnet.microsoft.com/en-us/download/dotnet/7.0) 
+- [Git ClI](https://git-scm.com/downloads)
 
 Optional (for developers that desire to build the examples locally)
 - [Java JDK 17](https://jdk.java.net/java-se-ri/17)
 - [IntelliJ IDEA Community Edition](https://www.jetbrains.com/idea/download)
 - [Visual Studio Code](https://code.visualstudio.com/download)
-- [Git ClI](https://git-scm.com/downloads)
+
 
