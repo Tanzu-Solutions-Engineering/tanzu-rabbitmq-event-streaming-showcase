@@ -24,12 +24,13 @@ docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALL
 docker logs rabbitmq01
 ```
 
+
+# 2-  Configure User in Management Console
+
 - Open Management Console with credentials *user/bitnami*
 ```shell
 open http://localhost:15672
 ```
-
-# 2-  Configure User in Management Console
 
 - click Admin -> add a user -> app/changeme 
 - Add Tag (ex: admin/administrator)
@@ -39,7 +40,8 @@ open http://localhost:15672
 
 # 3 - SetUp Exchanges and Queues in Management Console
 
-Create Exchange
+Create an Exchange in the Management Console
+
 - Click Exchanges
 - Add a new exchange 
 - Name  app.exchange
