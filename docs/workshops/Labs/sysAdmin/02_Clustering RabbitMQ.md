@@ -5,7 +5,7 @@ This lab demonstrates ways to set up a RabbitMQ cluster
 **Prerequisite**
 
 - Docker & Minikube
-- [kubectl(https://kubernetes.io/docs/tasks/tools/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
 - Download Source Code
 
 Example with git

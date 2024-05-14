@@ -16,6 +16,7 @@ Please use the following links to install the following for the workshop
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [Git ClI](https://git-scm.com/downloads)
 
 # Developers
 
