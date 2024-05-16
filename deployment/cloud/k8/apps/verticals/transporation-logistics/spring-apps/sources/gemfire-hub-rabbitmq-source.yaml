@@ -32,7 +32,7 @@ spec:
             - name: gemfire.region.region-name
               value: Event
             - name: gemfire.supplier.query
-              value: "select * from /Event where chat.message.text.matches('.*URGENT.*') and chat.message.eventTimeStamp.eventTime.hour24 > 12"
+              value: ":W"
             - name: spring.application.name
               value: gemfire-source-rabbit
             - name: spring.rabbitmq.host

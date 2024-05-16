@@ -98,6 +98,54 @@ deployer.event-account-http-source.kubernetes.imagePullPolicy=Always
 
 ```
 
+Wait for PODs to deploy
+
+```shell
+kubectl get pods
+```
+
+
+Get HTTP Service IP
+
+```shell
+kubectl get services
+```
+
+Open URL
+
+Example
+```shell
+http://57.151.30.253:8080
+```
+
+
+Example Account
+
+```json
+{
+  "id": "1",
+  "name": "Testing",
+  "accountType": "STANDARD",
+  "status": "OPEN",
+  "notes": "Hello World",
+  "location": {
+    "id": "1.LOC",
+    "address": "1 Straight Street",
+    "cityTown": "Jersey",
+    "stateProvince": "NJ",
+    "zipPostalCode": "5551",
+    "countryCode": "US"
+  }
+}
+```
+
+View Results in GemFire
+
+Example URL
+```shell
+open http://4.255.98.80:8080
+```
+
 Destroy Stream after testing
 
 --------------------------------------
@@ -164,6 +212,37 @@ deployer.jdbc-sql-console-app.kubernetes.imagePullPolicy=Always
 ```
 
 
+Get JDBC Console and HTTP Source IP
+
+```shell
+kubectl get services
+```
+
+Example JSON
+
+```shell
+{
+  "id": "2",
+  "name": "Acct 2",
+  "accountType": "STANDARD",
+  "status": "OPEN",
+  "notes": "Testing 124",
+  "location": {
+    "id": "2.LOC",
+    "address": "2 Straight Street",
+    "cityTown": "Jersey",
+    "stateProvince": "NJ",
+    "zipPostalCode": "5555",
+    "countryCode": "NJ"
+  }
+}
+```
+
+Example SQL
+```sql
+select * from evt_showcase.evt_accounts
+```
+
 --------------------------------------
 # Cleanup
 
@@ -172,6 +251,9 @@ helm uninstall gemfire-operator --namespace gemfire-system
 helm uninstall gemfire-crd --namespace gemfire-system
 ```
 
+```shell
+./deployment/cloud/k8/data-services/scdf/uninstall_scdf.sh
+```
 --------------
 
 ```shell

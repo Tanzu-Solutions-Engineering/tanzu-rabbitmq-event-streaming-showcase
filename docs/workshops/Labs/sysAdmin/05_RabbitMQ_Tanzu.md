@@ -41,11 +41,11 @@ minikube tunnel --bind-address=0.0.0.0
 From site 2
 
 ```shell
-k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site2-hub-replication-secret.yaml
+kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site2-hub-replication-secret.yaml
 ```
 
 ```shell
-k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site2-hub-replication.yaml
+kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site2-hub-replication.yaml
 ```
 
 
@@ -53,12 +53,12 @@ From site 3
 
 Create secret
 ```shell
-k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site3-hub-replication-secret.yaml
+kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/secret/site3-hub-replication-secret.yaml
 ```
 
 Create shovel
 ```shell
-k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site3-hub-replication.yaml
+kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/site-replication/site3-hub-replication.yaml
 ```
 
 
@@ -68,7 +68,7 @@ k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_l
 
 
 ```shell
-k apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/apps/site1/http-amqp-source
+kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/verticals/transportation_logistics/apps/site1/http-amqp-source
 ```
 
 
@@ -78,6 +78,11 @@ GemFire
 
 - Install in hub, site2 and site3
 
+Install GemFire
+
+```shell
+./deployment/cloud/k8/data-services/gemfire/gf-k8-setup.sh
+```
 
 ```shell
 kubectl apply -f deployment/cloud/k8/data-services/gemfire/verticals/logistics/gemfire.yml
@@ -128,9 +133,6 @@ k apply -f deployment/cloud/k8/apps/verticals/transporation-logistics/spring-app
 
 Shovel
 
-```shell
-kubectl delete -f deployment/cloud/k8/data-services/rabbitmq/multi-site/hub-to-site2-replication.yml
-```
 
 ----------------
 
