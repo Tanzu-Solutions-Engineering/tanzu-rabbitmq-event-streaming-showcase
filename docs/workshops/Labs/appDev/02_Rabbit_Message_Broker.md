@@ -53,12 +53,12 @@ dotnet run  --project  applications/dotnet/Receive  --clientName=Receive2 --queu
 Publish
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --message="Testing app.receive 1"
+dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --message="Testing app.receive 1"
 ```
 
 - Hit Enter/Return
 
-Send another message
+Send another message (round robin)
 
 ```shell
  dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --message="Testing app.receive 2"
