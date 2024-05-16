@@ -243,6 +243,12 @@ Example SQL
 select * from evt_showcase.evt_accounts
 ```
 
+
+GemFire query
+
+```shell
+select * from /Account 
+```
 --------------------------------------
 # Cleanup
 
