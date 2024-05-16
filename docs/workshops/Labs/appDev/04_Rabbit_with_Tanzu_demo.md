@@ -5,6 +5,13 @@
 
 - Kubernetes cluster
 - RabbitMQ Operator
+- Download Source Code
+
+Example with git
+```shell
+git clone https://github.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase.git
+cd tanzu-rabbitmq-event-streaming-showcase
+```
 
 
 Setup GemFire Operator

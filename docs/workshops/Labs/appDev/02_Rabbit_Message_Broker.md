@@ -4,6 +4,14 @@
 
 - Dotnet SDK 7.0.401 or higher 
 - Docker version 4.29 or higher
+- Download Source Code
+
+Example with git
+```shell
+git clone https://github.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase.git
+cd tanzu-rabbitmq-event-streaming-showcase
+```
+
 
 Create the docker network (if not existing)
 ```shell
