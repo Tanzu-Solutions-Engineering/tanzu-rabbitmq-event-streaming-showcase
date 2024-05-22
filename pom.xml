@@ -24,6 +24,7 @@
         <module>applications/http-mqtt-source</module>
         <module>applications/rabbit-streams-web-app</module>
         <module>applications/mqtt-jdbc</module>
+        <module>applications/timeout-api</module>
     </modules>
     <build>
         <pluginManagement>

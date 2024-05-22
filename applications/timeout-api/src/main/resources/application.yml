@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: timeout-api
+server:
+  port: 8585
