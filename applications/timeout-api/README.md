@@ -1,7 +1,10 @@
 
 ```shell
-api=http --port=7575 --path-pattern=timeout | http-request --body-expression=payload --http-method-expression="'POST'" --url-expression="'http://localhost:8585/timeout'" --expected-response-type=java.lang.String | log
+api=http --port=7575 --path-pattern=timeout | http-request --body-expression=payload --http-method-expression=headers.httpMethod --url-expression="'http://localhost:8585/timeout'" --expected-response-type=java.lang.String --spring.cloud.stream.rabbit.bindings.input.consumer.acknowledgeMode=MANUAL --spring.cloud.stream.rabbit.bindings.input.consumer.autoBindDlq=true | log
 ```
+
+get('http_requestMethod')
+
 
 ```shell
 curl -X 'POST' \
