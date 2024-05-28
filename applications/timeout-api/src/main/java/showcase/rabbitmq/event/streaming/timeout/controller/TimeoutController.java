@@ -11,6 +11,7 @@ import java.net.http.HttpTimeoutException;
 @RestController
 public class TimeoutController {
 
+
     @PostMapping("timeout")
     public ResponseEntity<Account> timeout(@RequestBody Account account) throws HttpTimeoutException {
         throw new HttpTimeoutException("TESTING");
