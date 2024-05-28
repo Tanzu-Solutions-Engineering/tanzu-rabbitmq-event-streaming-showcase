@@ -1,7 +1,6 @@
 package showcase.rabbitmq.event.streaming.timeout.controller;
 
 import com.vmware.tanzu.data.services.rabbitmq.streaming.account.domain.Account;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
