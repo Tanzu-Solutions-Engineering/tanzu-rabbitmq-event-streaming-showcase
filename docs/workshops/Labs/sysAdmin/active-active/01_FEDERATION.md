@@ -68,22 +68,27 @@ open http://localhost:45672/#/exchanges
 Create topic exchange "federated.test"
 
 
------------------------------------------------------------
-# HA/Reliable Delivery testings
+-------------------
+# Testing
 
-```shell
-docker exec -it  rabbitmqDOWN1 rabbitmqctl enable_feature_flag maintenance_mode_status
-```
 
-```shell
-docker exec -it  rabbitmqDOWN1  rabbitmq-upgrade drain
-```
+Create queues and binding to a queue for **federated.test** exchange in upstream
 
-Publish message in upstream
+![docs/upstream-binding.png](docs/upstream-binding.png)
 
-```shell
-docker exec -it  rabbitmqDOWN1 rabbitmq-upgrade revive
-```
+Create queues and binding to a queue for **federated.test** exchange in downstream
+
+![docs/downstream-binding.png](docs/downstream-binding.png)
+
+
+Publish message in upstream 
+
+![docs/published.png](docs/published.png)
+
+
+Message will be sent to queues in both clusters
+
+![docs/published.png](docs/published.png)
 
 # Cleanup
 
