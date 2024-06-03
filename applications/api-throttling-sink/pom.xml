@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>showcase.event.stream.rabbitmq</groupId>
-	<artifactId>api-throttling</artifactId>
+	<artifactId>api-throttling-sink</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>api-throttling</name>
-	<description>api-throttling</description>
+	<name>api-throttling-sink</name>
+	<description>api-throttling-sink</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.2</spring-cloud.version>

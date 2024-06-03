@@ -1,3 +1,7 @@
+# Time Out API
+
+Example REST API to validation API Throttling with RabbitMQ.
+
 # Start Rabbit
 
 ```shell
@@ -13,14 +17,9 @@ docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALL
 # Start SCDF
 
 
-
-"{name:'Nikola',dob:'10-July-1856'}"
-
 ```shell
 --http-method-expression="headers.get('http_requestMethod')" 
 ```
-
-org.springframework.messaging
 
 
 ```shell
