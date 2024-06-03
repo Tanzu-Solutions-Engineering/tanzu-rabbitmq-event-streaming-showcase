@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    stream:
+      rabbit:
+        bindings:
+          input:
+            consumer:
+              dlqQuorum:
+                enabled: "true"
+              autoBindDlq: "true"
+              republishToDlq: "true"
+              deadLetterExchange: apiThrottleDlx
+      #              acknowledgeMode: "MANUAL"
+
+      bindings:
+        input:
+          destination: "api-throttle"
+          group: "api-throttling"
+api:
+  throttling:
+    url: "http://localhost:8585/timeout"

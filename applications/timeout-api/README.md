@@ -1,4 +1,16 @@
-Start SCDF
+# Start Rabbit
+
+```shell
+docker network create tanzu
+```
+
+```shell
+docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.11.1
+```
+
+
+------------
+# Start SCDF
 
 
 
@@ -95,18 +107,27 @@ curl -X 'POST' \
 # Standalone Test
 
 
-```shell
-
-```
 http-request-processor
 
+
 ```shell
-java -jar /Users/devtools/integration/scdf/apps/http-request/http-request-processor-rabbit-4.0.0.jar --spring.cloud.stream.bindings.input.destination=throttle --spring.cloud.stream.bindings.input.group=http-request --spring.cloud.stream.bindings.output.destination=throttle-api-output --http.request.body-expression=payload --http.request.http-method-expression="'POST'" --http.request.urlExpression="'http://localhost:8585/timeout'" --expected-response-type=java.lang.String --spring.cloud.stream.rabbit.bindings.input.consumer.acknowledgeMode=MANUAL --spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.enabled=true --spring.cloud.stream.rabbit.bindings.input.consumer.autoBindDlq=true --spring.cloud.stream.rabbit.bindings.output.producer.quorum.enabled=true --spring.cloud.stream.rabbit.bindings.input.consumer.quorum.enabled=true --spring.cloud.stream.bindings.input.consumer.maxAttempts=3 --spring.cloud.stream.bindings.input.consumer.backOffInitialInterval=3 --spring.cloud.stream.bindings.input.consumer.backOffMaxInterval=3 --spring.cloud.stream.bindings.input.consumer.backOffMultiplier=1 --http.request.headers-expression="{'Content-Type':'application/json'}" --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchange=throttleDlx --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchangeType=topic --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterRoutingKey="#" --spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.deliveryLimit=3 --spring.cloud.stream.rabbit.bindings.input.consumer.quorum.deliveryLimit=3 --spring.cloud.stream.rabbit.bindings.input.consumer.republishToDlq=false --server.port=0 --logging.level.root=debug
+java -jar /Users/devtools/integration/scdf/apps/http-request/http-request-processor-rabbit-4.0.0.jar --spring.cloud.stream.bindings.input.destination=throttle --spring.cloud.stream.bindings.input.group=http-request --spring.cloud.stream.bindings.output.destination=throttle-api-output --http.request.body-expression=payload --http.request.http-method-expression="'POST'" --http.request.urlExpression="'http://localhost:8585/timeout'" --expected-response-type=java.lang.String  --spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.enabled="true" --spring.cloud.stream.rabbit.bindings.input.consumer.autoBindDlq=true   --http.request.headers-expression="{'Content-Type':'application/json'}" --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchange=throttleDlx  --spring.cloud.stream.rabbit.bindings.input.consumer.republishToDlq="true" --server.port=0 --logging.level.root=debug 
 ```
 
+--spring.cloud.stream.rabbit.bindings.output.producer.quorum.enabled=true
+--spring.cloud.stream.rabbit.bindings.input.consumer.acknowledgeMode=AUTO
+--spring.cloud.stream.rabbit.bindings.input.consumer.quorum.enabled=true
 
 ```shell
-java -jar /Users/devtools/integration/scdf/apps/http/http-source-rabbit-4.0.0.jar  --spring.cloud.stream.bindings.output.destination=throttle --http.path-pattern=timeout  --server.port=7575
+java -jar /Users/devtools/integration/scdf/apps/http-request/http-request-processor-rabbit-4.0.0.jar --spring.cloud.stream.bindings.input.destination=throttle --spring.cloud.stream.bindings.input.group=http-request --spring.cloud.stream.bindings.output.destination=throttle-api-output --http.request.body-expression=payload --http.request.http-method-expression="'POST'" --http.request.urlExpression="'http://localhost:8585/timeout'" --expected-response-type=java.lang.String --spring.cloud.stream.rabbit.bindings.input.consumer.acknowledgeMode=AUTO --spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.enabled=true --spring.cloud.stream.rabbit.bindings.input.consumer.autoBindDlq=true --spring.cloud.stream.rabbit.bindings.output.producer.quorum.enabled=true --spring.cloud.stream.rabbit.bindings.input.consumer.quorum.enabled=true --spring.cloud.stream.bindings.input.consumer.maxAttempts=3 --spring.cloud.stream.bindings.input.consumer.backOffInitialInterval=3 --spring.cloud.stream.bindings.input.consumer.backOffMaxInterval=3 --spring.cloud.stream.bindings.input.consumer.backOffMultiplier=1 --http.request.headers-expression="{'Content-Type':'application/json'}" --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchange=throttleDlx --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchangeType=topic --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterRoutingKey="#" --spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.deliveryLimit=3 --spring.cloud.stream.rabbit.bindings.input.consumer.quorum.deliveryLimit=3 --spring.cloud.stream.rabbit.bindings.input.consumer.republishToDlq=true --server.port=0 --logging.level.root=debug 
+```
+
+--spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami
+
+http-source
+
+```shell
+java -jar /Users/devtools/integration/scdf/apps/http/http-source-rabbit-4.0.0.jar  --spring.cloud.stream.bindings.output.destination=throttle --http.path-pattern=timeout  --server.port=7575 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami
 ```
 
 

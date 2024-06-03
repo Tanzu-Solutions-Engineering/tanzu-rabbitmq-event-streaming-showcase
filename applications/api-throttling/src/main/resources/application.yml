@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: api-throttling
+  config:
+    import: "optional:configserver:http://localhost:8888/"
+  cloud:
+    function:
+      definition: httpRequestConsumer
+    stream:
+      function:
+        bindings:
+          httpRequestConsumer-in-0: input
+          httpRequestConsumer-out-0: output

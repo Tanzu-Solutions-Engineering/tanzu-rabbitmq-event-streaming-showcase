@@ -26,6 +26,7 @@ public class TimeoutController {
         {
             var timeoutException =new HttpTimeoutException("TESTING");
             log.error("Cannot process account: % THROWING EXCEPTION: %",account, timeoutException);
+            throw timeoutException;
         }
 
         return ok(account);
