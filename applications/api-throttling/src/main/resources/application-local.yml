@@ -1,3 +1,5 @@
+server:
+  port: 0
 spring:
   cloud:
     stream:
@@ -10,7 +12,9 @@ spring:
               autoBindDlq: "true"
               republishToDlq: "true"
               deadLetterExchange: apiThrottleDlx
-      #              acknowledgeMode: "MANUAL"
+              quorum:
+                enabled: "true"
+#              acknowledgeMode: "MANUAL"
 
       bindings:
         input:

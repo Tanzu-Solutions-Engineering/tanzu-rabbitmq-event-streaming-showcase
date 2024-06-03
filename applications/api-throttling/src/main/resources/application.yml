@@ -5,9 +5,9 @@ spring:
     import: "optional:configserver:http://localhost:8888/"
   cloud:
     function:
-      definition: httpRequestConsumer
+      definition: apiThrottleConsumer
     stream:
       function:
         bindings:
-          httpRequestConsumer-in-0: input
-          httpRequestConsumer-out-0: output
+          apiThrottleConsumer-in-0: input
+          apiThrottleConsumer-out-0: output

@@ -21,13 +21,13 @@ import java.util.function.Consumer;
  */
 @Component
 @Slf4j
-public class HttpPostConsumer implements Consumer<Message<String>> {
+public class ApiThrottleConsumer implements Consumer<Message<String>> {
 
     private final RestTemplate restTemplate;
     private final URI uri;
 
     @SneakyThrows
-    public HttpPostConsumer(RestTemplate restTemplate, @Value("${api.throttling.url}") String uri) {
+    public ApiThrottleConsumer(RestTemplate restTemplate, @Value("${api.throttling.url}") String uri) {
         this.restTemplate = restTemplate;
         this.uri = new URI(uri);
     }
@@ -43,7 +43,6 @@ public class HttpPostConsumer implements Consumer<Message<String>> {
         var response = restTemplate.exchange(uri, HttpMethod.POST, requestEntity, String.class);
 
         if (response.getStatusCode().isError())
-            throw new CommunicationException(
-                    "NOT 200 response: " + response.toString());
+            throw new CommunicationException(response.toString());
     }
 }

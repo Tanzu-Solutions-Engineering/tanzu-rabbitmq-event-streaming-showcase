@@ -23,9 +23,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class HttpPostConsumerTest {
+class ApiThrottleConsumerTest {
 
-    private HttpPostConsumer subject;
+    private ApiThrottleConsumer subject;
 
     private Message<String> message;
     @Mock
@@ -64,7 +64,7 @@ class HttpPostConsumerTest {
 
     @BeforeEach
     void setUp() {
-        subject = new HttpPostConsumer(restTemplate,url);
+        subject = new ApiThrottleConsumer(restTemplate,url);
     }
 
     @Test
