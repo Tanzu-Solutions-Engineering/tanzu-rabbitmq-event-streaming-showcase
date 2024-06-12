@@ -7,7 +7,7 @@ Showcase for API Flow Control Throttling with RabbitMQ and Spring.
 
 
 ```shell
-java -jar applications/timeout-api/target/timeout-api-0.0.1-SNAPSHOT.jar
+kubectl apply -f deployment/cloud/k8/apps/timeout-api/timeout-api.yml
 ```
 ------------
 # Start SCDF
@@ -32,19 +32,20 @@ Client Applications -> Register -> By Properties
 See api-throttle properties
 
 ```properties
-sink.api-throttle=http://github.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/releases/download/api-throttle-6-3-2024/api-throttling-sink-0.0.1-SNAPSHOT.jar
+sink.api-throttle=docker:cloudnativedata/api-throttling-sink:0.0.1-SNAPSHOT
 ```
 
 Create Stream
 
 ```shell
-api=http --port=7575 --path-pattern=timeout --spring.cloud.stream.rabbit.bindings.output.producer.quorum.enabled="true" | api-throttle --api.throttling.url="http://localhost:8585/timeout" --spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.enabled="true" --spring.cloud.stream.rabbit.bindings.input.consumer.autoBindDlq="true" --spring.cloud.stream.rabbit.bindings.input.consumer.republishToDlq="true" --spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchange=apiThrottleDlx --spring.cloud.stream.rabbit.bindings.input.consumer.quorum.enabled="true"
+api=http | api-throttle
 ```
 
 Example Deployment Properties
 
 ```properties
-app.api-throttle.api.throttling.url="http://localhost:8585/timeout"
+deployer.http.kubernetes.createLoadBalancer=true
+app.api-throttle.api.throttling.url="http://timeout-api:8080/timeout"
 app.api-throttle.spring.cloud.stream.rabbit.bindings.input.consumer.autoBindDlq=true
 app.api-throttle.spring.cloud.stream.rabbit.bindings.input.consumer.deadLetterExchange=apiThrottleDlx
 app.api-throttle.spring.cloud.stream.rabbit.bindings.input.consumer.dlqQuorum.enabled=true
@@ -53,6 +54,9 @@ app.api-throttle.spring.cloud.stream.rabbit.bindings.input.consumer.republishToD
 app.http.path-pattern=timeout
 app.http.server.port=7575
 app.http.spring.cloud.stream.rabbit.bindings.output.producer.quorum.enabled=true
+app.http.spring.cloud.stream.rabbit.bindings.output.producer.dlqQuorum.enabled=true
+app.http.spring.cloud.stream.rabbit.bindings.output.producer.deadLetterExchange=apiThrottleDlx
+app.http.spring.cloud.stream.rabbit.bindings.output.producer.autoBindDlq=true
 ```
 
 
@@ -66,20 +70,26 @@ app.api-throttle.spring.cloud.stream.bindings.input.consumer.backOffMultiplier=1
 app.api-throttle.spring.cloud.stream.bindings.input.consumer.maxAttempts=3
 ```
 
+
+
 ------------------------------
-# Standalone (Without SCDF) Testing
 
-Sett http-source
 
-```shell
-java -jar /Users/devtools/integration/scdf/apps/http/http-source-rabbit-4.0.0.jar  --spring.cloud.stream.bindings.output.destination=api-throttle --http.path-pattern=timeout  --server.port=7575 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami
-```
+Testing
 
 Randomly Failures
 
 ```shell
-curl -X 'POST' \
-  'http://localhost:7575/timeout' \
+export API_HTTP_HOST=`kubectl get services api-http --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+```
+
+
+```shell
+echo $API_HTTP_HOST
+```
+
+```shell
+curl -X 'POST' "http://$API_HTTP_HOST:7575/timeout" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -97,13 +107,14 @@ curl -X 'POST' \
     "countryCode": "string"
   }
 }'
+
 ```
 
 Test Timeout to DQL
 
 ```shell
 curl -X 'POST' \
-  'http://localhost:7575/timeout' \
+   "http://$API_HTTP_HOST:7575/timeout" \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -138,4 +149,13 @@ docker build  --platform linux/amd64,linux/arm64 -t api-throttling-sink:0.0.1-SN
 ```shell
 docker tag api-throttling-sink:0.0.1-SNAPSHOT cloudnativedata/api-throttling-sink:0.0.1-SNAPSHOT
 docker push cloudnativedata/api-throttling-sink:0.0.1-SNAPSHOT
+```
+
+------------------------------
+# Standalone (Without SCDF) Testing
+
+Sett http-source
+
+```shell
+java -jar /Users/devtools/integration/scdf/apps/http/http-source-rabbit-4.0.0.jar  --spring.cloud.stream.bindings.output.destination=api-throttle --http.path-pattern=timeout  --server.port=7575 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami
 ```

@@ -137,3 +137,20 @@ Register
 ```properties
 processor.http-request=file:///Users/devtools/integration/scdf/apps/http-request/http-request-processor-rabbit-4.0.0.jar
 ```
+
+
+---------------------------------------
+# Docker building image
+
+```shell
+mvn install
+cd applications/timeout-api
+mvn package
+docker build  --platform linux/amd64,linux/arm64 -t timeout-api:0.0.1-SNAPSHOT .
+
+```
+
+```shell
+docker tag timeout-api:0.0.1-SNAPSHOT cloudnativedata/timeout-api:0.0.1-SNAPSHOT
+docker push cloudnativedata/timeout-api:0.0.1-SNAPSHOT
+```

@@ -29,4 +29,4 @@ kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/d
 
 ## RabbitMQ Install 1 Node cluster
 
-kubectl apply -f cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml
+#kubectl apply -f cloud/k8/data-services/rabbitmq/rabbitmq-1-node.yml

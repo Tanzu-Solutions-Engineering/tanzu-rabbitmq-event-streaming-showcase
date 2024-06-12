@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: timeout-api
+    run:  timeout-api
+  name:  timeout-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name:  timeout-api
+  template:
+    metadata:
+      labels:
+        name:  timeout-api
+    spec:
+      containers:
+        - env:
+            - name: spring.rabbitmq.host
+              value: rabbitmq
+            - name: spring.rabbitmq.stream.host
+              value: rabbitmq
+            - name: server.port
+              value: "8080"
+            - name: spring_rabbitmq_username
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: username
+            - name: spring.rabbitmq.password
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-default-user
+                  key: password
+            - name: spring.cloud.stream.bindings.output.destination
+              value: "showcase.event.super.streaming.accounts"
+            - name: rabbitmq.streaming.partitions
+              value: "2"
+            - name: spring.profiles.active
+              value: "superStream"
+          image: cloudnativedata/timeout-api:0.0.1-SNAPSHOT
+          name: timeout-api
+          imagePullPolicy: Always
+#          imagePullPolicy: IfNotPresent
+          readinessProbe:
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            failureThreshold: 3
+            httpGet:
+              scheme: HTTP
+              path: /actuator/health/readiness
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 40
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            failureThreshold: 3
+            httpGet:
+              scheme: HTTP
+              path: /actuator/health/liveness
+              port: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timeout-api
+spec:
+  selector:
+    name: timeout-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: LoadBalancer
