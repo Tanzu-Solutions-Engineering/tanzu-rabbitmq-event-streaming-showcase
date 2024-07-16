@@ -58,7 +58,7 @@ dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --mess
 
 - Hit Enter/Return
 
-Send another message (round robin)
+Send another message (round-robin)
 
 ```shell
  dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --message="Testing app.receive 2"

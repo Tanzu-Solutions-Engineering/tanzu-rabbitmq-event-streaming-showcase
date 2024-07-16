@@ -34,7 +34,38 @@ See api-throttle properties
 ```properties
 sink.api-throttle=docker:cloudnativedata/api-throttling-sink:0.0.1-SNAPSHOT
 ```
+------------------------------
+# Testing Timeout
 
+timeout-api
+
+```shell
+export TIMEOUT_HTTP_HOST=`kubectl get services timeout-api --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+```
+
+
+```shell
+curl -X 'POST' "http://$TIMEOUT_HTTP_HOST:8080/timeout" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "string",
+  "name": "string",
+  "accountType": "string",
+  "status": "string",
+  "notes": "string",
+  "location": {
+    "id": "string",
+    "address": "string",
+    "cityTown": "string",
+    "stateProvince": "string",
+    "zipPostalCode": "string",
+    "countryCode": "string"
+  }
+}'
+```
+
+------------------------------
 Create Stream
 
 ```shell
@@ -72,10 +103,7 @@ app.api-throttle.spring.cloud.stream.bindings.input.consumer.maxAttempts=3
 
 
 
-------------------------------
-
-
-Testing
+-----------------------------------
 
 Randomly Failures
 
@@ -107,7 +135,6 @@ curl -X 'POST' "http://$API_HTTP_HOST:7575/timeout" \
     "countryCode": "string"
   }
 }'
-
 ```
 
 Test Timeout to DQL
