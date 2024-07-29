@@ -1,28 +1,25 @@
 # LAB 01 - Installing RabbitMQ
 
-This lab provides details to install RabbitMQ using docker.
+This lab provides details to install RabbitMQ using podman.
 
 **Prerequisite**
 
-Create the docker network 
+Create the podman network 
 
 ```shell
-docker network create tanzu
+podman network create tanzu
 ```
 
 #  Install RabbitMQ Broker
 
 - Run RabbitMQ
 ```shell
-docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
+podman run --name rabbitmq01  --network tanzu --rm -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
 ```
-
 
 - View Logs (wait for message: started TCP listener on [::]:5672)
 
-```shell
-docker logs rabbitmq01
-```
+
 
 
 # 2-  Configure User in Management Console
@@ -89,7 +86,7 @@ Test Consuming
 Run Performance Test application
 
 ```shell
-docker run -it -p 8080:8080 --hostname rabbitmqperftest --name rabbitmqperftest  --network tanzu --rm pivotalrabbitmq/perf-test:latest com.rabbitmq.perf.PerfTest -x 1  -y 1 -u "queue_test" -a --id "perftest" --uris amqp://user:bitnami@rabbitmq01 --use-millis --variable-size 2000:30  --rate 100  --metrics-prometheus
+podman run -it -p 8080:8080 --hostname rabbitmqperftest --name rabbitmqperftest  --network tanzu --rm pivotalrabbitmq/perf-test:latest com.rabbitmq.perf.PerfTest -x 1  -y 1 -u "queue_test" -a --id "perftest" --uris amqp://user:bitnami@rabbitmq01 --use-millis --variable-size 2000:30  --rate 100  --metrics-prometheus
 ```
 
 Control C to kill perftest
@@ -98,5 +95,7 @@ Control C to kill perftest
 # 5 - Cleanup
 
 ```shell
-docker rm -f rabbitmq01
+podman rm -f rabbitmqperftest
+podman rm -f rabbitmq01
+
 ```
