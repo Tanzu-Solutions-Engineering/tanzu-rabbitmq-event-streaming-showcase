@@ -3,25 +3,18 @@
 
 # ROUGH DRAFT WIP
 
+
 **Prerequisite**
-- Docker & Minikube
-- [kubectl(https://kubernetes.io/docs/tasks/tools/)
 
-Start Minikube (if not started)
+- See [Podman](https://podman-desktop.io/docs/installation) & [Kind](https://podman-desktop.io/docs/kind/installing)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- Start Kind Cluster
+- Download Source Code
 
+Example with git
 ```shell
-minikube start  --memory='5g' --cpus='4'
-```
-
-or
-
-```shell
-minikube start  --memory='3g' --cpus='2'
-```
-Start Minikube Tunnel (if not running)
-
-```shell
-minikube tunnel --bind-address=0.0.0.0
+git clone https://github.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase.git
+cd tanzu-rabbitmq-event-streaming-showcase
 ```
 
 ## Hub

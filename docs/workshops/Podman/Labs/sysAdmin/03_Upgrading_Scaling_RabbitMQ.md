@@ -2,26 +2,19 @@
 
 
 **Prerequisite**
-- Docker & Minikube
-- [kubectl(https://kubernetes.io/docs/tasks/tools/)
 
-Start Minikube (if not started)
+- See [Podman](https://podman-desktop.io/docs/installation) & [Kind](https://podman-desktop.io/docs/kind/installing)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- Start Kind Cluster
+- Download Source Code
 
-Start Minikube
-
+Example with git
 ```shell
-minikube start  --memory='5g' --cpus='4'
+git clone https://github.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase.git
+cd tanzu-rabbitmq-event-streaming-showcase
 ```
-or
 
-```shell
-minikube start  --memory='3g' --cpus='2'
-```
-Start Minikube Tunnel
 
-```shell
-minikube tunnel --bind-address=0.0.0.0
-```
 
 -----------------------------------------
 # 1 - Create RabbitMQ Broker
@@ -50,7 +43,7 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 View PODs
 
 ```shell
-kubectl get pods
+kubectl get pods 
 ```
 
 Wait for server to be in running state
@@ -60,6 +53,7 @@ kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --time
 ```
 
 View k8 Services
+
 ```shell
 kubectl get services
 ```
@@ -78,6 +72,12 @@ echo "USER:" $ruser
 echo "PASSWORD:" $rpwd
 ```
 
+Access Management Console
+
+
+```shell
+kubectl port-forward service/rabbitmq 15672:15672 5672:5672
+```
 
 Access DashLoad (use above user/password)
 
@@ -99,16 +99,27 @@ Upgrade version
 kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/tanzu-rabbitmq-event-streaming-showcase/main/deployment/cloud/k8/data-services/rabbitmq/upgrade/rabbitmq-1-node-3.12.14.yml
 ```
 
+Enable all features
+
+```shell
+kubectl exec rabbitmq-server-0 -- rabbitmqctl enable_feature_flag all
+```
+
 View PODs
 
 ```shell
-kubectl get pods
+kubectl get pods -w
 ```
 
 Wait for broker to start
+
+Access Management Console
+
+
 ```shell
-kubectl wait pod -l=app.kubernetes.io/name=rabbitmq --for=condition=Ready --timeout=160s
+kubectl port-forward service/rabbitmq 15672:15672 5672:5672
 ```
+
 
 Access Management console (use above user/password)
 
@@ -129,18 +140,11 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 View PODs
 
 ```shell
-kubectl get pods
+kubectl get pods -w
 ```
 
-Wait for broker to start
-```shell
-kubectl wait pod -l=statefulset.kubernetes.io/pod-name=rabbitmq-server-1 --for=condition=Ready --timeout=160s
-```
+Wait for brokers to start
 
-Wait for broker to start
-```shell
-kubectl wait pod -l=statefulset.kubernetes.io/pod-name=rabbitmq-server-2 --for=condition=Ready --timeout=160s
-```
 
 Access Management console (use above user/password)
 
@@ -161,7 +165,7 @@ kubectl apply -f https://raw.githubusercontent.com/Tanzu-Solutions-Engineering/t
 View PODs
 
 ```shell
-kubectl get pods
+kubectl get pods -w
 ```
 
 Wait for all nodes to restart
@@ -171,6 +175,3 @@ Access Management console (use above user/password)
 ```shell
 open http://127.0.0.1:15672/
 ```
-
-
-# Cleanup Update

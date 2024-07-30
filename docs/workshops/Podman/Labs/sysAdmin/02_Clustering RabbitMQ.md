@@ -206,4 +206,4 @@ Delete the cluster (from directory tanzu-rabbitmq-event-streaming-showcase)
 kubectl delete -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
 ```
 
-Clean Kind Cluster
+Optional: Clean Kind Cluster

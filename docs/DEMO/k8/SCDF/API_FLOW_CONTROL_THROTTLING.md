@@ -2,14 +2,26 @@
 
 Showcase for API Flow Control Throttling with RabbitMQ and Spring.
 
+Start RabbitMQ
+
+
+Deploy RabbitMQ
+
+
+```shell
+kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
+```
+
 ------------
 # Start Timeout App
+
 
 
 ```shell
 kubectl apply -f deployment/cloud/k8/apps/timeout-api/timeout-api.yml
 ```
 ------------
+
 # Start SCDF
 
 ## Request API Throttle SInk
@@ -17,11 +29,27 @@ kubectl apply -f deployment/cloud/k8/apps/timeout-api/timeout-api.yml
 
 Install and start [Spring Cloud DataFlow locally](https://dataflow.spring.io/docs/installation/local/)
 
+```shell
+./deployment/cloud/k8/data-services/scdf/install_scdf.sh
+```
+
+
+Wait for pods to be running
+
+```shell
+kubectl get pods -w
+```
 
 Open dashboard
 
+
 ```shell
-open http://localhost:9393/dashboard
+kubectl get services
+
+```
+
+```shell
+open http://<IP-ADDRESS>:9393/dashboard
 ```
 
 
@@ -33,6 +61,7 @@ See api-throttle properties
 
 ```properties
 sink.api-throttle=docker:cloudnativedata/api-throttling-sink:0.0.1-SNAPSHOT
+sink.api-throttle.bootVersion=3
 ```
 ------------------------------
 # Testing Timeout
@@ -41,6 +70,7 @@ timeout-api
 
 ```shell
 export TIMEOUT_HTTP_HOST=`kubectl get services timeout-api --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+echo $TIMEOUT_HTTP_HOST
 ```
 
 
@@ -107,6 +137,9 @@ app.api-throttle.spring.cloud.stream.bindings.input.consumer.maxAttempts=3
 
 Randomly Failures
 
+
+View App Logs
+
 ```shell
 export API_HTTP_HOST=`kubectl get services api-http --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
 ```
@@ -137,7 +170,7 @@ curl -X 'POST' "http://$API_HTTP_HOST:7575/timeout" \
 }'
 ```
 
-Test Timeout to DQL
+Test Timeout to Dead Letter Queue
 
 ```shell
 curl -X 'POST' \
