@@ -17,7 +17,6 @@
         <module>applications/account-generator-amqp-source</module>
         <module>applications/generator-mqtt-source</module>
         <module>applications/account-generator-streams-source</module>
-        <module>applications/event-account-gemfire-sink</module>
         <module>applications/http-amqp-source</module>
         <module>applications/event-log-sink</module>
         <module>applications/mqtt-log-sink</module>

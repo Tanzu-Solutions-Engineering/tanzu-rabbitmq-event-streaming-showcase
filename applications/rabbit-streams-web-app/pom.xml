@@ -14,7 +14,6 @@
     <name>rabbit-streams-web-app</name>
     <description>rabbit-streams-web-app</description>
     <properties>
-		<geode.version>1.15.1</geode.version>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.4</spring-cloud.version>
     </properties>
@@ -91,12 +90,6 @@
             <groupId>com.vmware</groupId>
             <artifactId>stream-account-domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geode</groupId>
-            <artifactId>geode-core</artifactId>
-            <version>${geode.version}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
     <dependencyManagement>

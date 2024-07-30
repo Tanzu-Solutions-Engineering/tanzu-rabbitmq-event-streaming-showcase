@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import nyla.solutions.core.util.Organizer;
 import nyla.solutions.core.util.Text;
 import org.apache.geode.pdx.PdxInstance;
-import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.function.Function;
