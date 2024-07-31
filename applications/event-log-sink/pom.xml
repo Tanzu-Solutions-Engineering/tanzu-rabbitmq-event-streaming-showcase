@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.vmware</groupId>
 	<artifactId>event-log-sink</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>event-log-sink</name>
 	<description>event-log-sink</description>
 	<properties>

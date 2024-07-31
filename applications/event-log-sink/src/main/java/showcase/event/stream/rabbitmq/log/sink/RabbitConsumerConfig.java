@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 
-import java.util.function.Consumer;
-
 @Configuration
 @Slf4j
 public class RabbitConsumerConfig {
@@ -17,13 +15,14 @@ public class RabbitConsumerConfig {
     private String applicationName;
 
     @Bean
-    ConnectionNameStrategy connectionNameStrategy() {
-        return (connectionFactory) -> applicationName;
-    }
-
-    @Bean
     MessageConverter messageConverter() {
         return new MappingJackson2MessageConverter();
+    }
+
+
+    @Bean
+    ConnectionNameStrategy connectionNameStrategy() {
+        return (connectionFactory) -> applicationName;
     }
 
 }
