@@ -3,7 +3,6 @@ package com.vmware.rabbitmq.consumer;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DeliverCallback;
 import nyla.solutions.core.util.Config;
-import nyla.solutions.core.util.settings.ConfigSettings;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
