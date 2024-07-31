@@ -41,11 +41,11 @@ open http://localhost:15672
 
 ## Start Consumer
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=Receive1 --queue=app.receive
+podman run --name event-log-sink-1 --rm --network tanzu  cloudnativedata/event-log-sink:0.0.2-SNAPSHOT --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts  spring.cloud.stream.bindings.input.group=event-log-sink --spring.rabbitmq.host=rabbitmq01 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami --spring.profiles.active=ampq
 ```
 Start Another Consumer
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=Receive2 --queue=app.receive
+podman run --name event-log-sink-2 --rm --network tanzu  cloudnativedata/event-log-sink:0.0.2-SNAPSHOT --spring.cloud.stream.bindings.input.destination=showcase.event.streaming.accounts  spring.cloud.stream.bindings.input.group=event-log-sink --spring.rabbitmq.host=rabbitmq01 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami --spring.profiles.active=ampq
 ```
 
 ## Start Publisher
@@ -53,16 +53,33 @@ dotnet run  --project  applications/dotnet/Receive  --clientName=Receive2 --queu
 Publish
 
 ```shell
-dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --message="Testing app.receive 1"
+podman run --name event-account-http-source --network tanzu  -p 8095:8095  --rm cloudnativedata/event-account-http-source:0.0.2-SNAPSHOT --spring.profiles.active=amqp --spring.rabbitmq.host=rabbitmq01 --spring.rabbitmq.username=user --spring.rabbitmq.password=bitnami --server.port=8095  
 ```
 
-- Hit Enter/Return
-
-Send another message (round-robin)
+Send another messages (round-robin)
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive --message="Testing app.receive 2"
+curl -X 'POST' \
+  'http://localhost:8095/accounts' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "string",
+  "name": "string",
+  "accountType": "string",
+  "status": "string",
+  "notes": "string",
+  "location": {
+    "id": "string",
+    "address": "string",
+    "cityTown": "string",
+    "stateProvince": "string",
+    "zipPostalCode": "string",
+    "countryCode": "string"
+  }
+}'
 ```
+
 
 ## Review  Management Console (user/bitnami)
 
@@ -90,11 +107,11 @@ Stop Publisher and Consumers
 
 ## Start Consumer
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=Receive1 --queue=app.receive.1
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar  --clientName=Receive1 --queue=app.receive.1
 ```
 Start Another Consumer
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=Receive2 --queue=app.receive.2
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar --clientName=Receive2 --queue=app.receive.2
 ```
 
 
@@ -103,12 +120,12 @@ dotnet run  --project  applications/dotnet/Receive  --clientName=Receive2 --queu
 Publish
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.1 --message="Testing app.receive.1"
+ java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar --routingKey=app.receive.1 --message="Testing app.receive.1"
 ```
 Hit Enter
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.2 --message="Testing app.receive.2"
+ java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar --routingKey=app.receive.2 --message="Testing app.receive.2"
 ```
 Hit Enter
 
@@ -122,11 +139,11 @@ Stop Publisher and Consumers
 
 ## Start Consumer
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=rahway --exchange="amq.topic" --routingKey="city.Rahway.*" --queue=app.receive.rahway
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar   --clientName=rahway --exchange="amq.topic" --routingKey="city.Rahway.*" --queue=app.receive.rahway
 ```
 Start Another Consumer
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=ny --exchange="amq.topic" --routingKey="city.NY.#" --queue=app.receive.ny
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar  --clientName=ny --exchange="amq.topic" --routingKey="city.NY.#" --queue=app.receive.ny
 ```
 
 
@@ -135,14 +152,14 @@ dotnet run  --project  applications/dotnet/Receive  --clientName=ny --exchange="
 Publish
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/  --exchange="amq.topic" --routingKey=city.NY.uptown.store --message="Testing NY City"
+ java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar   --exchange="amq.topic" --routingKey=city.NY.uptown.store --message="Testing NY City"
 ```
 
 Hit Enter
 
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/  --exchange="amq.topic" --routingKey=city.Rahway.office --message="Testing Rahway"
+ java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar   --exchange="amq.topic" --routingKey=city.Rahway.office --message="Testing Rahway"
 ```
 
 Hit Enter

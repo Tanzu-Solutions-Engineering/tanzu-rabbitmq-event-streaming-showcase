@@ -25,6 +25,8 @@
         <module>applications/mqtt-jdbc</module>
         <module>applications/timeout-api</module>
         <module>applications/api-throttling-sink</module>
+        <module>applications/rabbit-consumer</module>
+        <module>applications/rabbit-publisher</module>
     </modules>
     <build>
         <pluginManagement>

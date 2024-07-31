@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.vmware</groupId>
-	<artifactId>consumer-app</artifactId>
+	<artifactId>rabbit-publisher</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>consumer-app</name>
-	<description>consumer-app</description>
+	<name>rabbit-publisher</name>
+	<description>rabbit-publisher</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -30,6 +30,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
+		<dependency>
+			<groupId>com.rabbitmq</groupId>
+			<artifactId>amqp-client</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -40,7 +46,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.github.nyla-solutions</groupId>
+            <artifactId>nyla.solutions.core</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
