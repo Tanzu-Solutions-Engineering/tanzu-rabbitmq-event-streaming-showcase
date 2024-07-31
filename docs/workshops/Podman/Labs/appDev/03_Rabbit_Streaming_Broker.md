@@ -6,9 +6,9 @@
 - Dotnet SDK 7.0.401 or higher
 - Docker version 4.29 or higher
 
-Create the docker network (if not existing)
+Create the podman network (if not existing)
 ```shell
-docker network create tanzu
+podman network create tanzu
 ```
 
 - Download Source Code
@@ -23,7 +23,7 @@ cd tanzu-rabbitmq-event-streaming-showcase
 - Run RabbitMQ (if not running)
 
 ```shell
-docker run --name rabbitmq01  --network tanzu --rm -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS='-rabbitmq_stream advertised_host localhost' -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
+podman run --name rabbitmq01  --network tanzu --rm -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS='-rabbitmq_stream advertised_host localhost' -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
 ```
 
 - View Logs (wait for message: started TCP listener on [::]:5672)
@@ -110,7 +110,7 @@ Stop Customer and Publisher
 Stop RabbitMQ
 
 ```shell
-docker rm -f rabbitmq01
+podman rm -f rabbitmq01
 ```
 
 ---------------------------

@@ -24,11 +24,6 @@
             <version>2.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.vmware.gemfire</groupId>
-            <artifactId>spring-boot-2.7-gemfire-9.15</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>stream-client</artifactId>
             <version>0.15.0</version>
@@ -130,10 +125,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>gemfire-release-repo</id>
-            <name>Pivotal GemFire Release Repository</name>
-            <url>https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire</url>
-        </repository>
+
     </repositories>
 </project>
