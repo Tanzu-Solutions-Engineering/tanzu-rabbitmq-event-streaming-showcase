@@ -63,9 +63,12 @@ public class ConsumerCmdLine implements CommandLineRunner {
                 DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                     String message = new String(delivery.getBody(), "UTF-8");
                     System.out.println(" [x] Received '" + message + "'");
+
+                    if(!autoAckFlag)
+                        channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
                 };
 
-                channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+                channel.basicConsume(queueName, autoAckFlag, consumerArguments, deliverCallback, consumerTag -> {
                 });
 
                 System.out.println(" Press [enter] to exit.");

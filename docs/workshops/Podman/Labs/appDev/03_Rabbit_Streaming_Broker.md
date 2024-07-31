@@ -23,14 +23,11 @@ cd tanzu-rabbitmq-event-streaming-showcase
 - Run RabbitMQ (if not running)
 
 ```shell
-docker run --name rabbitmq01  --network tanzu --rm -d -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS='-rabbitmq_stream advertised_host localhost' -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
+docker run --name rabbitmq01  --network tanzu --rm -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS='-rabbitmq_stream advertised_host localhost' -p 5672:5672 -p 5552:5552 -p 15672:15672  -p  1883:1883  bitnami/rabbitmq:3.13.1 
 ```
 
 - View Logs (wait for message: started TCP listener on [::]:5672)
 
-```shell
-docker logs rabbitmq01
-```
 
 - Open Management Console with credentials *user/bitnami*
 ```shell
@@ -40,8 +37,9 @@ open http://localhost:15672
 # 1 - RabbitMQ Streaming 
 
 ## Start Consumer
+
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --autoAck=false
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar  --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --autoAck=false
 ```
 
 
@@ -50,7 +48,7 @@ dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 
 Publish
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.stream --message="Testing app.receive STREAMING DATA 1"
+ java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar  --routingKey=app.receive.stream --message="Testing app.receive STREAMING DATA 1"
 ```
 
 - Hit Enter/Return to stop Publisher
@@ -58,7 +56,7 @@ Publish
 Send another message
 
 ```shell
- dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.stream --message="Testing app.receive STREAMING DATA 2"
+java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar  --routingKey=app.receive.stream --message="Testing app.receive STREAMING DATA 2"
 ```
 
 ## Review  Management Console (user/bitnami)
@@ -84,25 +82,25 @@ Stop Publisher and Consumer
 
 Replay all messages
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --streamOffset=first --autoAck=false 
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar   --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --streamOffset=first --autoAck=false 
 ```
 
 Hit Enter
 
 Reading last chunk
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --streamOffset=last --autoAck=false
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar   --clientName=ReceiveStream1 --queue=app.receive.stream --queueType=stream --streamOffset=last --autoAck=false
 ```
 
 Reading next message
 ```shell
-dotnet run  --project  applications/dotnet/Receive  --clientName=ReceiveStream1 --queue=app.receive.stream --autoAck=false --queueType=stream --streamOffset=next 
+java -jar applications/rabbit-consumer/target/rabbit-consumer-0.0.1-SNAPSHOT.jar   --clientName=ReceiveStream1 --queue=app.receive.stream --autoAck=false --queueType=stream --streamOffset=next 
 ```
 
 Send another message
 
 ```shell
-dotnet run  --project  applications/dotnet/Send/ --routingKey=app.receive.stream --message="NEXT MESSAGE"
+java -jar applications/rabbit-publisher/target/rabbit-publisher-0.0.1-SNAPSHOT.jar --routingKey=app.receive.stream --message="NEXT MESSAGE"
 ```
 
 
@@ -119,16 +117,8 @@ docker rm -f rabbitmq01
 # 3 - Spring Filter Single Active Consumer (Kubernetes)
 
 
-Start Minikube (if not started)
+Start Kind
 
-```shell
-minikube start  --memory='5g' --cpus='4'
-```
-
-or 
-```shell
-minikube start  --memory='3g' --cpus='2'
-```
 
 
 Install RabbitMQ Cluster Operator (if pods not running)
@@ -145,13 +135,7 @@ kubectl get pods -n rabbitmq-system
 
 Waited for PODS to be in Running status
 
-Start Minikube Tunnel
 
-```shell
-minikube tunnel --bind-address=0.0.0.0
-```
-
-Keep Tunnel running
 
 Create 1 Node RabbitMQ 
 
@@ -203,6 +187,7 @@ Open Sources in brows
 
 Submit account
 ```shell
+kubectl port-forward service/event-account-http-source 8080:8080
 open http://localhost:8080/swagger-ui/index.html
 ```
 
@@ -253,7 +238,7 @@ Review Logs for each
 
 Example pod 1 -  REPLACE event-log-sink-cd7fbc47b-djt2v ACTUAL POD NAME
 ```shell
-kubectl logs -f event-log-sink-cd7fbc47b-djt2v
+kubectl logs -f -lname=event-log-sink-cd7fbc47b-djt2v
 ```
 
 Example pod 2 (run in new terminal) - REPLACE event-log-sink-cd7fbc47b-qls7g ACTUAL POD NAME
