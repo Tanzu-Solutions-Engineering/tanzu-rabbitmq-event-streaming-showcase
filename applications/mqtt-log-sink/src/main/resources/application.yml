@@ -1,0 +1,8 @@
+:wqspring:
+  application:
+    name: "mqtt-log-sink"
+server:
+  port: 0
+mqtt:
+  topic:
+    filter: robot/+
