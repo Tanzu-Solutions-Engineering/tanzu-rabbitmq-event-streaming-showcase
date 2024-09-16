@@ -1,4 +1,4 @@
-
+Setup
 
 Start MongoDB server
 
@@ -73,10 +73,13 @@ query
 Greenplum
 
 ```sql
-CREATE TABLE public.app_users (
+DROP TABLE app_users;
+
+CREATE TABLE app_users (
+	id varchar NOT NULL,
 	name varchar NOT NULL,
 	age int NULL,
-	CONSTRAINT app_users_pk PRIMARY KEY (name)
+	CONSTRAINT app_users_id_pk PRIMARY KEY (id)
 );
 ```
 
