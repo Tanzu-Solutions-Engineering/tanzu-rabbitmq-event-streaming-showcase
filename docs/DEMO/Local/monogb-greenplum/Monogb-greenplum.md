@@ -21,16 +21,16 @@ docker run --network=tanzu  -it mongodb/mongodb-community-server:$MONGODB_VERSIO
 ```shell
 show dbs
 use admin
-db.user.insert({"_id": "joedoe", name: "Joe Doe", age: 45, synced: "false"})
-db.user.insert({"_id": "jilldoe", name: "Jill Doe", age: 50, synced: "false"})
-db.user.insert({"_id": "jsmith", name: "John Smith", age: 33, synced: "false"})
-db.user.insert({"_id": "jacme", name: "James Acme", age: 33, synced: "false"})
+db.user.insert({"_id": "joedoe", name: "Joe Doe", age: 45, synced: false})
+db.user.insert({"_id": "jilldoe", name: "Jill Doe", age: 50, synced: false})
+db.user.insert({"_id": "jsmith", name: "John Smith", age: 33, synced: false})
+db.user.insert({"_id": "jacme", name: "James Acme", age: 33, synced: false})
 ```
 
 Delete
 
 ```shell
-db.user.remove({acknowledged: true})
+db.user.deleteMany({})
 ```
 
 List of collections
@@ -52,15 +52,17 @@ db.user.find({})
 
 
 ```shell
-db.user.updateMany({ synced : { $eq :  false },
-  $set: { synced: "true" }}
-)
+db.user.updateMany({synced: true}, {$set:{synced: false}})  
+```
+
+
+```shell
+db.user.updateMany({synced: true, "_id": "joedoe" }, {$set:{synced: false, age: 66}})  
 ```
 
 ```shell
-db.user.updateMany(
-  { synced : { $eq :  true }},{$set: { synced: false }}
-)
+
+gti 
 ```
 
 query
@@ -89,7 +91,7 @@ mongo-stream=mongodb --username=mongo --database=admin --password=mongo --host=l
 
 ```properties
 app.mongodb.update-expression="'{$set: { synced: true }}'"
-app.mongodb.query="'{ synced : { $eq :  'false' }'"
+app.mongodb.query="'{ synced : { $eq :  false }'"
 ```
 
 

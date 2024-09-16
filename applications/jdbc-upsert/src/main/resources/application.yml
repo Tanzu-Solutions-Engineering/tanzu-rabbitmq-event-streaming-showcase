@@ -1,0 +1,16 @@
+server:
+  port: 0
+spring:
+  application:
+    name: jdbc-upsert
+  jpa:
+    show-sql: true
+  cloud:
+    function:
+      definition: upsertConsumer
+    stream:
+      function:
+        bindings:
+          upsertConsumer-in-0: input
+      binder:
+        connection-name-prefix: ${spring.application.name}

@@ -20,6 +20,7 @@
         <module>applications/http-amqp-source</module>
         <module>applications/event-log-sink</module>
         <module>applications/mqtt-log-sink</module>
+        <module>applications/jdbc-upsert</module>
         <module>applications/http-mqtt-source</module>
 <!--        <module>applications/rabbit-streams-web-app</module>-->
         <module>applications/mqtt-jdbc</module>
