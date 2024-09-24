@@ -17,7 +17,7 @@ helm repo update
 
 helm install cert-manager jetstack/cert-manager --namespace cert-manager  --version v1.0.2 --set installCRDs=true
 
-kubectl create secret docker-registry image-pull-secret --docker-server=registry.pivotal.io --docker-username=$HARBOR_USER --docker-password=$HARBOR_PASSWORD
+kubectl create secret docker-registry image-pull-secret --docker-server=registry.packages.broadcom.com --docker-username=$BROADCOM_MAVEN_USERNAME --docker-password=$BROADCOM_MAVEN_PASSWORD
 
 
 

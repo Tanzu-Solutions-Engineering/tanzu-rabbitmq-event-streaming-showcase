@@ -98,3 +98,6 @@ app.mongodb.query="'{ synced : { $eq :  false }'"
 ```
 
 
+```shell
+db.user.updateMany({synced: true, "_id": "jsmith" }, {$set:{synced: false, name: "Johnson Smith"}})  
+```

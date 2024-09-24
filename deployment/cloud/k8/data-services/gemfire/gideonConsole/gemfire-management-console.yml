@@ -14,6 +14,8 @@ spec:
     metadata:
       labels:
         name:  gemfire-management-console
+        run:  gemfire-management-console
+        app:  gemfire-management-console
     spec:
       containers:
         - env:
@@ -30,7 +32,8 @@ metadata:
   name: gemfire-management-console
 spec:
   selector:
-    name: gemfire-management-console
+    app: gemfire-management-console
+#    name: gemfire-management-console
   ports:
     - protocol: TCP
       port: 8080

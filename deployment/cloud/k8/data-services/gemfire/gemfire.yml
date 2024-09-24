@@ -19,7 +19,7 @@ spec:
     persistentVolumeClaim:
       deleteOnShutdown: true
   servers:
-    replicas: 1
+    replicas: 2
     resources:
       requests:
         memory: 1Gi
