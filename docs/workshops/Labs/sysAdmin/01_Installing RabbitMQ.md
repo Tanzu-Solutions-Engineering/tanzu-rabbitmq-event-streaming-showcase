@@ -32,7 +32,7 @@ docker logs rabbitmq01
 open http://localhost:15672
 ```
 
-- click Admin -> add a user -> app/changeme 
+- click Admin -> add a user -> app/changeme
 - Add Tag (ex: admin/administrator)
 - Create permissions (.* from configure, write and read)
 - Try logging into management console
