@@ -7,10 +7,11 @@ spring:
     show-sql: true
   cloud:
     function:
-      definition: sqlQueryConsumer
+      definition: sqlQueryProcessor
     stream:
       function:
         bindings:
-          sqlQueryConsumer-in-0: input
+          sqlQueryProcessor-in-0: input
+          sqlQueryProcessor-out-0: output
       binder:
         connection-name-prefix: ${spring.application.name}

@@ -11,18 +11,22 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Insert new data or update existing data
+ * Performance SQL query most on provided payload.
+ *
+ * Note if the select contains a single column with key "payload",
+ * then only that is returns as a text.
  *
  * @author gregory green
  */
 @Slf4j
 @Component
-public class SqlQueryConsumer implements Function<String,String> {
+public class SqlQueryProcessor implements Function<String,String> {
     private final String sql;
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private ObjectMapper objectMapper = new ObjectMapper();
+    private final static String PAYLOAD_KEY_NM = "payload";
 
-    public SqlQueryConsumer(NamedParameterJdbcTemplate jdbcTemplate, @Value("${jdbc.sql.query}")String sql) {
+    public SqlQueryProcessor(NamedParameterJdbcTemplate jdbcTemplate, @Value("${jdbc.sql.query}")String sql) {
         this.sql = sql;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -38,6 +42,12 @@ public class SqlQueryConsumer implements Function<String,String> {
 
         var outMap = jdbcTemplate.queryForMap(sql, inputMap);
         log.info("SQL: {}, results: {}",sql,outMap);
+
+        if(outMap.size() == 1 && outMap.containsKey(PAYLOAD_KEY_NM)) {
+            var payload = String.valueOf(outMap.get(PAYLOAD_KEY_NM));
+            log.info("Returning payload: {}",payload);
+            return payload;
+        }
 
         var out = objectMapper.writeValueAsString(outMap);
         log.info("Returning: {}",out);

@@ -96,12 +96,12 @@ app.http.server.port=9993
 app.tanzu-sql-select.spring.datasource.driver-class-name=org.postgresql.Driver
 app.tanzu-sql-select.spring.datasource.username=postgres
 app.tanzu-sql-select.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
-app.tanzu-sql-select.jdbc.sql.query="select payload::text from insurance.claims WHERE id= :id"
+app.tanzu-sql-select.jdbc.sql.query="select payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
 deployer.tanzu-sql-select.bootVersion=3
 deployer.http.bootVersion=2
 deployer.jdbc.bootVersion=3
-app.log.spring.cloud.stream.binder.connection-name-prefix=log
-app.http.spring.cloud.stream.binder.connection-name-prefix=http
+app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
+app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
 ```
 
 Local only
