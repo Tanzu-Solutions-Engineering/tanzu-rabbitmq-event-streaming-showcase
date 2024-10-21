@@ -12,20 +12,20 @@
 
     <modules>
         <module>components/stream-account-domain</module>
-         <module>applications/event-account-http-source</module>
-        <module>applications/event-account-jdbc-sink</module>
-        <module>applications/account-generator-amqp-source</module>
-        <module>applications/generator-mqtt-source</module>
-        <module>applications/account-generator-streams-source</module>
-        <module>applications/http-amqp-source</module>
-        <module>applications/event-log-sink</module>
-        <module>applications/mqtt-log-sink</module>
-        <module>applications/jdbc-upsert</module>
-        <module>applications/http-mqtt-source</module>
+         <module>applications/sources/event-account-http-source</module>
+        <module>applications/sinks/event-account-jdbc-sink</module>
+        <module>applications/sources/account-generator-amqp-source</module>
+        <module>applications/sources/generator-mqtt-source</module>
+        <module>applications/sources/account-generator-streams-source</module>
+        <module>applications/sources/http-amqp-source</module>
+        <module>applications/sinks/event-log-sink</module>
+        <module>applications/sinks/mqtt-log-sink</module>
+        <module>applications/sinks/jdbc-upsert</module>
+        <module>applications/sources/http-mqtt-source</module>
 <!--        <module>applications/rabbit-streams-web-app</module>-->
         <module>applications/mqtt-jdbc</module>
         <module>applications/timeout-api</module>
-        <module>applications/api-throttling-sink</module>
+        <module>applications/sinks/api-throttling-sink</module>
         <module>applications/rabbit-consumer</module>
         <module>applications/rabbit-publisher</module>
     </modules>
