@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,11 +21,15 @@ class UpsertConsumerTest {
 
     @Mock
      private NamedParameterJdbcTemplate jdbcTemplate;
+    private String updateSql = "update";
+    private UpsertConsumer subject;
+    private Map<String,Object> dataRow;
 
 
     @BeforeEach
     void setUp() {
-
+        subject = new UpsertConsumer(jdbcTemplate, updateSql, "");
+        dataRow = Map.of("col1", "dsds" );
     }
 
     @Test
@@ -75,14 +80,24 @@ class UpsertConsumerTest {
 
         var subject = new UpsertConsumer(jdbcTemplate, updateSql, insertSql);
 
-        when(jdbcTemplate.update(updateSql,dataRow)).thenReturn( 0);
-        when(jdbcTemplate.update(insertSql,dataRow)).thenReturn(1);
+        when(jdbcTemplate.update(anyString(),any(Map.class))).thenReturn( 0)
+                .thenReturn(1);
 
 
         subject.upsert(dataRow);
 
-        verify(jdbcTemplate,times(1))
-                .update(insertSql, dataRow);
+        verify(jdbcTemplate,times(2))
+                .update(anyString(), any(Map.class));
 
+    }
+
+    @Test
+    void addPayload() {
+
+        var actual = subject.upsert(dataRow);
+
+        System.out.println(actual);
+
+        assertThat(actual.get("payload")).isNotNull();
     }
 }

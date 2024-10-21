@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>showcase.event.streaming</groupId>
 	<artifactId>jdbc-upsert</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>jdbc-upsert</name>
 	<description>jdbc-upsert</description>
 	<properties>

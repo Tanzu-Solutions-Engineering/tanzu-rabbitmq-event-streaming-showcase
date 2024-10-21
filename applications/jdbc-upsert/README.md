@@ -56,12 +56,12 @@ docker login -u <user>
 mvn install
 cd applications/jdbc-upsert
 mvn package
-docker build  --platform linux/amd64,linux/arm64 -t jdbc-upsert:0.1.0-SNAPSHOT .
+docker build  --platform linux/amd64,linux/arm64 -t jdbc-upsert:0.1.1-SNAPSHOT .
 ```
 
 ```shell
-docker tag jdbc-upsert:0.1.0-SNAPSHOT cloudnativedata/jdbc-upsert:0.1.0-SNAPSHOT
-docker push cloudnativedata/jdbc-upsert:0.1.0-SNAPSHOT
+docker tag jdbc-upsert:0.1.1-SNAPSHOT cloudnativedata/jdbc-upsert:0.1.1-SNAPSHOT
+docker push cloudnativedata/jdbc-upsert:0.1.1-SNAPSHOT
 ```
 
 
@@ -110,6 +110,14 @@ https://dzone.com/articles/how-to-run-any-dockerized-application-on-spring-cl
 app register --name jdbc-upsert --type sink  --uri docker:cloudnativedata/jdbc-upsert:latest
 ```
 
+
+From properties
+
+```properties
+sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
+sink.jdbc-upsert.bootVersion=3
+```
+
 ```shell script
 stream create --name "jdbc-postgres" --definition "http | jdbc-upsert"
 ```
@@ -118,7 +126,7 @@ stream create --name "jdbc-postgres" --definition "http | jdbc-upsert"
 Local only
 
 ```shell
-app register --type sink --name jdbc-upsert --uri file:///Users/Projects/VMware/Tanzu/SCDF/dev/scdf-extensions/applications/jdbc-upsert-stream-sink/target/jdbc-upsert-0.0.4-SNAPSHOT.jar
+app register --type sink --name jdbc-upsert --uri file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
 ```
 
 
