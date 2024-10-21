@@ -2,7 +2,16 @@
 
 Showcase for API Flow Control Throttling with RabbitMQ and Spring.
 
-Start RabbitMQ
+
+Install RabbitMQ Kubernetes Operator
+
+```shell
+kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml"
+```
+
+```shell
+kubectl get pods -n rabbitmq-system
+```
 
 
 Deploy RabbitMQ
@@ -12,10 +21,12 @@ Deploy RabbitMQ
 kubectl apply -f deployment/cloud/k8/data-services/rabbitmq/rabbitmq-3-node.yml
 ```
 
+```shell
+kubectl get pods -w
+```
+
 ------------
 # Start Timeout App
-
-
 
 ```shell
 kubectl apply -f deployment/cloud/k8/apps/timeout-api/timeout-api.yml
@@ -44,12 +55,12 @@ Open dashboard
 
 
 ```shell
-kubectl get services
-
+export SCDF_HOST=`kubectl get services scdf-spring-cloud-dataflow-server --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+echo $SCDF_HOST
 ```
 
 ```shell
-open http://<IP-ADDRESS>:9393/dashboard
+open http://$SCDF_HOST:9393/dashboard
 ```
 
 
@@ -132,6 +143,13 @@ app.api-throttle.spring.cloud.stream.bindings.input.consumer.maxAttempts=3
 ```
 
 
+Wait for applications to deploy
+
+```shell
+kubectl get pod -w
+
+```
+
 
 -----------------------------------
 
@@ -142,10 +160,6 @@ View App Logs
 
 ```shell
 export API_HTTP_HOST=`kubectl get services api-http --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-```
-
-
-```shell
 echo $API_HTTP_HOST
 ```
 
