@@ -1,4 +1,4 @@
-package showcase.scdf.jdbc.upsert;
+package showcase.scdf.jdbc.sink;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

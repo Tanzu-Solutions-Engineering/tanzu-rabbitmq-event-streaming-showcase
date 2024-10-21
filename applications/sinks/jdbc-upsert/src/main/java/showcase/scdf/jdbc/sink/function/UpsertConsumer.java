@@ -1,4 +1,4 @@
-package showcase.scdf.jdbc.upsert.function;
+package showcase.scdf.jdbc.sink.function;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;

@@ -1,7 +1,6 @@
-package showcase.scdf.jdbc.upsert;
+package showcase.scdf.jdbc.sink;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 //@SpringBootTest
 class JdbcUpsertAppTests {

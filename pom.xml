@@ -28,6 +28,7 @@
         <module>applications/sinks/api-throttling-sink</module>
         <module>applications/rabbit-consumer</module>
         <module>applications/rabbit-publisher</module>
+        <module>applications/processors/jdbc-sql-processor</module>
     </modules>
     <build>
         <pluginManagement>
