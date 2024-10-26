@@ -91,18 +91,53 @@ processor.jdbc-sql-processor.bootVersion=3
 jdbc-postgres-select= http | tanzu-sql-select: jdbc-sql-processor | log
 ```
 
+
 ```properties
 app.http.server.port=9993
 app.tanzu-sql-select.spring.datasource.driver-class-name=org.postgresql.Driver
 app.tanzu-sql-select.spring.datasource.username=postgres
 app.tanzu-sql-select.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
-app.tanzu-sql-select.jdbc.sql.query="select payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
+app.tanzu-sql-select.jdbc.sql.query="select id, payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
 deployer.tanzu-sql-select.bootVersion=3
 deployer.http.bootVersion=2
 deployer.jdbc.bootVersion=3
 app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
 ```
+
+```shell script
+jdbc-postgres-enrichment-valkey=http | tanzu-sql-select: jdbc-sql-processor | valkey: redis --key-expression=payload.id
+```
+
+Get Data for Valkey
+
+```shell
+ LRANGE 1 0 0
+```
+
+
+
+
+```properties
+app.http.server.port=9994
+app.tanzu-sql-select.spring.datasource.driver-class-name=org.postgresql.Driver
+app.tanzu-sql-select.spring.datasource.username=postgres
+app.tanzu-sql-select.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
+app.tanzu-sql-select.jdbc.sql.query="select id, payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
+deployer.tanzu-sql-select.bootVersion=3
+deployer.http.bootVersion=2
+deployer.jdbc.bootVersion=3
+app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
+app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
+app.valkey.spring.cloud.stream.rabbit.binder.connection-name-prefix=valkey
+```
+
+HTTP POST
+
+```shell
+curl http://localhost:9994 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
+```
+
 
 Local only
 
@@ -119,7 +154,30 @@ app register --type sink --name jdbc-sql-processor --uri file:///Users/Projects/
 HTTP POST
 
 ```shell
-curl http://localhost:9993 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\", \"policyId\": \"11\", \"claimType\": \"auto\", \"description\" : \"\", \"notes\" : \"\", \"claimAmount\": 2323.22, \"dateOfLoss\": \"3/3/20243\", \"insured\": { \"name\": \"Josiah Imani\", \"homeAddress\" : { \"street\" : \"1 Straight\", \"city\" : \"JC\", \"state\" : \"JC\", \"zip\" : \"02323\" } }, \"lossType\": \"Collision\" }"
+curl http://localhost:9993 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
+```
+
+
+```json
+
+	{ 
+		"id"	: "1"
+	}
+
+```
+
+
+Output
+
+```json
+
+	{
+		"id"			:	"1",
+		"losstype"		:	"Collision",
+		"name"			:	"Josiah Imani",
+		"homeaddress"	:	"1 Straight, JC, JC 02323"
+	 }
+
 ```
 
 

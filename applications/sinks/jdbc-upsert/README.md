@@ -114,7 +114,7 @@ app register --name jdbc-upsert --type sink  --uri docker:cloudnativedata/jdbc-u
 From properties
 
 ```properties
-sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
+sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
 sink.jdbc-upsert.bootVersion=3
 ```
 
