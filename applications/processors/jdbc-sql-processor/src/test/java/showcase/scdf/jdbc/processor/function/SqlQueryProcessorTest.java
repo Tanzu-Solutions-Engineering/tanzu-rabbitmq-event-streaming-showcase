@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import showcase.scdf.jdbc.processor.properties.JdbcSqlProperties;
 
 import java.util.Map;
 
@@ -28,11 +29,12 @@ class SqlQueryProcessorTest {
     private Map expectedMap;
     private String expectedJson;
     private ObjectMapper objectMapper = new ObjectMapper();
+    private JdbcSqlProperties sqlProperties = new JdbcSqlProperties(sql);
 
 
     @BeforeEach
     void setUp() {
-        subject = new SqlQueryProcessor(jdbcTemplate, sql);
+        subject = new SqlQueryProcessor(jdbcTemplate, sqlProperties);
         json = """
                 {
                     "id": "1232",
@@ -42,14 +44,14 @@ class SqlQueryProcessorTest {
     }
 
 
-    @DisplayName("Given Result with colums When apply Then return json of results")
+    @DisplayName("Given Result with columns When apply Then return json of results")
     @Test
     void apply() throws JsonProcessingException {
 
         expectedMap = Map.of("id", "1232", "name", "1232");
 
 
-        var subject = new SqlQueryProcessor(jdbcTemplate, sql);
+        var subject = new SqlQueryProcessor(jdbcTemplate, sqlProperties);
         when(jdbcTemplate.queryForMap(anyString(),any(Map.class))).thenReturn( expectedMap);
 
         var actual = objectMapper.readValue(subject.apply(json),Map.class);
@@ -64,7 +66,7 @@ class SqlQueryProcessorTest {
         var expectedText = "expected";
         expectedMap = Map.of("payload", expectedText);
 
-        var subject = new SqlQueryProcessor(jdbcTemplate, sql);
+        var subject = new SqlQueryProcessor(jdbcTemplate, sqlProperties);
         when(jdbcTemplate.queryForMap(anyString(),any(Map.class))).thenReturn( expectedMap);
 
         var actual = subject.apply(json);
@@ -81,7 +83,7 @@ class SqlQueryProcessorTest {
         expectedMap = Map.of("id", "1232", "payload", "1232");
 
 
-        var subject = new SqlQueryProcessor(jdbcTemplate, sql);
+        var subject = new SqlQueryProcessor(jdbcTemplate, sqlProperties);
         when(jdbcTemplate.queryForMap(anyString(),any(Map.class))).thenReturn( expectedMap);
 
         var actual = objectMapper.readValue(subject.apply(json),Map.class);

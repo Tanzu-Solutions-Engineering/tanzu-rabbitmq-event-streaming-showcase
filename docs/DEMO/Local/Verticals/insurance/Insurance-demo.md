@@ -94,7 +94,8 @@ cd /Users/devtools/integration/scdf/
 From properties
 
 ```properties
-sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
+sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.2.0-SNAPSHOT.jar
+sink.jdbc-upsert.metadata=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.2.0-SNAPSHOT-metadata.jar
 sink.jdbc-upsert.bootVersion=3
 ```
 
@@ -104,6 +105,7 @@ From properties
 
 ```properties
 processor.jdbc-sql-processor=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/processors/jdbc-sql-processor/target/jdbc-sql-processor-0.0.1-SNAPSHOT.jar
+processor.jdbc-sql-processor.metadata=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/processors/jdbc-sql-processor/target/jdbc-sql-processor-0.0.1-SNAPSHOT-metadata.jar
 processor.jdbc-sql-processor.bootVersion=3
 ```
 
@@ -136,7 +138,7 @@ CREATE TABLE insurance.claims(
 --spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
 
 ```shell
-claims-http=http --port=9991 | tanzu-sql:jdbc-upsert
+claims-http=http --port=9991 | tanzu-sql: jdbc-upsert --insert-sql="UPDATE insurance.claims SET payload=to_json(:payload::json) WHERE id= :id" --update-sql="INSERT INTO insurance.claims (id,payload) VALUES(:id, to_json(:payload::json))"
 ```
 
 ```properties
@@ -144,8 +146,8 @@ app.http.server.port=9991
 app.tanzu-sql.spring.datasource.driver-class-name=org.postgresql.Driver
 app.tanzu-sql.spring.datasource.username=postgres
 app.tanzu-sql.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
-app.tanzu-sql.app.updateSql="UPDATE insurance.claims SET payload=to_json(:payload::json) WHERE id= :id"
-app.tanzu-sql.app.insertSql="INSERT INTO insurance.claims (id,payload) VALUES(:id, to_json(:payload::json))"
+app.tanzu-sql.jdbc.upsert.insert-sql=UPDATE insurance.claims SET payload=to_json(:payload::json) WHERE id= :id
+app.tanzu-sql.jdbc.upsert.update-sql=INSERT INTO insurance.claims (id,payload) VALUES(:id, to_json(:payload::json))
 deployer.tanzu-sql.bootVersion=3
 deployer.http.bootVersion=2
 deployer.jdbc.bootVersion=3
@@ -187,10 +189,9 @@ done
 
 Create SCDF stream
 
-```shell script
-claims-caching-http=http | tanzu-sql-select: jdbc-sql-processor | valkey: redis --key-expression=payload.id
+```shell
+claims-caching-http=http | tanzu-sql-select: jdbc-sql-processor --query="select id, payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id" | valkey: redis --key-expression=payload.id
 ```
-
 
 ```properties
 app.http.server.port=9994
@@ -203,6 +204,7 @@ deployer.http.bootVersion=2
 deployer.jdbc.bootVersion=3
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
 app.valkey.spring.cloud.stream.rabbit.binder.connection-name-prefix=valkey
+app.valkey.redis.consumer.key-expression=payload.id
 ```
 Get Data for Valkey
 
@@ -214,7 +216,10 @@ User 1
 ```shell
 curl http://localhost:9994 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
 ```
-
+View Data in ValKey
+```shell
+ LRANGE 1 0 0
+```
 
 User 2
 
@@ -222,12 +227,12 @@ User 2
 curl http://localhost:9994 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"2\" }"
 ```
 
-View Data in ValKey
-```shell
- LRANGE 1 0 0
-```
-
 ```shell
  LRANGE 2 0 0
 ```
 
+ValKey Clean up
+
+```shell
+ DEL 1 2
+```

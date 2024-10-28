@@ -33,10 +33,10 @@ sink.jdbc-upsert.bootVersion=3
 
 The configuration properties are *jdbc.upsert.updateSql* and *jdbc.upsert.insertSql*.
 
-Configuration | Notes                             
-------------- |--------------------------- 
-jdbc.upsert.updateSql | EX: update blackat.members set MEMBER_NM = :name where MEMBER_ID =:id
-jdbc.upsert.insertSql | Ex:insert into blackat.members(MEMBER_ID,MEMBER_NM) values(:id,:name)
+| Configuration         | Notes 					                                                             |                             
+|-----------------------|-------------------------------------------------------------------------| 
+| jdbc.upsert.updateSql | EX: update dei_users.members set MEMBER_NM = :name where MEMBER_ID =:id |
+| jdbc.upsert.insertSql | Ex:insert into dei_users.members(MEMBER_ID,MEMBER_NM) values(:id,:name) |
 
 ## Example SCDF Stream
 

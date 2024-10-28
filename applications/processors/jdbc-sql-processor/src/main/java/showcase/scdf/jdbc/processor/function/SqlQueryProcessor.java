@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+import showcase.scdf.jdbc.processor.properties.JdbcSqlProperties;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -21,16 +22,15 @@ import java.util.function.Function;
 @Slf4j
 @Component
 public class SqlQueryProcessor implements Function<String,String> {
-    private final String sql;
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final String sql;
     private ObjectMapper objectMapper = new ObjectMapper();
     private final static String PAYLOAD_KEY_NM = "payload";
 
-    public SqlQueryProcessor(NamedParameterJdbcTemplate jdbcTemplate, @Value("${jdbc.sql.query}")String sql) {
-        this.sql = sql;
+    public SqlQueryProcessor(NamedParameterJdbcTemplate jdbcTemplate, JdbcSqlProperties jdbcSqlProperties) {
+        this.sql = jdbcSqlProperties.getQuery();
         this.jdbcTemplate = jdbcTemplate;
     }
-
 
 
     @SneakyThrows
