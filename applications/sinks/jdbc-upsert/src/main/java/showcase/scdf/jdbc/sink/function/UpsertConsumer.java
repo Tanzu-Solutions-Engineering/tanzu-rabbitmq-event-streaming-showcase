@@ -24,7 +24,7 @@ public class UpsertConsumer implements Consumer<String> {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public UpsertConsumer(NamedParameterJdbcTemplate jdbcTemplate, @Value("${app.updateSql}")String updateSql, @Value("${app.insertSql}") String insertSql) {
+    public UpsertConsumer(NamedParameterJdbcTemplate jdbcTemplate, @Value("${jdbc.upsert.updateSql}")String updateSql, @Value("${jdbc.upsert.insertSql}") String insertSql) {
         this.updateSql = updateSql;
         this.insertSql = insertSql;
         this.jdbcTemplate = jdbcTemplate;

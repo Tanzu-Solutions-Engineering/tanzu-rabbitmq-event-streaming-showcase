@@ -115,6 +115,7 @@ From properties
 
 ```properties
 sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
+sink.jdbc-upsert.metadata=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT-metadata.jar
 sink.jdbc-upsert.bootVersion=3
 ```
 
