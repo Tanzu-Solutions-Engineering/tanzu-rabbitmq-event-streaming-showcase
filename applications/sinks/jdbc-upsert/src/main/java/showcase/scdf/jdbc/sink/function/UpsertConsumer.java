@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+import showcase.scdf.jdbc.sink.properties.JdbcUpsertProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +25,12 @@ public class UpsertConsumer implements Consumer<String> {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    public UpsertConsumer(NamedParameterJdbcTemplate jdbcTemplate, @Value("${jdbc.upsert.updateSql}")String updateSql, @Value("${jdbc.upsert.insertSql}") String insertSql) {
-        this.updateSql = updateSql;
-        this.insertSql = insertSql;
+    /*
+    @Value("${jdbc.upsert.updateSql}")String updateSql, @Value("${jdbc.upsert.insertSql}") String insertSql
+     */
+    public UpsertConsumer(NamedParameterJdbcTemplate jdbcTemplate, JdbcUpsertProperties properties) {
+        this.updateSql = properties.getUpdateSql();
+        this.insertSql = properties.getInsertSql();
         this.jdbcTemplate = jdbcTemplate;
     }
 

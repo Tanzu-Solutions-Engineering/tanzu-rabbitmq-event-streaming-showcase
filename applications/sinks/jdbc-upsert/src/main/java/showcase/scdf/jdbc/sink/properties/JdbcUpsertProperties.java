@@ -1,32 +1,26 @@
 package showcase.scdf.jdbc.sink.properties;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "jdbc.upsert")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class JdbcUpsertProperties {
     /**
-     * SQL update
+     * SQL update statement jdbc.upsert.updateSql. Ex: update dei_users.members set MEMBER_NM = :name where MEMBER_ID =:id
+     *
      */
-    private String updateSql;
+    private String updateSql = "";
 
     /**
-     * SQL insert
+     * SQL insert statement jdbc.upsert.insertSql  Ex:insert into dei_users.members(MEMBER_ID,MEMBER_NM) values(:id,:name)
      */
-    private String insertSql;
+    private String insertSql = "";
 
-    public String getUpdateSql() {
-        return updateSql;
-    }
-
-    public void setUpdateSql(String updateSql) {
-        this.updateSql = updateSql;
-    }
-
-    public String getInsertSql() {
-        return insertSql;
-    }
-
-    public void setInsertSql(String insertSql) {
-        this.insertSql = insertSql;
-    }
 }

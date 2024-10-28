@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import showcase.scdf.jdbc.sink.properties.JdbcUpsertProperties;
 
 import java.util.Map;
 
@@ -28,13 +29,13 @@ class UpsertConsumerTest {
 
     @BeforeEach
     void setUp() {
-        subject = new UpsertConsumer(jdbcTemplate, updateSql, "");
+        subject = new UpsertConsumer(jdbcTemplate, JdbcUpsertProperties.builder().updateSql(updateSql).insertSql("").build());
         dataRow = Map.of("col1", "dsds" );
     }
 
     @Test
     void acceptJsonDataRow_empty() {
-        var subject = new UpsertConsumer(jdbcTemplate, "", "");
+        var subject = new UpsertConsumer(jdbcTemplate, new JdbcUpsertProperties());
 
         var emptyObject = "{}";
 
@@ -47,7 +48,7 @@ class UpsertConsumerTest {
 
     @Test
     void acceptJsonDataRow_invalid() {
-        var subject = new UpsertConsumer(jdbcTemplate, "", "");
+        var subject = new UpsertConsumer(jdbcTemplate, new JdbcUpsertProperties());
 
         var invalid = "{";
         assertThrows(JsonParseException.class, () ->
@@ -61,7 +62,7 @@ class UpsertConsumerTest {
 
         var updateSql = "insert into table values(?,?)";
 
-        var subject = new UpsertConsumer(jdbcTemplate, updateSql, "");
+        var subject = new UpsertConsumer(jdbcTemplate, JdbcUpsertProperties.builder().updateSql(updateSql).build());
         when(jdbcTemplate.update(anyString(),any(Map.class))).thenReturn( 1);
 
         subject.upsert(dataRow);
@@ -78,7 +79,8 @@ class UpsertConsumerTest {
         var insertSql = "insert into table values(:col1)";
         var updateSql = "update table set values cl=:col1";
 
-        var subject = new UpsertConsumer(jdbcTemplate, updateSql, insertSql);
+        var subject = new UpsertConsumer(jdbcTemplate, JdbcUpsertProperties.builder()
+                .updateSql(updateSql).insertSql(insertSql).build());
 
         when(jdbcTemplate.update(anyString(),any(Map.class))).thenReturn( 0)
                 .thenReturn(1);

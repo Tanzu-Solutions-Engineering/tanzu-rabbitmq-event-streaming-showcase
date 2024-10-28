@@ -16,8 +16,22 @@ For example payload
 }
 ``` 
 
-The configuration properties are *jdbc.upsert.updateSql* and *jdbc.upsert.insertSql*.
+## Register/Create
 
+```shell script
+app register --name jdbc-upsert --type sink  --uri docker:cloudnativedata/jdbc-upsert:latest
+```
+
+
+From properties
+
+```properties
+sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.2.0-SNAPSHOT.jar
+sink.jdbc-upsert.metadata=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.2.0-SNAPSHOT-metadata.jar
+sink.jdbc-upsert.bootVersion=3
+```
+
+The configuration properties are *jdbc.upsert.updateSql* and *jdbc.upsert.insertSql*.
 
 Configuration | Notes                             
 ------------- |--------------------------- 
@@ -79,12 +93,12 @@ docker login -u <user>
 mvn install
 cd applications/jdbc-upsert
 mvn package
-docker build  --platform linux/amd64,linux/arm64 -t jdbc-upsert:0.1.1-SNAPSHOT .
+docker build  --platform linux/amd64,linux/arm64 -t jdbc-upsert:0.2.0-SNAPSHOT .
 ```
 
 ```shell
-docker tag jdbc-upsert:0.1.1-SNAPSHOT cloudnativedata/jdbc-upsert:0.1.1-SNAPSHOT
-docker push cloudnativedata/jdbc-upsert:0.1.1-SNAPSHOT
+docker tag jdbc-upsert:0.2.0-SNAPSHOT cloudnativedata/jdbc-upsert:0.2.0-SNAPSHOT
+docker push cloudnativedata/jdbc-upsert:0.2.0-SNAPSHOT
 ```
 
 
@@ -122,20 +136,7 @@ docker push cloudnativedata/jdbc-upsert:latest
 
 See the following
 
-## Register/Create
 
-```shell script
-app register --name jdbc-upsert --type sink  --uri docker:cloudnativedata/jdbc-upsert:latest
-```
-
-
-From properties
-
-```properties
-sink.jdbc-upsert=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
-sink.jdbc-upsert.metadata=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/sinks/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT-metadata.jar
-sink.jdbc-upsert.bootVersion=3
-```
 
 ```shell script
 stream create --name "jdbc-postgres" --definition "http | jdbc-upsert"
@@ -145,7 +146,7 @@ stream create --name "jdbc-postgres" --definition "http | jdbc-upsert"
 Local only
 
 ```shell
-app register --type sink --name jdbc-upsert --uri file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/jdbc-upsert/target/jdbc-upsert-0.1.1-SNAPSHOT.jar
+app register --type sink --name jdbc-upsert --uri file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/jdbc-upsert/target/jdbc-upsert-0.2.0-SNAPSHOT.jar
 ```
 
 
