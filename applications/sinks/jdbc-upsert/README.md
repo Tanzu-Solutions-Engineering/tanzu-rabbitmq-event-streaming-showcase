@@ -1,17 +1,13 @@
 ## JDBC UPSERT stream Sink
 
-file:///Users/Projects/VMware/Tanzu/SCDF/dev/scdf-showcase/applications/jdbc-upsert/target/jdbc-upsert-0.0.1-SNAPSHOT.jar
-
-file:///Users/devtools/integration/scdf/apps/jdbc/spring-cloud-starter-stream-source-jdbc/target/spring-cloud-starter-stream-source-jdbc-2.1.8.BUILD-SNAPSHOT.jar
-
-Uses Spring Data to insert or update records based [RabbitMQ](https://www.rabbitmq.com/) JSON topic payloads. 
+This Spring Cloud Stream application uses Spring Data to insert or update records based [RabbitMQ](https://www.rabbitmq.com/) JSON topic payloads. 
 
 Note that this application will first execute the update SQL
 If the SQL update count is 0, then the SQL insert statement will be executed.
 
 The application supports populating bind variables from a JSON message payload.
 
-For example,
+For example payload
 
 ```json
 {
@@ -20,13 +16,13 @@ For example,
 }
 ``` 
 
-The configuration properties are *app.updateSql* and *app.insertSql*.
+The configuration properties are *jdbc.upsert.updateSql* and *jdbc.upsert.insertSql*.
 
 
 Configuration | Notes                             
 ------------- |--------------------------- 
-app.updateSql | EX: update blackat.members set MEMBER_NM = :name where MEMBER_ID =:id
-app.insertSql | Ex:insert into blackat.members(MEMBER_ID,MEMBER_NM) values(:id,:name)
+jdbc.upsert.updateSql | EX: update blackat.members set MEMBER_NM = :name where MEMBER_ID =:id
+jdbc.upsert.insertSql | Ex:insert into blackat.members(MEMBER_ID,MEMBER_NM) values(:id,:name)
 
 # Setup
 
@@ -97,12 +93,7 @@ docker push cloudnativedata/jdbc-upsert:latest
 ## Example
 
 
-See the following 
-
-https://spring.io/blog/2020/01/27/creating-docker-images-with-spring-boot-2-3-0-m1
-
-https://dzone.com/articles/how-to-run-any-dockerized-application-on-spring-cl
-
+See the following
 
 ## Register/Create
 
@@ -153,9 +144,7 @@ Environment Variables
 To influence the environment settings for a given application, you can use the spring.cloud.deployer.kubernetes.environmentVariables deployer property. For example, a common requirement in production settings is to influence the JVM memory arguments. You can do so by using the JAVA_TOOL_OPTIONS environment variable, as the following example shows:
 
     deployer.<app>.kubernetes.environmentVariables=JAVA_TOOL_OPTIONS='-Xmx1024m -Xms1024m'
-
-
-deployer.jdbc.kubernetes.environmentVariables=spring.datasource.driver-class-name=org.postgresql.Driver,spring.datasource.url=jdbc:postgresql://192.168.1.84:5432/postgres,spring.datasource.username=postgres,spring.datasource.password=security,app.updateSql=update blackat.members set MEMBER_ID =:id','  MEMBER_NM = :name' --app.insertSql='insert into blackat.members(MEMBER_ID'',''MEMBER_NM) values(:id'','':name)'
+	deployer.jdbc.kubernetes.environmentVariables=spring.datasource.driver-class-name=org.postgresql.Driver,spring.datasource.url=jdbc:postgresql://192.168.1.84:5432/postgres,spring.datasource.username=postgres,spring.datasource.password=security,jdbc.upsert.updateSql=update blackat.members set MEMBER_ID =:id','  MEMBER_NM = :name' --jdbc.upsert.insertSql='insert into blackat.members(MEMBER_ID'',''MEMBER_NM) values(:id'','':name)'
     
 The environmentVariables property accepts a comma-delimited string. If an environment variable contains a value which is also a comma-delimited string, it must be enclosed in single quotation marks — for example, spring.cloud.deployer.kubernetes.environmentVariables=spring.cloud.stream.kafka.binder.brokers='somehost:9092, anotherhost:9093'
 This overrides the JVM memory setting for the desired <app> (replace <app> with the name of your application).
@@ -178,13 +167,13 @@ kubectl get configmap jdbc-upsert-config -o yaml
 
 External Postgres
 ```shell script
-stream deploy --name jdbc-postgres --properties "deployer.jdbc-upsert.kubernetes.imagePullSecret=regcred,deployer.jdbc-upsert.kubernetes.imagePullPolicy=Always,deployer.jdbc-upsert.kubernetes.configMapKeyRefs=[{envVarName: 'app.insertSql', configMapName: 'jdbc-upsert-config', dataKey: 'app.insertSql'},{envVarName: 'app.updateSql', configMapName: 'jdbc-upsert-config', dataKey: 'app.updateSql'}], deployer.jdbc-upsert.kubernetes.environmentVariables=app.test=test,spring.datasource.driver-class-name=org.postgresql.Driver,spring.datasource.url=jdbc:postgresql://HOSTNAME:5432/postgres,spring.datasource.username=postgres,spring.datasource.password=PASSWD"
+stream deploy --name jdbc-postgres --properties "deployer.jdbc-upsert.kubernetes.imagePullSecret=regcred,deployer.jdbc-upsert.kubernetes.imagePullPolicy=Always,deployer.jdbc-upsert.kubernetes.configMapKeyRefs=[{envVarName: 'jdbc.upsert.insertSql', configMapName: 'jdbc-upsert-config', dataKey: 'jdbc.upsert.insertSql'},{envVarName: 'jdbc.upsert.updateSql', configMapName: 'jdbc-upsert-config', dataKey: 'jdbc.upsert.updateSql'}], deployer.jdbc-upsert.kubernetes.environmentVariables=jdbc.upsert.test=test,spring.datasource.driver-class-name=org.postgresql.Driver,spring.datasource.url=jdbc:postgresql://HOSTNAME:5432/postgres,spring.datasource.username=postgres,spring.datasource.password=PASSWD"
 ```
 
 
 SCDF Postgres
 ```shell script
-stream deploy --name jdbc-postgres --properties "deployer.jdbc-upsert.kubernetes.imagePullSecret=regcred,deployer.jdbc-upsert.kubernetes.imagePullPolicy=Always,deployer.jdbc-upsert.kubernetes.configMapKeyRefs=[{envVarName: 'app.insertSql', configMapName: 'jdbc-upsert-config', dataKey: 'app.insertSql'},{envVarName: 'app.updateSql', configMapName: 'jdbc-upsert-config', dataKey: 'app.updateSql'}], deployer.jdbc-upsert.kubernetes.environmentVariables=app.test=test,spring.datasource.driver-class-name=org.postgresql.Driver,spring.datasource.url=jdbc:postgresql://postgresql:5432/postgres,spring.datasource.username=postgres,spring.datasource.password=CHANGEME"
+stream deploy --name jdbc-postgres --properties "deployer.jdbc-upsert.kubernetes.imagePullSecret=regcred,deployer.jdbc-upsert.kubernetes.imagePullPolicy=Always,deployer.jdbc-upsert.kubernetes.configMapKeyRefs=[{envVarName: 'jdbc.upsert.insertSql', configMapName: 'jdbc-upsert-config', dataKey: 'jdbc.upsert.insertSql'},{envVarName: 'jdbc.upsert.updateSql', configMapName: 'jdbc-upsert-config', dataKey: 'jdbc.upsert.updateSql'}], deployer.jdbc-upsert.kubernetes.environmentVariables=jdbc.upsert.test=test,spring.datasource.driver-class-name=org.postgresql.Driver,spring.datasource.url=jdbc:postgresql://postgresql:5432/postgres,spring.datasource.username=postgres,spring.datasource.password=CHANGEME"
 
 ```
 
@@ -197,7 +186,7 @@ kubectl apply -k src/test/resources/secret
 ```
 
 ```shell script
-stream deploy --name jdbc-postgres --properties "deployer.jdbc-upsert.kubernetes.imagePullSecret=regcred,deployer.jdbc-upsert.kubernetes.imagePullPolicy=Always,deployer.jdbc-upsert.kubernetes.configMapKeyRefs=[{envVarName: 'app.insertSql', configMapName: 'jdbc-upsert-config', dataKey: 'app.insertSql'},{envVarName: 'app.updateSql', configMapName: 'jdbc-upsert-config', dataKey: 'app.updateSql'}],deployer.jdbc-upsert.kubernetes.secretKeyRefs=[{envVarName: 'spring.datasource.username', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.username'}, {envVarName: 'spring.datasource.password', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.password'},{envVarName: 'spring.datasource.url', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.url'},{envVarName: 'spring.datasource.driver-class-name', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.driver-class-name'}]"
+stream deploy --name jdbc-postgres --properties "deployer.jdbc-upsert.kubernetes.imagePullSecret=regcred,deployer.jdbc-upsert.kubernetes.imagePullPolicy=Always,deployer.jdbc-upsert.kubernetes.configMapKeyRefs=[{envVarName: 'jdbc.upsert.insertSql', configMapName: 'jdbc-upsert-config', dataKey: 'jdbc.upsert.insertSql'},{envVarName: 'jdbc.upsert.updateSql', configMapName: 'jdbc-upsert-config', dataKey: 'jdbc.upsert.updateSql'}],deployer.jdbc-upsert.kubernetes.secretKeyRefs=[{envVarName: 'spring.datasource.username', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.username'}, {envVarName: 'spring.datasource.password', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.password'},{envVarName: 'spring.datasource.url', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.url'},{envVarName: 'spring.datasource.driver-class-name', secretName: 'db-connections-7hb4f5h5fb', dataKey: 'spring.datasource.driver-class-name'}]"
 ```
 
 
