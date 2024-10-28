@@ -24,8 +24,34 @@ Configuration | Notes
 jdbc.upsert.updateSql | EX: update blackat.members set MEMBER_NM = :name where MEMBER_ID =:id
 jdbc.upsert.insertSql | Ex:insert into blackat.members(MEMBER_ID,MEMBER_NM) values(:id,:name)
 
-# Setup
+## Example SCDF Stream
 
+
+```shell
+claims-http=http --port=9991 | tanzu-sql:jdbc-upsert
+```
+
+Deploy Properties
+
+```properties
+app.http.server.port=9991
+app.tanzu-sql.spring.datasource.driver-class-name=org.postgresql.Driver
+app.tanzu-sql.spring.datasource.username=postgres
+app.tanzu-sql.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
+app.tanzu-sql.jdbc.upsert.updateSql="UPDATE insurance.claims SET payload=to_json(:payload::json) WHERE id= :id"
+app.tanzu-sql.jdbc.upsert.insertSql="INSERT INTO insurance.claims (id,payload) VALUES(:id, to_json(:payload::json))"
+deployer.tanzu-sql.bootVersion=3
+deployer.http.bootVersion=2
+deployer.jdbc.bootVersion=3
+app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
+```
+
+
+```shell
+curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\", \"policyId\": \"11\", \"claimType\": \"auto\", \"description\" : \"\", \"notes\" : \"\", \"claimAmount\": 2323.22, \"dateOfLoss\": \"3/3/20243\", \"insured\": { \"name\": \"Josiah Imani\", \"homeAddress\" : { \"street\" : \"1 Straight\", \"city\" : \"JC\", \"state\" : \"JC\", \"zip\" : \"02323\" } }, \"lossType\": \"Collision\" }"
+```
+
+# Setup
 
 
 ## App Starters
