@@ -46,6 +46,7 @@ deployer.jdbc.bootVersion=3
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
 ```
 
+Testing via HTTP
 
 ```shell
 curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\", \"policyId\": \"11\", \"claimType\": \"auto\", \"description\" : \"\", \"notes\" : \"\", \"claimAmount\": 2323.22, \"dateOfLoss\": \"3/3/20243\", \"insured\": { \"name\": \"Josiah Imani\", \"homeAddress\" : { \"street\" : \"1 Straight\", \"city\" : \"JC\", \"state\" : \"JC\", \"zip\" : \"02323\" } }, \"lossType\": \"Collision\" }"
