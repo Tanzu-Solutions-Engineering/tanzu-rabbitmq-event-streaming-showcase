@@ -55,11 +55,18 @@ processor.jdbc-sql-processor.bootVersion=3
 
 # SCDF Pre-built connectors
 
-```shell
-open http://localhost:9393/dashboard
-```
 
 # Create Table
+
+
+
+```shell
+export JDBC_CONSOLE_APP=`cf apps | grep jdbc-sql-console-app  | awk  '{print $5}'`
+echo $JDBC_CONSOLE_APP
+
+open http://$JDBC_CONSOLE_APP
+```
+
 
 
 ```sqlite-sql
@@ -91,15 +98,21 @@ deployer.jdbc.bootVersion=3
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
 ```
 
+Save URIs for API
+```shell
+export CLAIMS_HOST=`cf apps | grep claims-http-http  | awk  '{print $4}'`
+export CLAIMS_URI="http://$CLAIMS_HOST"
+echo $CLAIMS_URI
+```
 
 ```shell
-export CLAIMS_URI="http://HV8uend-claims-http-http-v2.apps.iris-3289245.cf-app.com"
+
 curl $CLAIMS_URI -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\", \"policyId\": \"11\", \"claimType\": \"auto\", \"description\" : \"\", \"notes\" : \"\", \"claimAmount\": 2323.22, \"dateOfLoss\": \"3/3/20243\", \"insured\": { \"name\": \"Josiah Imani\", \"homeAddress\" : { \"street\" : \"1 Straight\", \"city\" : \"JC\", \"state\" : \"JC\", \"zip\" : \"02323\" } }, \"lossType\": \"Collision\" }"
 ```
 
 
 ```shell
-for i in {2..100}
+for i in {2..20}
 do
   claimJson='{ "id": "';
   claimJson+=$i;
@@ -116,9 +129,14 @@ do
 
   echo '========' POSTING $claimJson;
   
-  curl http://localhost:9991 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d $claimJson
+  curl $CLAIMS_URI -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d $claimJson
   echo
 done
+```
+
+
+```sql
+select * from insurance.claims
 ```
 
 --------------------------------------
@@ -132,10 +150,7 @@ claims-caching-http=http | tanzu-sql-select: jdbc-sql-processor --query="select 
 ```
 
 ```properties
-app.http.server.port=9994
-app.tanzu-sql-select.spring.datasource.driver-class-name=org.postgresql.Driver
-app.tanzu-sql-select.spring.datasource.username=postgres
-app.tanzu-sql-select.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
+deployer.tanzu-sql-select.cloudfoundry.services=postgres
 app.tanzu-sql-select.jdbc.sql.query="select id, payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
 deployer.tanzu-sql-select.bootVersion=3
 deployer.http.bootVersion=2
@@ -143,34 +158,114 @@ deployer.jdbc.bootVersion=3
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
 app.valkey.spring.cloud.stream.rabbit.binder.connection-name-prefix=valkey
 app.valkey.redis.consumer.key-expression=payload.id
+deployer.valkey.cloudfoundry.services=valkey
+deployer.http.memory=1400
+deployer.valkey.memory=1400
+deployer.tanzu-sql-select.memory=1400
 ```
 Get Data for Valkey
 
 
 HTTP POST
 
-User 1
+
+Get Environment
 
 ```shell
-curl http://localhost:9994 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
+export HTTP_CACHE_CLAIMS_HOST=`cf apps | grep claims-caching-http-http  | awk  '{print $4}'`
+export HTTP_CACHE_CLAIMS_HOST_URI="http://$HTTP_CACHE_CLAIMS_HOST"
+echo $HTTP_CACHE_CLAIMS_HOST_URI
 ```
-View Data in ValKey
+
+VaKey Access App
+
+```shell
+export VALKEY_HOST=`cf apps | grep valkey-console-app  | awk  '{print $5}'`
+export VALKEY_HOST_URI="http://$VALKEY_HOST"
+open $VALKEY_HOST_URI
+```
+
+
+
+
+Get using Curl
+
 ```shell
  LRANGE 1 0 0
 ```
 
-User 2
-
+No Data
 ```shell
-curl http://localhost:9994 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"2\" }"
+curl -X 'GET' \
+  "$VALKEY_HOST_URI/valKey/lrange?key=1&start=0&end=0" \
+  -H 'accept: */*'
 ```
 
+
+
+Cache First Claim
+
 ```shell
- LRANGE 2 0 0
+curl $HTTP_CACHE_CLAIMS_HOST_URI -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
 ```
+
+Get claim
+
+```shell
+curl -X 'GET' \
+  "$VALKEY_HOST_URI/valKey/lrange?key=1&start=0&end=0" \
+  -H 'accept: */*'
+```
+
+
+Second Claim - No Data
+
+```shell
+curl -X 'GET' \
+  "$VALKEY_HOST_URI/valKey/lrange?key=2&start=0&end=0" \
+  -H 'accept: */*'
+```
+
+
+Cache Second Claim in ValKey
+
+```shell
+curl $HTTP_CACHE_CLAIMS_HOST_URI -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"2\" }"
+```
+
+
+Get Cache 2n claim
+
+```shell
+curl -X 'GET' \
+  "$VALKEY_HOST_URI/valKey/lrange?key=2&start=0&end=0" \
+  -H 'accept: */*'
+```
+
+
+-------------
+
+# Clean Up
 
 ValKey Clean up
 
 ```shell
  DEL 1 2
+```
+
+```shell
+curl -X 'DELETE' \
+  "$VALKEY_HOST_URI/valKey/del?keys=1&keys=2" \
+  -H 'accept: */*'
+```
+
+
+
+```shell
+open http://$JDBC_CONSOLE_APP
+```
+
+
+```sql
+delete from insurance.claims
 ```
