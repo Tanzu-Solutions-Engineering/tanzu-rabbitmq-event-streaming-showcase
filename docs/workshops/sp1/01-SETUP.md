@@ -13,8 +13,8 @@ git pull
 ```
 
 
-# step 3 - Create Kubernetes cluster
+# step 3 - Create Kubernetes cluster on AWS
 
 ```shell
-./cloud/k8/setup.sh 
+./cloud/k8/sp1/setup.sh 
 ```
