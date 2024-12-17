@@ -24,27 +24,38 @@ import java.util.function.Function;
  * @author gregory green
  */
 @Component
+@Slf4j
 public class FreemarkerFunction implements Function<Map<String,Object>, Message<String>> {
-    private static final Logger log = LoggerFactory.getLogger(FreemarkerFunction.class);
     private final Configuration cfg = new Configuration(Configuration.VERSION_2_3_33);
-    private final Template template;
-    private final String contentType;
+    private final FreemarkerProperties properties;
 
+    /**
+     *
+     * @param freemarkerProperties the contentType and template definition
+     */
     @SneakyThrows
     public FreemarkerFunction(FreemarkerProperties freemarkerProperties) {
 
-        log.info("Properties: {} ",freemarkerProperties);
-
-        this.template = new Template("templateName", new StringReader(freemarkerProperties.getTemplate()), cfg);
-
-        this.contentType = freemarkerProperties.getContentType();
+        log.info("FreemarkerProperties: {} ",freemarkerProperties);
+        this.properties = freemarkerProperties;
     }
 
 
+    /**
+     * Perform template transformation
+     * @param map the input map
+     * @return the formatted text output
+     */
     @SneakyThrows
     @Override
     public Message<String> apply(Map<String, Object> map) {
+
+        log.info("Properties: {} ",properties);
+
         StringWriter writer = new StringWriter();
+
+        var template = new Template("templateName", new StringReader(properties.getTemplate()), cfg);
+
         template.process(map,writer);
 
         var output = writer.toString();
@@ -52,7 +63,7 @@ public class FreemarkerFunction implements Function<Map<String,Object>, Message<
         log.info("TEMPLATE output: {} ",output);
 
         return MessageBuilder.withPayload(output)
-                .setHeader(MessageHeaders.CONTENT_TYPE,contentType)
+                .setHeader(MessageHeaders.CONTENT_TYPE,properties.getContentType())
                 .build();
     }
 }
