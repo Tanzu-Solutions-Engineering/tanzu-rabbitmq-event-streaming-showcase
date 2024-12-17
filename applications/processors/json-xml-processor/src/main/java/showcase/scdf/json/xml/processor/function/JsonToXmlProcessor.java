@@ -13,6 +13,12 @@ import showcase.scdf.json.xml.processor.properties.JsonToXmlProperties;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * The application uses
+ * [FasterXML/jackson](https://github.com/FasterXML/jackson) to convert
+ * json to XML.
+ * @author gregory green
+ */
 @Component
 public class JsonToXmlProcessor implements Function<Map<String,Object>,Message<String>> {
 
