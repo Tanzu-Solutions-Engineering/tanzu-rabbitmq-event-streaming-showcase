@@ -73,7 +73,7 @@ deployer.http.bootVersion=2
 deployer.log.bootVersion=2
 ```
 
-Test with CSV
+Testing 
 
 ```shell
 curl -X POST http://localhost:9003  \
