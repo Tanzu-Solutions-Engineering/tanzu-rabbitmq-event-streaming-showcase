@@ -58,8 +58,7 @@ Right Click Ellipse/dots next to "json-to-xml"
 
 Deploy Stream
 
-![deploy-json-to-csv-button.png](images/deploy-json-to-csv-button.png)
-
+![Deploy-Stream.png](images/Deploy-Stream.png)
 
 
 Click Free Text - > uses the following properties
@@ -92,6 +91,7 @@ open http://localhost:9393/dashboard/index.html#/streams/list/json-to-xml
 Click View Log of the "log" application
 
 ![click-view-log.png](images/click-view-log.png)
+
 
 Scroll down and to right to see results
 
