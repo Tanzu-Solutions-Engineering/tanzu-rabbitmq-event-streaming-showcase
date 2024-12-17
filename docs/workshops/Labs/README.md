@@ -2,10 +2,11 @@
 
 Note that Internet Access is required for these workshop.
 
-| Workshop                                  | Notes                                                                                                                                                |
-|-------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Platform Architects/Operators](sysAdmin) | Provide architect and operations teams with hands on workshops to deploy modern event streaming solutions with [RabbitMQ](https://www.rabbitmq.com). |
-| [Developers & Architects](appDev)         | Provide developers and architecture teams with hands on workshops for modern apps with [RabbitMQ](https://www.rabbitmq.com).                         |
+| Workshop                                   | Notes                                                                                                                                                        |
+|--------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Platform Architects/Operators](sysAdmin)  | Provide architect and operations teams with hands on workshops to deploy modern event streaming solutions with [RabbitMQ](https://www.rabbitmq.com).         |
+| [Developers & Architects](appDev)          | Provide developers and architecture teams with hands on workshops for modern apps with [RabbitMQ](https://www.rabbitmq.com).                                 |
+| [Data-Transformation](Data-Transformation) | This workshop explores data modernization for application digital transformation with Tanzu’s portfolio of data services used by modern Spring applications. |
 
 # Platform Architects/Operators
 
