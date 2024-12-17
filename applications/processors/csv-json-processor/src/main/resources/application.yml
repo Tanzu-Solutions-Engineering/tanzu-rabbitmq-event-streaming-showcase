@@ -1,0 +1,15 @@
+server:
+  port: 0
+spring:
+  application:
+    name: csv-json-processor
+  cloud:
+    function:
+      definition: csvToJsonFunction
+    stream:
+      function:
+        bindings:
+          csvToJsonFunction-in-0: input
+          csvToJsonFunction-out-0: output
+      binder:
+        connection-name-prefix: ${spring.application.name}

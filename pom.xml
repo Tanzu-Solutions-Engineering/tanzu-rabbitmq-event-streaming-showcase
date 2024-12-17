@@ -29,6 +29,9 @@
         <module>applications/rabbit-consumer</module>
         <module>applications/rabbit-publisher</module>
         <module>applications/processors/jdbc-sql-processor</module>
+        <module>applications/processors/csv-json-processor</module>
+        <module>applications/processors/json-xml-processor</module>
+        <module>applications/processors/freemarker-processor</module>
     </modules>
     <build>
         <pluginManagement>

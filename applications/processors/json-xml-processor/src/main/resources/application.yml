@@ -1,0 +1,15 @@
+server:
+  port: 0
+spring:
+  application:
+    name: json-xml-processor
+  cloud:
+    function:
+      definition: jsonToXmlProcessor
+    stream:
+      function:
+        bindings:
+          jsonToXmlProcessor-in-0: input
+          jsonToXmlProcessor-out-0: output
+      binder:
+        connection-name-prefix: ${spring.application.name}

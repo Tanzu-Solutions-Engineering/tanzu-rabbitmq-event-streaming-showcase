@@ -85,7 +85,9 @@ cd /Users/devtools/integration/scdf/
 cd /Users/devtools/integration/scdf/
 ./shell.sh 
 ```
+----------------------
 
+# START DEMO
 
 ## Register Custom Apps
 

@@ -1,0 +1,15 @@
+server:
+  port: 0
+spring:
+  application:
+    name: freemarker-processor
+  cloud:
+    function:
+      definition: freemarkerFunction
+    stream:
+      function:
+        bindings:
+          freemarkerFunction-in-0: input
+          freemarkerFunction-out-0: output
+      binder:
+        connection-name-prefix: ${spring.application.name}
