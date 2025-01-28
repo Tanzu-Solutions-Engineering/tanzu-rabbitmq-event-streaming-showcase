@@ -1,208 +1,204 @@
-## JDBC SQL PRocessors
+# freemarker-processor
 
-Uses Spring Data select data based [RabbitMQ](https://www.rabbitmq.com/) JSON topic payloads. 
+The following will demonstrate using
+a custom [FreemarkerFunction.java](src/main/java/showcase/scdf/freemarker/processor/function/FreemarkerFunction.java)
+processor to convert JSON to CSV.
 
+This reference implementation uses Apache FreeMarker™ is a template engine: a Java library to generate text output such as
+HTML, CSV, XML and more.
 
-For example,
-
-```json
-{
-  "id"   : "1",
-  "name" :  "Josiah Imani"
-}
-``` 
-
-The configuration properties are *app.updateSql* and *app.insertSql*.
+See [Apache Freemarker](https://freemarker.apache.org/)
+for details .
 
 
-| Configuration  | Notes                                                       |
-|----------------|-------------------------------------------------------------| 
-| jdbc.sql.query | select name, phone, email from members where MEMBER_ID =:id |
+## Register Application
 
-
-
-## Pushing to a docker repository
-
-Login to docker HUB/repository
-
-```shell script
-docker login -u <user>
-```
-
-## Docker building image
+Copy the jars to the /tmp directory
 
 ```shell
-mvn install
-cd applications/jdbc-sql-processor
-mvn package
-docker build  --platform linux/amd64,linux/arm64 -t jdbc-sql-processor:0.0.1-SNAPSHOT .
+rm /tmp/freemarker-processor*
+cp applications/processors/freemarker-processor/target/freemarker-processor-0.0.1-SNAPSHOT.jar /tmp
+cp applications/processors/freemarker-processor/target/freemarker-processor-0.0.1-SNAPSHOT-metadata.jar /tmp
+ls /tmp/freemarker-processor*
 ```
+
+Start the SCDF Shell
 
 ```shell
-docker tag jdbc-sql-processor:0.0.1-SNAPSHOT cloudnativedata/jdbc-sql-processor:0.0.1-SNAPSHOT
-docker push cloudnativedata/jdbc-sql-processor:0.0.1-SNAPSHOT
+java -jar runtime/scdf/spring-cloud-dataflow-shell-2.11.5.jar
 ```
 
+Execute the following to register the freemarker-processor.
 
-## Docker Registry Notes
-
-```shell script
-kubectl create secret generic regcred --from-file=.dockerconfigjson=/Users/ggreen/.docker/config.json     --type=kubernetes.io/dockerconfigjson
+```shell
+app register --bootVersion 3 --type processor --name freemarker-processor  --metadata-uri "file:///tmp/freemarker-processor-0.0.1-SNAPSHOT-metadata.jar" --uri "file:///tmp/freemarker-processor-0.0.1-SNAPSHOT.jar"
 ```
 
+## json-to-csv SCDF stream
 
-```shell script
-kubectl create secret docker-registry regcred --docker-server=registry.pivotal.io --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
+Open SCDF Streams
+
+```shell
+open http://localhost:9393/dashboard/index.html#/streams/list
 ```
 
-```shell script
-kubectl get secret regcred --output=yaml
+Create Stream with DSL
 
+![create-stream.png](images/create-stream.png)
 
+Use Stream definition
 
-From the directory with the Dockerfile
-
-```shell script
-docker build --file=Dockerfile --tag=cloudnativedata/jdbc-sql-processor:latest --rm=true .
-docker ps
-docker login
-docker push cloudnativedata/jdbc-sql-processor:latest 
-docker push cloudnativedata/jdbc-sql-processor:latest
+```shell
+json-to-csv=http --port=9004 | freemarker-processor --content-type=text/csv | log
 ```
 
+Click Create Stream -> Create Stream
 
-## Example
-
-## Register/Create
-
-```shell script
-app register --name jdbc-sql-processor --type processor  --uri docker:cloudnativedata/jdbc-sql-processor:latest
-```
+![json-to-csv-stream-def.png](images/json-to-csv-stream-def.png)
 
 
-From properties
+Deploy Stream
+
+![deploy-json-to-csv-button.png](images/deploy-json-to-csv-button.png)
+
+
+Click Free Text
+
+![json-to-csv-deploy-properties.png](images/json-to-csv-deploy-properties.png)
+
+
+Use the following properties
 
 ```properties
-processor.jdbc-sql-processor=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/processors/jdbc-sql-processor/target/jdbc-sql-processor-0.0.1-SNAPSHOT.jar
-processor.jdbc-sql-processor.metadata=file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/processors/jdbc-sql-processor/target/jdbc-sql-processor-0.0.1-SNAPSHOT-metadata.jar
-processor.jdbc-sql-processor.bootVersion=3
-```
-
-```shell script
-jdbc-postgres-select= http | tanzu-sql-select: jdbc-sql-processor | log
-```
-
-
-```properties
-app.http.server.port=9993
-app.tanzu-sql-select.spring.datasource.driver-class-name=org.postgresql.Driver
-app.tanzu-sql-select.spring.datasource.username=postgres
-app.tanzu-sql-select.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
-app.tanzu-sql-select.jdbc.sql.query="select id, payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
-deployer.tanzu-sql-select.bootVersion=3
-deployer.http.bootVersion=2
-deployer.jdbc.bootVersion=3
-app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
+app.freemarker-processor.spring.config.location=classpath:/application.yml,/tmp/json-to-csv.properties
+app.freemarker-processor.server.port=8580
+app.freemarker-processor.freemarker.content-type=text/csv
+app.http.server.port=9004
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
+app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
+deployer.freemarker-processor.bootVersion=3
+deployer.http.bootVersion=2
+deployer.log.bootVersion=2
 ```
 
-```shell script
-jdbc-postgres-enrichment-valkey=http | tanzu-sql-select: jdbc-sql-processor | valkey: redis --key-expression=payload.id
-```
+Click DEPLOY THE STREAM
 
-Get Data for Valkey
+Once the stream is deployed Configure the FreeMarker Template
 
 ```shell
- LRANGE 1 0 0
+open http://localhost:8580/swagger-ui/index.html#/config-controller/setTemplate
 ```
 
 
+![swagger-freemarker-config.png](images/swagger-freemarker-config.png)
 
+Set String Temple
+
+
+Click Try it out
+
+Paste Freemarker Template
+
+```csv
+"${firstName}","${lastName}"
+```
+Click Execute
+
+Testing
+
+```shell
+curl -X POST http://localhost:9004  \
+   -H 'Content-Type: application/json' \
+    -d '{ "firstName" : "Josiah", "lastName" : "Imani" }'
+```
+
+Open Stream
+
+```shell
+open http://localhost:9393/dashboard/index.html#/streams/list/json-to-csv
+```
+
+Click View Log of the "log" application
+
+![click-view-log.png](images/click-view-log.png)
+
+Scroll down and to right to see results
+
+![log-json-to-csv.png](images/log-json-to-csv.png)
+
+
+-------------------------------------------
+## json-to-csv-file
+
+The following will save the CSV to a file
+
+Open Streams in the SCDF Dashboard
+
+```shell
+open http://localhost:9393/dashboard/index.html#/streams/list
+```
+
+Click CREATE STREAM
+
+Use the following definition
+
+```shell
+json-to-csv-file=http --port=9005 | freemarker-processor --content-type=text/csv | file --directory=/tmp --name=csv-out.txt
+```
+
+Click CREATE STREAM(S)
+
+
+Right Click Ellipse/dots next to "json-to-csv-file"
+
+Click Deploy -> FreeText
+
+
+Use the following properties
 
 ```properties
-app.http.server.port=9994
-app.tanzu-sql-select.spring.datasource.driver-class-name=org.postgresql.Driver
-app.tanzu-sql-select.spring.datasource.username=postgres
-app.tanzu-sql-select.spring.datasource.url="jdbc:postgresql://localhost:5432/postgres"
-app.tanzu-sql-select.jdbc.sql.query="select id, payload->> 'lossType' as lossType, payload-> 'insured' ->> 'name' as name, concat( payload->'insured'->'homeAddress' ->> 'street', ', ', payload->'insured'->'homeAddress' ->> 'city', ', ', payload ->'insured'->'homeAddress' ->> 'state', ' ', payload -> 'insured'->'homeAddress' ->> 'zip') as homeAddress from insurance.claims WHERE id= :id"
-deployer.tanzu-sql-select.bootVersion=3
-deployer.http.bootVersion=2
-deployer.jdbc.bootVersion=3
-app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
+app.freemarker-processor.spring.config.location=classpath:/application.yml,/tmp/json-to-csv.properties
+app.freemarker-processor.server.port=8581
+app.freemarker-processor.freemarker.content-type=text/csv
+app.file.directory=/tmp
+app.file.name=csv-out.txt
+deployer.file.bootVersion=2
+app.http.server.port=9005
 app.http.spring.cloud.stream.rabbit.binder.connection-name-prefix=http
-app.valkey.spring.cloud.stream.rabbit.binder.connection-name-prefix=valkey
+app.log.spring.cloud.stream.rabbit.binder.connection-name-prefix=log
+deployer.freemarker-processor.bootVersion=3
+deployer.http.bootVersion=2
+deployer.log.bootVersion=2
 ```
 
-HTTP POST
+
+Click DEPLOY THE STREAM
+
+Once the stream is deployed Configure the FreeMarker Template
 
 ```shell
-curl http://localhost:9994 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
+open http://localhost:8581/swagger-ui/index.html#/config-controller/setTemplate
 ```
 
+Paste Freemarker Template
 
-Local only
+```csv
+"FILE-00A","${firstName}","${lastName}"
+```
+Click Execute
+
+
+Testing
 
 ```shell
-app register --type sink --name jdbc-sql-processor --uri file:///Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase/applications/processors/jdbc-sql-processor/target/jdbc-sql-processor-0.0.1-SNAPSHOT.jar
+curl -X POST http://localhost:9005  \
+   -H 'Content-Type: application/json' \
+    -d '{ "firstName" : "Josiah", "lastName" : "Imani" }'
 ```
 
 
-
-
-### HTTP Testing
-
-
-HTTP POST
+View Results in File
 
 ```shell
-curl http://localhost:9993 -H "Accept: application/json" --header "Content-Type: application/json"  -X POST -d "{ \"id\": \"1\" }"
+cat /tmp/csv-out.txt
 ```
-
-
-```json
-
-	{ 
-		"id"	: "1"
-	}
-
-```
-
-
-Output
-
-```json
-
-	{
-		"id"			:	"1",
-		"losstype"		:	"Collision",
-		"name"			:	"Josiah Imani",
-		"homeaddress"	:	"1 Straight, JC, JC 02323"
-	 }
-
-```
-
-
-# Trouble Shooting
-
-## Postgres issue
-
-See https://stackoverflow.com/questions/25641047/org-postgresql-util-psqlexception-fatal-no-pg-hba-conf-entry-for-host
-
-    sudo vi ../12/data/pg_hba.conf
-
-Add
-
-    host    all             all             192.168.1.84/32         trust
-
-020-06-26 19:46:26.249 ERROR 1 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Exception during pool initialization.
-
-org.postgresql.util.PSQLException: FATAL: no pg_hba.conf entry for host "192.168.1.84", user "postgres", database "postgres", SSL off
-	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:525) ~[postgresql-42.2.14.jar!/:42.2.14]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:146) ~[postgresql-42.2.14.jar!/:42.2.14]
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:197) ~[postgresql-42.2.14.jar!/:42.2.14]
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49) ~[postgresql-42.2.14.jar!/:42.2.14]
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:217) ~[postgresql-42.2.14.jar!/:42.2.14]
-	
-
-
-
