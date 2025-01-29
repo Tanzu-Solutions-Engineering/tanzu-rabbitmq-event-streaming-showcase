@@ -1,4 +1,4 @@
-# LAB - DATE Transformations
+# LAB - Scripting Transformations with Groovy
 
 This example will reformat dates 
 using Spring Cloud Stream Application's [Groovy processor](https://docs.spring.io/stream-applications/docs/current/reference/html/#processors).
