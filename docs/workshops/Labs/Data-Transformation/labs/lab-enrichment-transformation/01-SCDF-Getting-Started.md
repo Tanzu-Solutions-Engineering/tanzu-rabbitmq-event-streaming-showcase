@@ -29,7 +29,7 @@ wget --directory-prefix=runtime/scdf https://repo.maven.apache.org/maven2/org/sp
 Start Skipper
 ```shell
 export ROOT_DIR=/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
-java -jar runtime/scdf/spring-cloud-skipper-server-2.11.5.jar
+java -jar $ROOT_DIR/runtime/scdf/spring-cloud-skipper-server-2.11.5.jar
 ```
 
 
@@ -38,7 +38,7 @@ Start Data Flow Server
 export ROOT_DIR=/Users/Projects/VMware/Tanzu/TanzuData/TanzuRabbitMQ/dev/tanzu-rabbitmq-event-streaming-showcase
 export SPRING_APPLICATION_JSON='{"spring.cloud.stream.binders.rabbitBinder.environment.spring.rabbitmq.username":"user","spring.cloud.stream.binders.rabbitBinder.environment.spring.rabbitmq.password":"bitnami","spring.rabbitmq.username":"user","spring.rabbitmq.password":"bitnami","spring.cloud.dataflow.applicationProperties.stream.spring.rabbitmq.username" :"user","spring.cloud.dataflow.applicationProperties.stream.spring.rabbitmq.password" :"bitnami"}'
 
-java -jar runtime/scdf/spring-cloud-dataflow-server-2.11.5.jar
+java -jar $ROOT_DIR/runtime/scdf/spring-cloud-dataflow-server-2.11.5.jar
 ```
 
 
