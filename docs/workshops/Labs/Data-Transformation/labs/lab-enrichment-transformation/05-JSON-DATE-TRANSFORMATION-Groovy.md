@@ -1,7 +1,7 @@
 # LAB - DATE Transformations
 
-Example will reformat dates 
-using Spring Cloud Stream application [Groovy processor](https://docs.spring.io/stream-applications/docs/current/reference/html/#processors).
+This example will reformat dates 
+using Spring Cloud Stream Application's [Groovy processor](https://docs.spring.io/stream-applications/docs/current/reference/html/#processors).
 
 [Apache Groovy](https://groovy-lang.org/index.html) is a very powerful scripting language. 
 It runs on top of the Java virtual machine. 
