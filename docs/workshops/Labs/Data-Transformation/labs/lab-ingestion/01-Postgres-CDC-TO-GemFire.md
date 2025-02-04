@@ -98,6 +98,10 @@ cdc-stream=cdc-debezium --cdc.name=postgres-connector --cdc.config.database.dbna
 
 Deploy
 
+![deploy-gemfire-cdc.png](images/deploy-gemfire-cdc.png)
+
+![deloy-gf-step-2.png](images/deloy-gf-step-2.png)
+
 --------------
 # Testing
 
