@@ -3,6 +3,8 @@
 This example will reformat dates 
 using Spring Cloud Stream Application's [Groovy processor](https://docs.spring.io/stream-applications/docs/current/reference/html/#processors).
 
+![groovy-flow.png](images/groovy-flow.png)
+
 [Apache Groovy](https://groovy-lang.org/index.html) is a very powerful scripting language. 
 It runs on top of the Java virtual machine. 
 
