@@ -1,4 +1,4 @@
-# Lab Pre-requiste 
+# Lab Pre-requisite 
 
 # step 1 - goto  project dir
 
