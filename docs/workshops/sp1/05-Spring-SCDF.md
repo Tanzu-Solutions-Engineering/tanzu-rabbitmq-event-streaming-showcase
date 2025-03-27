@@ -91,7 +91,7 @@ stream list
     kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "destroy region --name=Account"
 ```
 
-## destroy region
+## recreate region
 
 ```shell
     kubectl exec gemfire1-locator-0 -- gfsh -e "connect" -e "create region --name=Account --type=PARTITION"
